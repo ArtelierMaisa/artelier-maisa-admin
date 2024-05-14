@@ -1,14 +1,15 @@
-import { Horse, Heart, Cube } from "@phosphor-icons/react";
+import { Toaster, toast } from 'sonner'
 
 function App() {
 
   return (
     //<h1 className="text-1xl font-bold underline">Josias fodão</h1>
-    <main>
-      <Horse />
-      <Heart color="#AE2983" weight="fill" size={32} />
-      <Cube color="teal" weight="duotone" />
-    </main>
+    <div>
+    <Toaster />
+    <button onClick={() => toast('My first toast')}>
+      Give me a toast
+    </button>
+  </div>
   )
 
 }
