@@ -1,7 +1,9 @@
 import './styles/global.scss';
 
+import { Icon } from './components';
+
 function App() {
-  return <div>Hello World!</div>;
+  return <Icon variant='info' color='text' />;
 }
 
 export default App;
