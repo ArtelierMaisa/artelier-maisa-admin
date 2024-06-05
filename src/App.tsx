@@ -1,9 +1,9 @@
 import './styles/global.scss';
 
-import { Icon } from './components';
+import { DotButton } from './components';
 
 function App() {
-  return <Icon variant='info' color='text' />;
+  return <DotButton />;
 }
 
 export default App;
