@@ -1,9 +1,9 @@
 import './styles/global.scss';
 
-import { DotButton } from './components';
+import { Text } from './components';
 
 function App() {
-  return <DotButton />;
+  return <Text>Daniel</Text>;
 }
 
 export default App;
