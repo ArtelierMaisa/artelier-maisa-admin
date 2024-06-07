@@ -1,9 +1,15 @@
 import './styles/global.scss';
 
-import { DotButton } from './components';
+import { GenericButton } from './components';
+import { Flowbite } from 'flowbite-react';
+import { flowbiteTheme } from './styles';
 
 function App() {
-  return <DotButton />;
+  return (
+    <Flowbite theme={{ theme: flowbiteTheme, mode: 'light' }}>
+      <GenericButton title='Text' type='medium' variant='primary' />;
+    </Flowbite>
+  )
 }
 
 export default App;
