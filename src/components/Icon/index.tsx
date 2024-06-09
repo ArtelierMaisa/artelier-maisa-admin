@@ -6,6 +6,7 @@ import {
   EyeSlash,
   Image,
   Info,
+  List,
   MagnifyingGlass,
   Palette,
   Pencil,
@@ -16,7 +17,6 @@ import {
   WhatsappLogo,
   X,
 } from '@phosphor-icons/react';
-import { List } from 'flowbite-react';
 
 import { IconProps } from '../../@types';
 import { iconColors, iconSizes } from '../../constants';
