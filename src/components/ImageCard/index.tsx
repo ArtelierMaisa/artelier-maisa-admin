@@ -1,58 +1,50 @@
-import { useState, useRef } from 'react'
+import { ChangeEvent, useRef } from 'react';
 
-import { DotButtonType } from "../../@types";
-import { DotButton, Text } from "../";
-
-export type ImageCardType = 'photo' | 'edit';
-
-export interface ImageCardProps {
-	type?: ImageCardType;
-	onOpenExplorer?(photo: string): void;
-}
+import { ImageCardProps } from '../../@types';
+import { imageCardTitles, imageCardTypes } from '../../constants';
+import { DotButton, Text } from '../';
 
 export function ImageCard(props: ImageCardProps) {
-	const { type = 'photo', onOpenExplorer } = props
+  const { type = 'photo', onGetFile } = props;
 
-	const [image, setImage] = useState<string>('')
-	
-	const inputRef = useRef<HTMLInputElement>(null);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-	const imageCardTitles: Record<Required<ImageCardProps>['type'], string> = {
-		edit: 'Imagem adicionada! Clique para editar',
-		photo: 'Escolha uma imagem de divulgação'
-	}
+  function handleOpenExplorer(): void {
+    if (inputRef.current) inputRef.current.click();
+  }
 
-	const imageCardTypes: Record<Required<ImageCardProps>['type'], DotButtonType> = {
-		edit: 'pencil',
-		photo: 'add'
-	}
+  function handleGetFile(event: ChangeEvent<HTMLInputElement>): void {
+    const files = event.target.files;
 
-	// TODO: Get image from user library
-	function handleUploadImage(): void {
-		if (inputRef.current) {
-			inputRef.current.click();
+    if (files && onGetFile) onGetFile(files[0]);
+    else if (onGetFile) onGetFile(null);
+  }
 
-			const files = inputRef.current.files
-			if (files) {
-				const [imageSelected] = files;
-	
-				console.log(imageSelected)
-			}
+  return (
+    <>
+      <input
+        type='file'
+        ref={inputRef}
+        accept='image/png, image/jpg, image/jpeg'
+        multiple={false}
+        className='hidden'
+        readOnly
+        onChange={handleGetFile}
+      />
 
+      <button
+        type='button'
+        onClick={handleOpenExplorer}
+        className='flex flew-row w-64 sm:w-96 h-[4.5rem] justify-center items-center px-5 gap-2 bg-white ring-1 ring-primary rounded-lg cursor-pointer hover:opacity-90 transition-colors duration-300'
+      >
+        <div className='hidden sm:flex'>
+          <DotButton mode='figure' type={imageCardTypes[type]} />
+        </div>
 
-			if (onOpenExplorer) onOpenExplorer('')
-		}
-	}
-
-	return (
-		<>
-			<input type='file' accept='image/png, image/jpg, image/jpeg' multiple={false} ref={inputRef} className='hidden' />
-
-			<button onClick={handleUploadImage} className="flex flew-row w-96 h-[4.5rem] justify-center items-center px-5 gap-2 bg-white ring-1 ring-primary rounded-lg cursor-pointer hover:opacity-90 transition-colors duration-300">
-				<DotButton type={imageCardTypes[type]} isChild />
-
-				<Text type="semibold" color="primary" toCenter isCursorPointer>{imageCardTitles[type]}</Text>
-			</button>
-		</>
-	)
+        <Text type='semibold' color='primary' toCenter isCursorPointer>
+          {imageCardTitles[type]}
+        </Text>
+      </button>
+    </>
+  );
 }
