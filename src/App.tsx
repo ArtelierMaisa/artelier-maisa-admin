@@ -21,7 +21,7 @@ function App() {
       />
 
       <Flowbite theme={{ theme: flowtibeTheme, mode: 'light' }}>
-        <Switch checked={isChecked} onToggle={setIsChecked} variant='neutral' />
+        <Switch checked={isChecked} onToggle={setIsChecked} variant='eyes' />
       </Flowbite>
     </>
   );
