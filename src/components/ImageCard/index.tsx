@@ -44,8 +44,8 @@ export function ImageCard(props: ImageCardProps) {
         type='file'
         ref={inputRef}
         accept='image/png, image/jpg, image/jpeg'
-        multiple={false}
         className='hidden'
+        multiple={false}
         readOnly
         onChange={handleGetFile}
         onError={handleGetFileError}

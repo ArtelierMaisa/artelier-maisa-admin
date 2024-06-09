@@ -4,11 +4,10 @@ import { Flowbite } from 'flowbite-react';
 import { Toaster } from 'sonner';
 
 import { BannerCard } from './components';
-import { flowtibeTheme } from './styles';
 import { PRIMARY_LOGO } from './config';
+import { flowtibeTheme } from './styles';
 
 function App() {
-
   return (
     <>
       <Toaster
@@ -20,7 +19,7 @@ function App() {
       />
 
       <Flowbite theme={{ theme: flowtibeTheme, mode: 'light' }}>
-        <BannerCard variant='fill' image={{id:"123", name:"Titulo", uri:PRIMARY_LOGO }}/>
+        <BannerCard banner={{ id: '123', name: 'Banner', uri: PRIMARY_LOGO }} />
       </Flowbite>
     </>
   );

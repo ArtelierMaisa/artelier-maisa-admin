@@ -1,3 +1,4 @@
+export * from './BannerCard';
 export * from './DotButton';
 export * from './GenericButton';
 export * from './Icon';
