@@ -24,7 +24,7 @@ export const flowtibeTheme: CustomFlowbiteTheme = {
   },
 
   textarea: {
-    base: 'block w-full min-h-48 rounded-lg text-base disabled:cursor-not-allowed disabled:opacity-50',
+    base: 'block w-full h-48 max-h-48 min-h-48 resize-none rounded-lg text-base disabled:cursor-not-allowed disabled:opacity-50 scrollbar scrollbar-w-3 scrollbar-thumb-rounded-lg scrollbar-thumb-primary scrollbar-track-white-color overflow-y-scroll',
     colors: {
       primary:
         'bg-white border-primary text-primary placeholder-primary60 focus:border-primary focus:ring-primary',

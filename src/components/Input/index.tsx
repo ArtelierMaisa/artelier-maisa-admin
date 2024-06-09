@@ -36,7 +36,7 @@ export function Input(props: InputProps) {
       onChange && onChange(event.target.value),
   };
 
-  const inputs: Record<InputVariant, JSX.Element> = {
+  const inputVariants: Record<InputVariant, JSX.Element> = {
     input: (
       <TextInput
         type={textInputTypes[type]}
@@ -57,7 +57,7 @@ export function Input(props: InputProps) {
         </div>
       )}
 
-      {inputs[variant]}
+      {inputVariants[variant]}
     </div>
   );
 }
