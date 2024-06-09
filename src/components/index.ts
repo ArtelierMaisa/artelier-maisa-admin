@@ -6,3 +6,4 @@ export * from './Input';
 export * from './Spinner';
 export * from './Switch';
 export * from './Text';
+export * from './BannerCard';

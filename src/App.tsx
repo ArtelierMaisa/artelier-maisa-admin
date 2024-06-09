@@ -1,14 +1,13 @@
 import './styles/global.scss';
 
 import { Flowbite } from 'flowbite-react';
-import { useState } from 'react';
 import { Toaster } from 'sonner';
 
-import { Switch } from './components';
+import { BannerCard } from './components';
 import { flowtibeTheme } from './styles';
+import { PRIMARY_LOGO } from './config';
 
 function App() {
-  const [isChecked, setIsChecked] = useState<boolean>(false);
 
   return (
     <>
@@ -21,7 +20,7 @@ function App() {
       />
 
       <Flowbite theme={{ theme: flowtibeTheme, mode: 'light' }}>
-        <Switch checked={isChecked} onToggle={setIsChecked} variant='eyes' />
+        <BannerCard variant='fill' image={{id:"123", name:"Titulo", uri:PRIMARY_LOGO }}/>
       </Flowbite>
     </>
   );
