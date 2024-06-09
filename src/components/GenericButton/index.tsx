@@ -1,7 +1,7 @@
 import { Colors, GenericButtonProps, SpinnerColor } from '../../@types';
 import { genericButtonHeights } from '../../constants';
-import { Spinner } from '../Spinner';
 import { Text } from '../';
+import { Spinner } from '../Spinner';
 
 export function GenericButton(props: GenericButtonProps) {
   const {
