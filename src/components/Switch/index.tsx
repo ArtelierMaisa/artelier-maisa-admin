@@ -19,11 +19,11 @@ export function Switch(props: SwitchProps) {
   const iconVariant = isChecked ? 'eye' : 'eye-slash';
 
   return (
-    <div className='relative rounded-full w-16 h-8 transition duration-700 linear'>
+    <div className='relative rounded-full w-16 h-8 transition duration-300 linear'>
       <label
         htmlFor='toggle'
         aria-disabled={isDisabled}
-        className={`absolute left-0 flex w-8 h-8 justify-center items-center appearance-none ${backgroundColorDisabled} rounded-full transition transform duration-700 linear ${cursor} ${animateSwitch}`}
+        className={`absolute left-0 flex w-8 h-8 justify-center items-center appearance-none ${backgroundColorDisabled} rounded-full transition transform duration-300 linear ${cursor} ${animateSwitch}`}
       >
         {variant === 'eyes' && (
           <Icon

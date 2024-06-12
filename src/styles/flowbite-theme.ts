@@ -104,4 +104,16 @@ export const flowtibeTheme: CustomFlowbiteTheme = {
       },
     },
   },
+
+  carousel: {
+    root: {
+      leftControl:
+        'absolute left-0 top-0 flex h-full items-center justify-center px-3',
+      rightControl:
+        'absolute right-0 top-0 flex h-full items-center justify-center px-3',
+    },
+    scrollContainer: {
+      base: 'flex h-full snap-mandatory overflow-y-hidden overflow-x-scroll scroll-smooth rounded-t-lg',
+    },
+  },
 };
