@@ -7,6 +7,7 @@ export * from './Icon';
 export * from './ImageCard';
 export * from './Input';
 export * from './Product';
+export * from './SearchInput';
 export * from './Sidebar';
 export * from './Spinner';
 export * from './Switch';
