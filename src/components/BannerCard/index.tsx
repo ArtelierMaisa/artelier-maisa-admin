@@ -108,7 +108,7 @@ export function BannerCard(props: BannerCardProps) {
 
         <button
           type='button'
-          className={`flex ${commonClassNames} cursor-pointer hover:opacity-90`}
+          className={`flex ${commonClassNames} cursor-pointer hover:opacity-90 transition-opacity duration-200`}
           onClick={handleOpenExplorer}
         >
           {isLoading ? <Spinner size='large' /> : <DotButton mode='figure' />}
@@ -121,7 +121,7 @@ export function BannerCard(props: BannerCardProps) {
 
         <button
           type='button'
-          className={`flex flex-col gap-2 ${commonClassNames} cursor-pointer hover:opacity-90`}
+          className={`flex flex-col gap-2 ${commonClassNames} cursor-pointer hover:opacity-90 transition-opacity duration-200`}
           onClick={handleOpenExplorer}
         >
           {isLoading ? (

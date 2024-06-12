@@ -1,3 +1,5 @@
+export type ProductVariant = 'fill' | 'blank';
+
 export interface ProductImageProps {
   id: string;
   name: string;
@@ -5,10 +7,12 @@ export interface ProductImageProps {
 }
 
 export interface ProductProps {
-  id: string;
-  name: string;
-  images: ProductImageProps[];
-  isOccult: boolean;
+  variant?: ProductVariant;
+  id?: string;
+  name?: string;
+  images?: ProductImageProps[];
+  isOccult?: boolean;
+  onAdd?(): void;
   onUpdate?(id: string): void;
   onDelete?(id: string): void;
 }

@@ -21,6 +21,7 @@ function App() {
         <div className='flex w-full h-screen'>
           <Container>
             <Product
+              variant='fill'
               id='1234'
               name='Título'
               images={[
