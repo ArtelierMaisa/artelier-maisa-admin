@@ -3,8 +3,7 @@ import './styles/global.scss';
 import { Flowbite } from 'flowbite-react';
 import { Toaster } from 'sonner';
 
-import { BannerCard } from './components';
-import { PRIMARY_LOGO } from './config';
+import { BannerCard, Container, Sidebar } from './components';
 import { flowtibeTheme } from './styles';
 
 function App() {
@@ -19,7 +18,20 @@ function App() {
       />
 
       <Flowbite theme={{ theme: flowtibeTheme, mode: 'light' }}>
-        <BannerCard banner={{ id: '123', name: 'Banner', uri: PRIMARY_LOGO }} />
+        <div className='flex w-full h-screen'>
+          <Sidebar />
+
+          <Container>
+            <BannerCard
+              variant='fill'
+              banner={{
+                id: 'any_id',
+                name: 'any_image',
+                uri: 'https://firebasestorage.googleapis.com/v0/b/fir-test-53930.appspot.com/o/images%2Ffoto%20pro%20git.jpg?alt=media&token=3a48806a-efcd-4638-9c02-a29598b5e1f3',
+              }}
+            />
+          </Container>
+        </div>
       </Flowbite>
     </>
   );
