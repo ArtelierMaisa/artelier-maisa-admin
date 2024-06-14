@@ -3,7 +3,8 @@ import './styles/global.scss';
 import { Flowbite } from 'flowbite-react';
 import { Toaster } from 'sonner';
 
-import { CategoryModal, Container } from './components';
+import { Container, EventModal } from './components';
+import { PRIMARY_LOGO } from './config';
 import { flowtibeTheme } from './styles';
 
 function App() {
@@ -20,10 +21,19 @@ function App() {
       <Flowbite theme={{ theme: flowtibeTheme, mode: 'light' }}>
         <div className='flex w-full h-screen'>
           <Container>
-            <CategoryModal
-              data={{ id: '123', name: 'Test' }}
+            <EventModal
               isOpen
               variant='edit'
+              data={{
+                description: 'Description',
+                id: 'id',
+                image: {
+                  id: 'image',
+                  name: 'Name Image',
+                  uri: PRIMARY_LOGO,
+                },
+                name: 'Name',
+              }}
             />
           </Container>
         </div>
