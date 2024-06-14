@@ -1,5 +1,6 @@
 export * from './BannerCard';
 export * from './Carousel';
+export * from './CategoryModal';
 export * from './Container';
 export * from './Dialog';
 export * from './DotButton';

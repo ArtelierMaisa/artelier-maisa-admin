@@ -34,7 +34,7 @@ export function Dialog(props: DialogProps) {
           </Text>
 
           <div className='flex flex-row items-center gap-2'>
-            <Icon variant='info' color='primary' size='small' />
+            <Icon variant='info' color='primary' size='medium' />
 
             <Text type='medium' color='primary'>
               Ao excluir a categoria, todos os produtos cadastrados nela também

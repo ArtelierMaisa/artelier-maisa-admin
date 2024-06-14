@@ -21,7 +21,7 @@ export function Input(props: InputProps) {
 
   const isPassword = type === 'password';
   const isWhatsApp = type === 'whatsapp';
-  const maxWidth = isHugWidth ? 'max-w-[28rem]' : 'max-w-none';
+  const maxWidth = isHugWidth ? 'max-w-none' : 'max-w-[28rem]';
   const textColor = mode === 'normal' ? 'primary' : 'primary60';
 
   const commonInputProps = {

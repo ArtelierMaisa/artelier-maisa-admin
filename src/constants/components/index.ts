@@ -1,3 +1,4 @@
+export * from './CategoryModal';
 export * from './Dialog';
 export * from './DotButton';
 export * from './GenericButton';
