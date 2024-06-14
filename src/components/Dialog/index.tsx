@@ -73,9 +73,9 @@ export function Dialog(props: DialogProps) {
       shouldCloseOnEsc
       ariaHideApp={false}
       overlayClassName='fixed inset-0 bg-text50 border-none'
-      className='flex flex-col w-full h-full justify-center items-center py-8'
+      className='flex flex-col w-full h-full justify-center items-center'
     >
-      <div className='relative flex flex-col w-full lg:w-[32rem] lg:h-auto overflow-hidden p-6 gap-4 rounded-2xl bg-white shadow-default'>
+      <div className='relative flex flex-col w-11/12 md:w-[32rem] lg:h-auto overflow-hidden p-6 gap-4 rounded-2xl bg-white shadow-default'>
         <button
           type='button'
           className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-tr-lg cursor-pointer hover:opacity-90 transition-colors duration-300'
