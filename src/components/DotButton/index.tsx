@@ -11,15 +11,17 @@ export function DotButton(props: DotButtonProps) {
     isCursorPointer: true,
   };
 
-  const dotButtonIcons: Record<Required<DotButtonProps>['type'], JSX.Element> =
-    {
-      add: <Icon variant='plus' {...commonIconProps} />,
-      next: <Icon variant='caret-right' {...commonIconProps} />,
-      previous: <Icon variant='caret-left' {...commonIconProps} />,
-      pencil: <Icon variant='pencil' {...commonIconProps} />,
-    };
+  const dotButtonIcons: Record<
+    Required<DotButtonProps>['type'],
+    React.JSX.Element
+  > = {
+    add: <Icon variant='plus' {...commonIconProps} />,
+    next: <Icon variant='caret-right' {...commonIconProps} />,
+    previous: <Icon variant='caret-left' {...commonIconProps} />,
+    pencil: <Icon variant='pencil' {...commonIconProps} />,
+  };
 
-  const dotButtonModes: Record<DotButtonMode, JSX.Element> = {
+  const dotButtonModes: Record<DotButtonMode, React.JSX.Element> = {
     button: (
       <button
         type='button'

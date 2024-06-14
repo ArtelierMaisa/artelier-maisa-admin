@@ -37,7 +37,7 @@ export function Icon(props: IconProps) {
     onClick,
   };
 
-  const icons: Record<IconProps['variant'], JSX.Element> = {
+  const icons: Record<IconProps['variant'], React.JSX.Element> = {
     'caret-left': <CaretLeft {...iconCommonProps} />,
     'caret-right': <CaretRight {...iconCommonProps} />,
     'magnifying-glass': <MagnifyingGlass {...iconCommonProps} />,

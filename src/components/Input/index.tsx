@@ -36,7 +36,7 @@ export function Input(props: InputProps) {
       onChange && onChange(event.target.value),
   };
 
-  const inputVariants: Record<InputVariant, JSX.Element> = {
+  const inputVariants: Record<InputVariant, React.JSX.Element> = {
     input: (
       <TextInput
         type={textInputTypes[type]}

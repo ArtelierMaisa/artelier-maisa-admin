@@ -1,6 +1,7 @@
 export * from './BannerCard';
 export * from './Carousel';
 export * from './Container';
+export * from './Dialog';
 export * from './DotButton';
 export * from './GenericButton';
 export * from './Icon';

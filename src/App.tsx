@@ -3,7 +3,7 @@ import './styles/global.scss';
 import { Flowbite } from 'flowbite-react';
 import { Toaster } from 'sonner';
 
-import { Container, SearchInput } from './components';
+import { Container, Dialog } from './components';
 import { flowtibeTheme } from './styles';
 
 function App() {
@@ -20,7 +20,11 @@ function App() {
       <Flowbite theme={{ theme: flowtibeTheme, mode: 'light' }}>
         <div className='flex w-full h-screen'>
           <Container>
-            <SearchInput />
+            <Dialog
+              data={{ id: '123', name: 'Test' }}
+              isOpen
+              variant='sign-out'
+            />
           </Container>
         </div>
       </Flowbite>

@@ -48,7 +48,7 @@ export function BannerCard(props: BannerCardProps) {
     handleGetFileError();
   }
 
-  const input: JSX.Element = (
+  const input: React.JSX.Element = (
     <input
       type='file'
       ref={inputRef}
@@ -70,7 +70,7 @@ export function BannerCard(props: BannerCardProps) {
   const commonClassNames =
     'items-center justify-center w-64 h-56 bg-background-color ring-2 ring-primary overflow-hidden rounded-lg';
 
-  const bannerCardVariants: Record<BannerCardVariant, JSX.Element> = {
+  const bannerCardVariants: Record<BannerCardVariant, React.JSX.Element> = {
     fill: (
       <>
         {input}
