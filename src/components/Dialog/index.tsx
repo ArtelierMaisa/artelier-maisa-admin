@@ -1,8 +1,6 @@
-import ReactModal from 'react-modal';
-
 import { DialogProps, TextProps } from '../../@types';
 import { dialogTitles } from '../../constants';
-import { GenericButton, Icon, Text } from '../';
+import { GenericButton, Icon, Modal, Text } from '../';
 
 export function Dialog(props: DialogProps) {
   const { isOpen, variant, data, onAccept, onClose } = props;
@@ -67,14 +65,7 @@ export function Dialog(props: DialogProps) {
   }
 
   return (
-    <ReactModal
-      isOpen={isOpen}
-      onRequestClose={onClose || onAccept}
-      shouldCloseOnEsc
-      ariaHideApp={false}
-      overlayClassName='fixed inset-0 bg-text50 border-none'
-      className='flex flex-col w-full h-full justify-center items-center'
-    >
+    <Modal isOpen={isOpen} onRequestClose={onClose || onAccept}>
       <div className='relative flex flex-col w-11/12 md:w-[32rem] lg:h-auto overflow-hidden p-6 gap-4 rounded-2xl bg-white shadow-default'>
         <button
           type='button'
@@ -108,6 +99,6 @@ export function Dialog(props: DialogProps) {
           />
         </div>
       </div>
-    </ReactModal>
+    </Modal>
   );
 }

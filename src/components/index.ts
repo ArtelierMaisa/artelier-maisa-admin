@@ -7,6 +7,7 @@ export * from './GenericButton';
 export * from './Icon';
 export * from './ImageCard';
 export * from './Input';
+export * from './Modal';
 export * from './Product';
 export * from './SearchInput';
 export * from './Sidebar';
