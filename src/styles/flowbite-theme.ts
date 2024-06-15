@@ -8,9 +8,9 @@ export const flowtibeTheme: CustomFlowbiteTheme = {
       input: {
         colors: {
           primary:
-            'bg-white border-primary text-primary placeholder-primary60 focus:border-primary focus:ring-primary',
+            'h-full bg-white border-primary text-primary placeholder-primary60 focus:border-primary focus:ring-primary',
           primary60:
-            'bg-background-color border-primary text-primary placeholder-primary60 focus:border-primary focus:ring-primary',
+            'h-full bg-background-color border-primary text-primary placeholder-primary60 focus:border-primary focus:ring-primary',
         },
         sizes: {
           lg: 'px-3 py-4 text-base',

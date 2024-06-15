@@ -7,6 +7,6 @@ export const textInputTypes: Record<InputType, React.HTMLInputTypeAttribute> = {
   password: 'password',
   size: 'text',
   text: 'text',
-  weight: 'number',
-  whatsapp: 'text',
+  weight: 'text',
+  whatsapp: 'tel',
 };

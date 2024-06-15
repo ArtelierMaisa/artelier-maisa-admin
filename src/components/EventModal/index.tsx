@@ -33,6 +33,7 @@ export function EventModal(props: EventModalProps) {
         </Text>
 
         <Input
+          id='input-name'
           variant='input'
           type='text'
           value={name}
@@ -45,6 +46,7 @@ export function EventModal(props: EventModalProps) {
         />
 
         <Input
+          id='input-description'
           variant='textarea'
           type='text'
           value={description}

@@ -1,4 +1,8 @@
-export type InputVariant = 'input' | 'textarea';
+export type InputVariant =
+  | 'input'
+  | 'input-currency'
+  | 'input-whatsapp'
+  | 'textarea';
 
 export type InputType =
   | 'email'
@@ -13,6 +17,7 @@ export type InputType =
 export type InputMode = 'nude' | 'normal';
 
 export interface InputProps {
+  id?: string;
   value?: string;
   label?: string;
   placeholder?: string;
