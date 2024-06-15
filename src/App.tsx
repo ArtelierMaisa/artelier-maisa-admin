@@ -3,21 +3,24 @@ import './styles/global.scss';
 import { Flowbite } from 'flowbite-react';
 import { Toaster } from 'sonner';
 
-import { CategoryModal, Container } from './components';
+import { CategoryModal, Container, Login } from './components';
 import { flowtibeTheme } from './styles';
 
 function App() {
   return (
     <>
-      <Toaster
+       <Toaster
         position='bottom-right'
         duration={5000}
         closeButton
         richColors
         expand
-      />
-
-      <Flowbite theme={{ theme: flowtibeTheme, mode: 'light' }}>
+      /> 
+      
+      <Container>
+        <Login/>
+      </Container> 
+       <Flowbite theme={{ theme: flowtibeTheme, mode: 'light' }}>
         <div className='flex w-full h-screen'>
           <Container>
             <CategoryModal
@@ -27,7 +30,7 @@ function App() {
             />
           </Container>
         </div>
-      </Flowbite>
+      </Flowbite> 
     </>
   );
 }
