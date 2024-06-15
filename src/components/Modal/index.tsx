@@ -12,7 +12,7 @@ export function Modal(props: ModalProps) {
       shouldCloseOnEsc
       ariaHideApp={false}
       overlayClassName='fixed inset-0 bg-text50 border-none'
-      className={`flex flex-col w-full h-full justify-center items-center ${className}`}
+      className={`flex flex-col w-full h-screen justify-center items-center ${className}`}
     >
       {children}
     </ReactModal>

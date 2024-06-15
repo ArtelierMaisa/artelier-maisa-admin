@@ -68,7 +68,7 @@ export function BannerCard(props: BannerCardProps) {
   };
 
   const commonClassNames =
-    'items-center justify-center w-64 h-56 bg-background-color ring-2 ring-primary overflow-hidden rounded-lg';
+    'items-center justify-center w-64 h-56 bg-transparent ring-2 ring-primary overflow-hidden rounded-lg';
 
   const bannerCardVariants: Record<BannerCardVariant, React.JSX.Element> = {
     fill: (
