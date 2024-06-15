@@ -3,7 +3,11 @@ import './styles/global.scss';
 import { Flowbite } from 'flowbite-react';
 import { Toaster } from 'sonner';
 
+<<<<<<< HEAD
 import { CategoryModal, Container, Login } from './components';
+=======
+import { Router } from './routes';
+>>>>>>> 79e7aefa0399c57b7a6f18d5e88624569496c098
 import { flowtibeTheme } from './styles';
 
 function App() {
@@ -22,13 +26,7 @@ function App() {
       </Container> 
        <Flowbite theme={{ theme: flowtibeTheme, mode: 'light' }}>
         <div className='flex w-full h-screen'>
-          <Container>
-            <CategoryModal
-              data={{ id: '123', name: 'Test' }}
-              isOpen
-              variant='edit'
-            />
-          </Container>
+          <Router />
         </div>
       </Flowbite> 
     </>
