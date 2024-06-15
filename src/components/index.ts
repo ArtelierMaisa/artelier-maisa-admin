@@ -16,4 +16,3 @@ export * from './Sidebar';
 export * from './Spinner';
 export * from './Switch';
 export * from './Text';
-export * from './Login';

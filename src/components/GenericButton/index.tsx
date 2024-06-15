@@ -8,6 +8,7 @@ export function GenericButton(props: GenericButtonProps) {
     title,
     variant = 'primary',
     type = 'medium',
+    mode = 'button',
     isDisabled = false,
     isHugWidth = false,
     isLoading = false,
@@ -45,7 +46,7 @@ export function GenericButton(props: GenericButtonProps) {
   return (
     <button
       className={`flex ${width} justify-center items-center ${genericButtonHeights[type]} px-6 ${paddingY} ${genericButtonBackgroundColors[variant]} rounded-lg ${cursor} shadow-default hover:opacity-90 transition-colors duration-300 disabled:hover:opacity-100`}
-      type='button'
+      type={mode}
       disabled={isDisabled}
       aria-disabled={isDisabled}
       onClick={onClick}

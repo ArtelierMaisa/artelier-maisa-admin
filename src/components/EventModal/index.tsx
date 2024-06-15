@@ -40,6 +40,7 @@ export function EventModal(props: EventModalProps) {
           label='Título'
           maxLength={64}
           isHugWidth
+          isRequired
           onChange={setName}
         />
 
@@ -51,6 +52,7 @@ export function EventModal(props: EventModalProps) {
           label='Descrição'
           maxLength={512}
           isHugWidth
+          isRequired
           onChange={setDescription}
         />
 

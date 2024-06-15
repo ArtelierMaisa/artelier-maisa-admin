@@ -38,6 +38,7 @@ export function CategoryModal(props: CategoryModalProps) {
           label={label}
           maxLength={64}
           isHugWidth
+          isRequired
           onChange={setInputValue}
         />
 
