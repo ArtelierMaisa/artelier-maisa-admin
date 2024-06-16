@@ -7,10 +7,8 @@ import { BannerCard, GenericButton, Icon, Text } from '../../';
 export function Photos(props: PhotosProps) {
   const { variant, data, onAdd, onGoBack, onClose } = props;
 
-  const isEdit = variant === 'edit';
-
   const [images, setImages] = useState<ProductModalImagesProps | null>(
-    isEdit ? data! : null,
+    data || null,
   );
 
   const quantityBanners = new Array(4).fill(0);

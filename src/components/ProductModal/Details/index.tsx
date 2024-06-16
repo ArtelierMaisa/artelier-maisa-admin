@@ -7,10 +7,8 @@ import { GenericButton, Icon, Input, Text } from '../../';
 export function Details(props: DetailsProps) {
   const { variant, data, onContinue, onGoBack, onClose } = props;
 
-  const isEdit = variant === 'edit';
-
   const [details, setDetails] = useState<DetailsDataProps>(
-    isEdit ? data! : ({} as DetailsDataProps),
+    data || ({} as DetailsDataProps),
   );
 
   function handleContinue(event: FormEvent<HTMLFormElement>): void {

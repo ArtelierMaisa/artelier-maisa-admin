@@ -7,15 +7,11 @@ import { GenericButton, Icon, Input, Switch, Text } from '../../';
 export function Intro(props: IntroProps) {
   const { variant, data, onClose, onContinue } = props;
 
-  const isEdit = variant === 'edit';
-
-  const [name, setName] = useState<string>(isEdit ? data!.name : '');
+  const [name, setName] = useState<string>(data?.name || '');
   const [description, setDescription] = useState<string>(
-    isEdit ? data!.description : '',
+    data?.description || '',
   );
-  const [isOccult, setIsOccult] = useState<boolean>(
-    isEdit ? data!.isOccult : false,
-  );
+  const [isOccult, setIsOccult] = useState<boolean>(data?.isOccult || false);
 
   function handleContinue(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
