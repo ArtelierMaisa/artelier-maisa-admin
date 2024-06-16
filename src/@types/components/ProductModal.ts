@@ -56,7 +56,7 @@ export type DetailsDataProps = Pick<
 export interface DetailsProps {
   variant: ProductModalVariant;
   data?: DetailsDataProps;
-  onContinue(datailsData: DetailsDataProps): void;
+  onContinue(detailsData: DetailsDataProps): void;
   onGoBack(): void;
   onClose?(): void;
 }

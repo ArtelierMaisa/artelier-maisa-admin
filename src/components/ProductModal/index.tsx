@@ -1,6 +1,10 @@
 import { useState } from 'react';
 
-import { ProductModalActiveType, ProductModalProps } from '../../@types';
+import {
+  ProductModalActiveType,
+  ProductModalDataProps,
+  ProductModalProps,
+} from '../../@types';
 import { Modal } from '../Modal';
 import { Details } from './Details';
 import { Intro } from './Intro';
@@ -9,16 +13,15 @@ import { Photos } from './Photos';
 export function ProductModal(props: ProductModalProps) {
   const { isOpen, variant, data, onAdd, onClose } = props;
 
-  console.log(data);
-
-  // TODO: This state should be used by the component to manager the product data when is edited or added.
-  // const [product, setProduct] = useState()
+  const [product, setProduct] = useState<ProductModalDataProps | undefined>(
+    data,
+  );
   const [currentModalContent, setCurrentModalContent] =
     useState<ProductModalActiveType>('intro');
 
   const commonModalContentProps = {
     variant,
-    data,
+    data: product,
     onClose,
   };
 
@@ -26,13 +29,19 @@ export function ProductModal(props: ProductModalProps) {
     details: (
       <Details
         onGoBack={() => setCurrentModalContent('intro')}
-        onContinue={() => setCurrentModalContent('photos')}
+        onContinue={detailsData => {
+          setProduct({ ...product!, ...detailsData });
+          setCurrentModalContent('photos');
+        }}
         {...commonModalContentProps}
       />
     ),
     intro: (
       <Intro
-        onContinue={() => setCurrentModalContent('details')}
+        onContinue={introData => {
+          setProduct({ ...product!, ...introData });
+          setCurrentModalContent('details');
+        }}
         {...commonModalContentProps}
       />
     ),
@@ -41,14 +50,18 @@ export function ProductModal(props: ProductModalProps) {
         variant={variant}
         data={data?.images}
         onClose={onClose}
-        onAdd={() => onClose && onClose()}
+        onAdd={photosData => {
+          setProduct({ ...product!, ...photosData });
+          onAdd && onAdd();
+          onClose && onClose();
+        }}
         onGoBack={() => setCurrentModalContent('details')}
       />
     ),
   };
 
   return (
-    <Modal isOpen={isOpen} onRequestClose={onClose || onAdd}>
+    <Modal isOpen={isOpen} onRequestClose={onClose}>
       {modalContents[currentModalContent]}
     </Modal>
   );

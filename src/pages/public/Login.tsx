@@ -2,7 +2,7 @@ import { FormEvent, useState } from 'react';
 
 import { GenericButton, Input } from '../../components';
 import { ProductModal } from '../../components/ProductModal';
-import { PRIMARY_LOGO, SECONDARY_LOGO } from '../../config';
+import { SECONDARY_LOGO } from '../../config';
 
 export function Login() {
   const [email, setEmail] = useState<string>('');
@@ -67,22 +67,7 @@ export function Login() {
         </form>
       </main>
 
-      <ProductModal
-        isOpen
-        variant='edit'
-        data={{
-          description: 'Description',
-          id: '123',
-          isOccult: false,
-          material: 'Tecido',
-          name: 'Enfeite de Páscoa',
-          price: '10.00',
-          size: '20 por 30',
-          weight: '30kg',
-          whatsapp: null,
-          images: [{ id: '1', name: 'Image 1', uri: PRIMARY_LOGO }],
-        }}
-      />
+      <ProductModal isOpen variant='add' />
     </>
   );
 }

@@ -24,7 +24,7 @@ export function Photos(props: PhotosProps) {
   return (
     <form
       onSubmit={handleAdd}
-      className='relative flex flex-col w-full md:w-[40rem] h-full md:h-auto md:max-h-[90%] items-center overflow-hidden rounded-none md:rounded-2xl px-10 py-6 gap-2 bg-white shadow-default scrollbar scrollbar-w-3 scrollbar-thumb-rounded-lg scrollbar-thumb-primary scrollbar-track-white-color overflow-y-scroll'
+      className='relative flex flex-col w-full md:w-[40rem] h-full md:h-auto md:max-h-[90%] items-center overflow-hidden rounded-none md:rounded-2xl px-6 md:px-10 py-6 gap-2 bg-white shadow-default scrollbar scrollbar-w-3 scrollbar-thumb-rounded-lg scrollbar-thumb-primary scrollbar-track-white-color overflow-y-scroll'
     >
       <div className='m-auto'>
         <button
