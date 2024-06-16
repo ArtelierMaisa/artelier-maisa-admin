@@ -22,7 +22,7 @@ export function Details(props: DetailsProps) {
   return (
     <form
       onSubmit={handleContinue}
-      className='relative flex flex-col w-full md:w-[32rem] h-full md:h-auto overflow-hidden justify-center items-center p-6 gap-2 rounded-none md:rounded-2xl bg-white shadow-default'
+      className='relative flex flex-col w-full md:w-[32rem] h-full md:h-auto overflow-hidden items-center p-6 gap-2 rounded-none md:rounded-2xl bg-white shadow-default'
     >
       <button
         type='button'

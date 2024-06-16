@@ -15,7 +15,7 @@ export function Login() {
 
   return (
     <>
-      <main className='flex flex-col w-full h-screen bg-white justify-center items-center'>
+      <main className='flex flex-col w-full h-full bg-white justify-center items-center'>
         <form
           onSubmit={onSubmit}
           className='flex flex-col w-full md:w-[40rem] h-full md:h-auto justify-center items-center px-8 pb-8 sm:px-12 sm:pb-12 md:px-20 md:pb-20 pt-3 bg-background-color rounded-none md:rounded-lg md:shadow-default'
@@ -69,7 +69,7 @@ export function Login() {
 
       <ProductModal
         isOpen
-        variant='add'
+        variant='edit'
         data={{
           description: 'Description',
           id: '123',
