@@ -12,7 +12,7 @@ import {
 
 export function Events() {
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
-  const [isOpenDialog, setIsOpenDialog] = useState<boolean>(true);
+  const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
 
   const quantityEvents = new Array(3).fill(0);
 
