@@ -13,7 +13,7 @@ export interface DialogDataProps {
 export interface DialogProps {
   isOpen: boolean;
   variant: DialogVariant;
-  data: DialogDataProps;
+  data?: DialogDataProps;
   onAccept?(): void;
   onClose?(): void;
 }

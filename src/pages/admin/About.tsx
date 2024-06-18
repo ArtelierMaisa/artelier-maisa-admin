@@ -4,6 +4,7 @@ import { toast } from 'sonner';
 import { About as AboutData } from '../../@types';
 import {
   Container,
+  Dialog,
   DotButton,
   GenericButton,
   Icon,
@@ -14,6 +15,7 @@ import {
 import { ACCEPT_EXTENSION_FILES } from '../../config';
 
 export function About() {
+  const [isOpenDialog, setOpenDialog] = useState<boolean>(false);
   const [about, setAbout] = useState<AboutData>({} as AboutData);
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -54,6 +56,8 @@ export function About() {
       );
       return;
     }
+
+    setOpenDialog(true);
   }
 
   return (
@@ -171,6 +175,13 @@ export function About() {
           </div>
         </form>
       </Container>
+
+      <Dialog
+        isOpen={isOpenDialog}
+        variant='sign-out'
+        onAccept={() => setOpenDialog(false)}
+        onClose={() => setOpenDialog(false)}
+      />
     </>
   );
 }

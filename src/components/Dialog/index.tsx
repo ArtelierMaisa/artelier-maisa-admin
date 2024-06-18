@@ -30,7 +30,7 @@ export function Dialog(props: DialogProps) {
           <Text {...commonTextProps}>
             Tem certeza que deseja{' '}
             <span className={commonSpanClassNames}>excluir</span> à categoria{' '}
-            <span className={commonSpanClassNames}>{data.name || ''}</span>?
+            <span className={commonSpanClassNames}>{data?.name || ''}</span>?
           </Text>
 
           <div className='flex flex-row items-center gap-2'>
@@ -47,7 +47,7 @@ export function Dialog(props: DialogProps) {
         <Text {...commonTextProps}>
           Tem certeza que deseja{' '}
           <span className={commonSpanClassNames}>excluir</span> o produto{' '}
-          <span className={commonSpanClassNames}>{data.name || ''}</span>?
+          <span className={commonSpanClassNames}>{data?.name || ''}</span>?
         </Text>
       ),
       event: (
