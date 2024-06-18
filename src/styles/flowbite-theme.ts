@@ -78,7 +78,7 @@ export const flowtibeTheme: CustomFlowbiteTheme = {
 
   sidebar: {
     root: {
-      base: 'h-screen',
+      base: 'h-screen sm:h-full',
       collapsed: {
         on: 'flex w-auto',
         off: 'w-full sm:w-72',

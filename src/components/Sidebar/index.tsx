@@ -20,8 +20,10 @@ export function Sidebar() {
   const isAbout = currentPage === 'about';
   const isProducts = currentPage === 'products';
 
+  const width = isCollapsed ? 'w-auto' : 'w-full sm:w-auto';
+
   return (
-    <aside className='fixed sm:relative z-50 w-full sm:w-auto top-0 left-0'>
+    <aside className={`fixed sm:relative ${width} top-0 left-0 z-50`}>
       <FlowbiteSidebar
         aria-label='Menu lateral da Artelier Maisa'
         collapsed={isCollapsed}

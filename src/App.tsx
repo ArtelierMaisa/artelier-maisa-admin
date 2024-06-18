@@ -18,9 +18,7 @@ function App() {
       />
 
       <Flowbite theme={{ theme: flowtibeTheme, mode: 'light' }}>
-        <div className='flex w-full h-screen'>
-          <Router />
-        </div>
+        <Router />
       </Flowbite>
     </>
   );
