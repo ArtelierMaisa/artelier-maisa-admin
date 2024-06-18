@@ -24,10 +24,6 @@
 
 html,
 body {
-  display: flex;
-
-  width: 100%;
-
   background: var(--background-color);
   color: var(--text);
 }
@@ -70,6 +66,4 @@ textarea {
 
 #root {
   display: flex;
-
-  width: 100%;
 }

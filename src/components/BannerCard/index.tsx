@@ -8,10 +8,12 @@ import { DotButton, Icon, Spinner, Text } from '../';
 export function BannerCard(props: BannerCardProps) {
   const {
     variant = 'add',
+    type = 'file-system',
     isLoading = false,
     banner,
     onGetFile,
     onDelete,
+    onModal,
   } = props;
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -46,6 +48,11 @@ export function BannerCard(props: BannerCardProps) {
     }
 
     handleGetFileError();
+  }
+
+  function handleInteractionWithCard(): void {
+    if (type === 'file-system') handleOpenExplorer();
+    else if (onModal) onModal();
   }
 
   const input: React.JSX.Element = (
@@ -109,7 +116,7 @@ export function BannerCard(props: BannerCardProps) {
         <button
           type='button'
           className={`flex ${commonClassNames} cursor-pointer hover:opacity-90 transition-opacity duration-200`}
-          onClick={handleOpenExplorer}
+          onClick={handleInteractionWithCard}
         >
           {isLoading ? <Spinner size='large' /> : <DotButton mode='figure' />}
         </button>
@@ -122,7 +129,7 @@ export function BannerCard(props: BannerCardProps) {
         <button
           type='button'
           className={`flex flex-col gap-2 ${commonClassNames} cursor-pointer hover:opacity-90 transition-opacity duration-200`}
-          onClick={handleOpenExplorer}
+          onClick={handleInteractionWithCard}
         >
           {isLoading ? (
             <Spinner size='large' />
