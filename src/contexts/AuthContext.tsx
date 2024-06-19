@@ -2,10 +2,11 @@ import { createContext, PropsWithChildren, useEffect, useState } from 'react';
 
 import { AuthContextProps, AuthStorageProps, User, UserSignInProps } from '../@types';
 import { AsyncStorage } from '../storage';
-import { ref, get } from 'firebase/database';
-import { database } from '../services';
+import { ref, get, set } from 'firebase/database';
+import { auth, database } from '../services';
 import { toast } from 'sonner';
 import { authenticate } from '../helpers/auth';
+import { signInWithEmailAndPassword } from 'firebase/auth';
 
 export const AuthContext = createContext({} as AuthContextProps);
 
@@ -39,6 +40,7 @@ export function AuthProvider({ children }: Required<PropsWithChildren>) {
 
     const userFirebase: User = Object.keys(userSnapshot.val()).map(key => ({
       ...userSnapshot.val(),
+      lastAccess: currentDate.getTime()
     }))[0];
 
     const isUserAuthenticated = await authenticate(user, userFirebase);
@@ -58,6 +60,22 @@ export function AuthProvider({ children }: Required<PropsWithChildren>) {
 
     AsyncStorage.set<AuthStorageProps>('auth', userToStorage);
     setIsAuthenticated(true);
+
+    if (isAuthenticated) {
+      await signInWithEmailAndPassword(auth, user.email, user.password).then(async (_) => {
+        await set(loginRef, userFirebase).then(() => { }).catch((error) => {
+          console.error(error)
+          toast.error('Falha no Login! Algo deu errado durante o login. Por favor, tente novamente. Se o problema persistir, entre em contato com o suporte técnico.', {
+            duration: 7500,
+          });
+        })
+      }).catch((error) => {
+        console.error(error)
+        toast.error('Falha no Login! Algo deu errado durante o login. Por favor, tente novamente. Se o problema persistir, entre em contato com o suporte técnico.', {
+          duration: 7500,
+        });
+      })
+    }
 
     return true;
   }
