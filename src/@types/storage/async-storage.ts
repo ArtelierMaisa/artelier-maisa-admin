@@ -1,4 +1,4 @@
-export type AsyncStorageKeyType = 'is-logged';
+export type AsyncStorageKeyType = 'auth';
 
 export interface AsyncStorageProps {
   get<T>(key: AsyncStorageKeyType): T | null;

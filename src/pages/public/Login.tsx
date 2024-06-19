@@ -3,7 +3,6 @@ import { useNavigate } from 'react-router-dom';
 
 import { GenericButton, Input } from '../../components';
 import { SECONDARY_LOGO } from '../../config';
-import { AsyncStorage } from '../../storage';
 
 export function Login() {
   const [email, setEmail] = useState<string>('');
@@ -14,8 +13,6 @@ export function Login() {
   // TODO: You should login with Firebase here!
   function onSubmit(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
-
-    AsyncStorage.set<boolean>('is-logged', true);
 
     navigate('/admin/banners');
   }
