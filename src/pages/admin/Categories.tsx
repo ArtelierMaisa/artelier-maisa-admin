@@ -1,8 +1,13 @@
+import { useState } from 'react';
+
 import {
+  CategoryModal,
   Container,
+  Dialog,
   GenericButton,
   Icon,
   Product,
+  ProductModal,
   SearchInput,
   Sidebar,
   Text,
@@ -10,6 +15,14 @@ import {
 import { PRIMARY_LOGO, SECONDARY_LOGO } from '../../config';
 
 export function Categories() {
+  const [isOpenCategoryDialog, setIsOpenCategoryDialog] =
+    useState<boolean>(false);
+  const [isOpenProductDialog, setIsOpenProductDialog] =
+    useState<boolean>(false);
+  const [isOpenCategoryModal, setIsOpenCategoryModal] =
+    useState<boolean>(false);
+  const [isOpenProductModal, setIsOpenProductModal] = useState<boolean>(false);
+
   // TODO: This categories and products are mocked. The category object has products list inside his.
   const categories = [0];
   const products = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
@@ -56,7 +69,8 @@ export function Categories() {
 
                   <button
                     type='button'
-                    className='hover:opacity-90 transition-colors duration-300'
+                    className='rounded-lg hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
+                    onClick={() => setIsOpenCategoryModal(true)}
                   >
                     <Icon variant='pencil' color='primary' />
                   </button>
@@ -64,14 +78,18 @@ export function Categories() {
 
                 <button
                   type='button'
-                  className='hover:opacity-90 transition-colors duration-300'
+                  className='rounded-lg hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
+                  onClick={() => setIsOpenCategoryDialog(true)}
                 >
                   <Icon variant='trash' color='primary' />
                 </button>
               </div>
 
               <div className='flex flex-row w-full h-auto p-1 md:p-0.5 pb-1.5 md:pb-2 gap-4 overflow-hidden overflow-x-auto scrollbar scrollbar-w-3 scrollbar-thumb-rounded-lg scrollbar-thumb-primary scrollbar-track-white-color'>
-                <Product variant='blank' />
+                <Product
+                  variant='blank'
+                  onAdd={() => setIsOpenProductModal(true)}
+                />
 
                 {/* TODO: Add correct logic to handle product list */}
                 {products.map(() => (
@@ -92,6 +110,7 @@ export function Categories() {
                       },
                     ]}
                     isOccult={false}
+                    onDelete={() => setIsOpenProductDialog(true)}
                   />
                 ))}
               </div>
@@ -123,6 +142,36 @@ export function Categories() {
           </div>
         )}
       </Container>
+
+      <Dialog
+        isOpen={isOpenCategoryDialog}
+        variant='category'
+        onAccept={() => setIsOpenCategoryDialog(false)}
+        onClose={() => setIsOpenCategoryDialog(false)}
+      />
+
+      {/* TODO: You must change to `edit` when a category is selected */}
+      <CategoryModal
+        isOpen={isOpenCategoryModal}
+        variant='add'
+        onAccept={() => setIsOpenCategoryModal(false)}
+        onClose={() => setIsOpenCategoryModal(false)}
+      />
+
+      <Dialog
+        isOpen={isOpenProductDialog}
+        variant='product'
+        onAccept={() => setIsOpenProductDialog(false)}
+        onClose={() => setIsOpenProductDialog(false)}
+      />
+
+      {/* TODO: You must change to `edit` when a product is selected */}
+      <ProductModal
+        isOpen={isOpenProductModal}
+        variant='add'
+        onAdd={() => setIsOpenProductModal(false)}
+        onClose={() => setIsOpenProductModal(false)}
+      />
     </div>
   );
 }

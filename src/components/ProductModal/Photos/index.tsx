@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { useState } from 'react';
 
 import { PhotosProps, ProductModalImagesProps } from '../../../@types';
 import { productModalTitles } from '../../../constants';
@@ -13,21 +13,17 @@ export function Photos(props: PhotosProps) {
 
   const quantityBanners = new Array(4).fill(0);
 
-  function handleAdd(event: FormEvent<HTMLFormElement>): void {
-    event.preventDefault();
-
+  // TODO: You should develop the logic to add new product here!
+  function handleAdd(): void {
     if (images) onAdd(images);
   }
 
   return (
-    <form
-      onSubmit={handleAdd}
-      className='relative flex flex-col w-full md:w-[40rem] h-full md:h-auto md:max-h-[90%] items-center overflow-hidden rounded-none md:rounded-2xl px-6 md:px-10 py-6 gap-2 bg-white shadow-default scrollbar scrollbar-w-3 scrollbar-thumb-rounded-lg scrollbar-thumb-primary scrollbar-track-white-color overflow-y-scroll'
-    >
+    <div className='relative flex flex-col w-full md:w-[40rem] h-full md:h-auto md:max-h-[90%] items-center overflow-hidden rounded-none md:rounded-2xl px-6 md:px-10 py-6 gap-2 bg-white shadow-default scrollbar scrollbar-w-3 scrollbar-thumb-rounded-lg scrollbar-thumb-primary scrollbar-track-white-color overflow-y-scroll'>
       <div className='w-full m-auto'>
         <button
           type='button'
-          className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-none cursor-pointer hover:opacity-90 transition-colors duration-300'
+          className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-none cursor-pointer hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
           onClick={onClose}
         >
           <Icon variant='x' color='white' />
@@ -89,9 +85,10 @@ export function Photos(props: PhotosProps) {
             type='medium'
             title='Cadastrar'
             isHugWidth
+            onClick={handleAdd}
           />
         </div>
       </div>
-    </form>
+    </div>
   );
 }

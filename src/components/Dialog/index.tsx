@@ -69,7 +69,7 @@ export function Dialog(props: DialogProps) {
       <div className='relative flex flex-col w-11/12 md:w-[32rem] lg:h-auto overflow-hidden p-6 gap-4 rounded-2xl bg-white shadow-default'>
         <button
           type='button'
-          className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-tr-lg cursor-pointer hover:opacity-90 transition-colors duration-300'
+          className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-tr-lg cursor-pointer hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
           onClick={onClose}
         >
           <Icon variant='x' color='white' />

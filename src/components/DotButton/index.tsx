@@ -26,7 +26,7 @@ export function DotButton(props: DotButtonProps) {
       <button
         type='button'
         onClick={onClick}
-        className={`flex ${dotButtonSizes[variant]} justify-center items-center cursor-pointer bg-primary rounded-full hover:opacity-90 transition-colors duration-300`}
+        className={`flex ${dotButtonSizes[variant]} justify-center items-center cursor-pointer bg-primary rounded-full hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60`}
       >
         {dotButtonIcons[type]}
       </button>

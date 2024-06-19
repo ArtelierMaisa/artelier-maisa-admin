@@ -45,7 +45,7 @@ export function GenericButton(props: GenericButtonProps) {
 
   return (
     <button
-      className={`flex ${width} justify-center items-center ${genericButtonHeights[type]} px-6 ${paddingY} ${genericButtonBackgroundColors[variant]} rounded-lg ${cursor} shadow-default hover:opacity-90 transition-colors duration-300 disabled:hover:opacity-100`}
+      className={`flex ${width} justify-center items-center ${genericButtonHeights[type]} px-6 ${paddingY} ${genericButtonBackgroundColors[variant]} rounded-lg ${cursor} shadow-default hover:opacity-90 transition-colors duration-300 disabled:hover:opacity-100 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60`}
       type={mode}
       disabled={isDisabled}
       aria-disabled={isDisabled}

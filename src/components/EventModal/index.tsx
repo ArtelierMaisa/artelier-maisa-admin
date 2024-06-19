@@ -22,7 +22,7 @@ export function EventModal(props: EventModalProps) {
       <div className='relative flex flex-col w-full md:w-[32rem] h-full md:h-auto overflow-hidden justify-center items-center p-6 gap-4 rounded-none md:rounded-2xl bg-white shadow-default'>
         <button
           type='button'
-          className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-none md:rounded-tr-lg cursor-pointer hover:opacity-90 transition-colors duration-300'
+          className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-none md:rounded-tr-lg cursor-pointer hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
           onClick={onClose}
         >
           <Icon variant='x' color='white' />

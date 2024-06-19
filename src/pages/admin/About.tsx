@@ -85,7 +85,7 @@ export function About() {
 
               <button
                 type='button'
-                className='flex size-44 justify-center items-center rounded-lg ring-2 ring-primary cursor-pointer hover:opacity-90 transition-colors duration-300'
+                className='flex size-44 justify-center items-center rounded-lg ring-2 ring-primary cursor-pointer hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
                 onClick={handleOpenExplorer}
               >
                 <input
