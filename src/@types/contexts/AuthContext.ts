@@ -9,6 +9,6 @@ export interface AuthStorageProps {
 
 export interface AuthContextProps {
   isAuthenticated: boolean;
-  handleSignIn(user: UserSignInProps): void;
+  handleSignIn(user: UserSignInProps): Promise<boolean>;
   handleSignOut(): void;
 }
