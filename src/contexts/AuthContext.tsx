@@ -16,8 +16,8 @@ export function AuthProvider({ children }: Required<PropsWithChildren>) {
     authStorage ? authStorage.isAuthenticated : false,
   );
 
-  function isInsidePeriodAccess(lastAccess: Date): boolean {
-    const difference = Math.abs(lastAccess.getTime() - new Date().getTime());
+  function isInsidePeriodAccess(lastAccess: number): boolean {
+    const difference = Math.abs(lastAccess - new Date().getTime());
     const daysBetween = difference / (1000 * 60 * 60 * 24);
     return daysBetween <= 30;
   }
@@ -53,7 +53,7 @@ export function AuthProvider({ children }: Required<PropsWithChildren>) {
 
     const userToStorage: AuthStorageProps = {
       isAuthenticated: true,
-      lastAccess: currentDate,
+      lastAccess: currentDate.getTime(),
     };
 
     AsyncStorage.set<AuthStorageProps>('auth', userToStorage);
