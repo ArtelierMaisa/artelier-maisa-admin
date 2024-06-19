@@ -38,7 +38,7 @@ export function Categories() {
           <span className='font-semibold text-base text-text'>produtos</span>
         </Text>
 
-        <div className='flex flex-col lg:flex-row w-full justify-center items-center gap-4'>
+        <div className='flex flex-col lg:flex-row w-full justify-center items-stretch md:items-center gap-4'>
           <SearchInput />
 
           <GenericButton title='Adicionar Nova Categoria' />
@@ -46,8 +46,8 @@ export function Categories() {
 
         {/* TODO: Add correct logic to handle category list */}
         {categories.length > 0 ? (
-          <div className='flex flex-col w-full mt-6 gap-2'>
-            <div className='flex flex-col py-4 gap-2 border-y-2 border-y-primary'>
+          <div className='flex flex-col w-full mt-6 gap-2 border-t-2 border-t-primary'>
+            <div className='flex flex-col py-4 gap-2 border-b-2 border-b-primary'>
               <div className='flex w-full justify-between items-center'>
                 <div className='flex gap-2'>
                   <Text type='semibold' color='primary' size='xl'>
@@ -70,7 +70,7 @@ export function Categories() {
                 </button>
               </div>
 
-              <div className='flex flex-row w-full h-auto p-0.5 pb-2 gap-4 overflow-hidden overflow-x-auto scrollbar scrollbar-w-3 scrollbar-thumb-rounded-lg scrollbar-thumb-primary scrollbar-track-white-color'>
+              <div className='flex flex-row w-full h-auto p-1 md:p-0.5 pb-1.5 md:pb-2 gap-4 overflow-hidden overflow-x-auto scrollbar scrollbar-w-3 scrollbar-thumb-rounded-lg scrollbar-thumb-primary scrollbar-track-white-color'>
                 <Product variant='blank' />
 
                 {/* TODO: Add correct logic to handle product list */}
