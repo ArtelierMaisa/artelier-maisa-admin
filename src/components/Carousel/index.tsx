@@ -1,6 +1,6 @@
 import { Carousel as FlowbiteCarousel } from 'flowbite-react';
 
-import { CarouselProps } from '../../@types';
+import { CarouselProps, DotButtonProps } from '../../@types';
 import { DotButton } from '../';
 
 export function Carousel(props: CarouselProps) {
@@ -10,17 +10,35 @@ export function Carousel(props: CarouselProps) {
     ? 'absolute flex top-0 left-0 cursor-not-allowed'
     : 'hidden';
 
+  const commonDotButtonProps: DotButtonProps = {
+    variant: 'x-small',
+    mode: 'figure',
+  };
+
+  const hasOneImage = images.length === 1;
+
+  const rightControl: React.JSX.Element = hasOneImage ? (
+    <span />
+  ) : (
+    <DotButton type='next' {...commonDotButtonProps} />
+  );
+  const leftControl: React.JSX.Element = hasOneImage ? (
+    <span />
+  ) : (
+    <DotButton type='previous' {...commonDotButtonProps} />
+  );
+
   return (
     <div className='relative w-full max-w-80 h-56'>
-      <div className={`${display} z-20 w-full h-full bg-white opacity-40`} />
+      <div
+        className={`${display} z-20 w-full h-full bg-white opacity-40 rounded-t-lg`}
+      />
 
       <FlowbiteCarousel
         slide={false}
         indicators={false}
-        rightControl={<DotButton type='next' variant='x-small' mode='figure' />}
-        leftControl={
-          <DotButton type='previous' variant='x-small' mode='figure' />
-        }
+        rightControl={rightControl}
+        leftControl={leftControl}
       >
         {images.map(image => (
           <img
