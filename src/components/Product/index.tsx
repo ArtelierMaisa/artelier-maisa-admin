@@ -25,15 +25,15 @@ export function Product(props: ProductProps) {
   };
 
   return (
-    <div className='flex flex-col w-64 sm:w-80 h-auto rounded-lg ring-1 ring-primary bg-background-color'>
+    <div className='flex flex-col w-64 min-w-64 sm:w-80 sm:min-w-80 h-auto rounded-lg ring-1 ring-primary bg-background-color'>
       {isFilled ? (
         <>
-          <Carousel images={images} isDisabled={!isChecked} />
+          <Carousel images={images} isDisabled={isChecked} />
 
           <div className='flex flex-col h-auto justify-center items-center p-2 gap-1 sm:gap-2 overflow-hidden'>
             <Text
               type='semibold'
-              color={!isChecked ? 'primary60' : 'primary'}
+              color={isChecked ? 'primary60' : 'primary'}
               toCenter
             >
               {name}
