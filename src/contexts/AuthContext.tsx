@@ -38,7 +38,7 @@ export function AuthProvider({ children }: Required<PropsWithChildren>) {
       return false;
     }
 
-    const userFirebase: User = Object.keys(userSnapshot.val()).map(key => ({
+    const userFirebase: User = Object.keys(userSnapshot.val()).map(_ => ({
       ...userSnapshot.val(),
       lastAccess: currentDate.getTime()
     }))[0];
