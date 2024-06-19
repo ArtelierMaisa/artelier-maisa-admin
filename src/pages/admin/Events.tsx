@@ -44,6 +44,7 @@ export function Events() {
         <div className='flex flex-col mx-auto lg:max-w-[52rem] gap-6 sm:gap-8 md:gap-10'>
           <div className='flex flex-row flex-wrap justify-center items-center mx-auto gap-4'>
             {quantityEvents.map((_, index) => (
+              // TODO: Change variant to `fill` when banner card object is available
               <BannerCard
                 key={index}
                 variant='empty'
