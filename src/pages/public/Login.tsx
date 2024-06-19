@@ -12,12 +12,11 @@ export function Login() {
   const navigate = useNavigate();
   const { handleSignIn } = useAuth();
 
-  // TODO: You should login with Firebase here!
   async function onSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
-    const hasSignIn = await handleSignIn({ email, password });
+    const isLoggedIn = await handleSignIn({ email, password });
 
-    if (hasSignIn) {
+    if (isLoggedIn) {
       navigate('/admin/banners');
     }
   }

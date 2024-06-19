@@ -43,7 +43,6 @@ export function AuthProvider({ children }: Required<PropsWithChildren>) {
     return daysBetween <= 30;
   }
 
-  // TODO: Add login with Firebase here!
   async function handleSignIn(user: UserSignInProps): Promise<boolean> {
     const currentTime = new Date().getTime();
 
