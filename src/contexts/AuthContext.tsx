@@ -43,16 +43,13 @@ export function AuthProvider({ children }: Required<PropsWithChildren>) {
     return daysBetween <= 30;
   }
 
-  async function handleSignIn(user: UserSignInProps): Promise<boolean> {
+  async function handleSignIn(user: UserSignInProps): Promise<void> {
     const currentTime = new Date().getTime();
 
     const loginRef = ref(database, 'user');
     const userSnapshot = await get(loginRef);
 
-    if (!userSnapshot.exists()) {
-      handleAuthenticationErrorToast();
-      return false;
-    }
+    if (!userSnapshot.exists()) return handleAuthenticationErrorToast();
 
     const userFirebase: User = Object.keys(userSnapshot.val()).map(() => ({
       ...userSnapshot.val(),
@@ -61,10 +58,8 @@ export function AuthProvider({ children }: Required<PropsWithChildren>) {
 
     const isUserAuthenticated = await authenticate(user, userFirebase);
 
-    if (!isUserAuthenticated || !userFirebase) {
-      handleAuthenticationErrorToast();
-      return false;
-    }
+    if (!isUserAuthenticated || !userFirebase)
+      return handleAuthenticationErrorToast();
 
     const userToStorage: AuthStorageProps = {
       isAuthenticated: true,
@@ -80,7 +75,7 @@ export function AuthProvider({ children }: Required<PropsWithChildren>) {
       })
       .catch(handleGenericErrorToast);
 
-    return true;
+    return;
   }
 
   function handleSignOut(): void {

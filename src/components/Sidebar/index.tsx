@@ -1,11 +1,11 @@
 import { Sidebar as FlowbiteSidebar } from 'flowbite-react';
 import { useCallback, useEffect, useState } from 'react';
-import { Link, useLocation, useNavigate } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 import packageJson from '../../../package.json';
 import { SidebarCurrentPageType } from '../../@types';
 import { PRIMARY_LOGO } from '../../config';
-import { AsyncStorage } from '../../storage';
+import { useAuth } from '../../hooks';
 import { Dialog, Icon, Text } from '../';
 
 export function Sidebar() {
@@ -15,18 +15,16 @@ export function Sidebar() {
   const [currentPage, setCurrentPage] =
     useState<SidebarCurrentPageType>('banners');
 
+  const { handleSignOut } = useAuth();
   const { pathname } = useLocation();
-  const navigate = useNavigate();
 
   function handleChangeCurrentPage(newPage: SidebarCurrentPageType): void {
     if (newPage !== currentPage) setCurrentPage(newPage);
   }
 
-  function handleSignOutAccept() {
-    AsyncStorage.clearAll();
+  function handleSignOutAccept(): void {
     setIsOpenSignOutDialog(false);
-
-    navigate('/', { replace: true });
+    handleSignOut();
   }
 
   const pathnames = useCallback(
@@ -47,6 +45,7 @@ export function Sidebar() {
 
   const width = isCollapsed ? 'w-auto' : 'w-full sm:w-auto';
   const textsClassName = `${isCollapsed ? 'hidden' : 'flex'} text-wrap`;
+  const menuJustify = isCollapsed ? 'justify-center' : 'justify-between';
 
   useEffect(pathnames, [pathname, pathnames]);
 
@@ -57,11 +56,13 @@ export function Sidebar() {
           aria-label='Menu lateral da Artelier Maisa'
           collapsed={isCollapsed}
         >
-          <div className='flex w-full h-auto justify-between items-center mb-7'>
+          <div
+            className={`flex w-full h-auto ${menuJustify} items-center mb-7`}
+          >
             <img
               src={PRIMARY_LOGO}
               alt='Logo da Artelier Maisa'
-              className={isCollapsed ? 'hidden' : 'w-16 h-16'}
+              className={isCollapsed ? 'hidden' : 'size-16'}
             />
 
             <Icon

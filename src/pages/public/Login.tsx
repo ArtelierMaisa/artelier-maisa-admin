@@ -1,5 +1,4 @@
 import { FormEvent, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { GenericButton, Input } from '../../components';
 import { SECONDARY_LOGO } from '../../config';
@@ -9,16 +8,11 @@ export function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
-  const navigate = useNavigate();
   const { handleSignIn } = useAuth();
 
   async function onSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
-    const isLoggedIn = await handleSignIn({ email, password });
-
-    if (isLoggedIn) {
-      navigate('/admin/banners');
-    }
+    await handleSignIn({ email, password });
   }
 
   return (
