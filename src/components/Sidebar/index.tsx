@@ -77,7 +77,7 @@ export function Sidebar() {
             <Link
               to='/admin/banners'
               title='Cadastro de Banners de Boas Vindas'
-              className='flex flex-row justify-start items-center gap-2 cursor-pointer'
+              className='flex flex-row justify-start items-center rounded-lg p-1 gap-2 cursor-pointer focus:outline-none focus:ring focus:ring-background-color focus:border-background-color'
               onClick={() => handleChangeCurrentPage('banners')}
             >
               <Icon
@@ -98,7 +98,7 @@ export function Sidebar() {
             <Link
               to='/admin/categories'
               title='Cadastro de Produtos'
-              className='flex flex-row justify-start items-center gap-2 cursor-pointer'
+              className='flex flex-row justify-start items-center rounded-lg p-1 gap-2 cursor-pointer focus:outline-none focus:ring focus:ring-background-color focus:border-background-color'
               onClick={() => handleChangeCurrentPage('products')}
             >
               <Icon
@@ -119,7 +119,7 @@ export function Sidebar() {
             <Link
               to='/admin/events'
               title='Cadastro de Divulgações'
-              className='flex flex-row justify-start items-center gap-2 cursor-pointer'
+              className='flex flex-row justify-start items-center rounded-lg p-1 gap-2 cursor-pointer focus:outline-none focus:ring focus:ring-background-color focus:border-background-color'
               onClick={() => handleChangeCurrentPage('highlights')}
             >
               <Icon
@@ -140,7 +140,7 @@ export function Sidebar() {
             <Link
               to='/admin/about'
               title='Sobre a Maisa'
-              className='flex flex-row justify-start items-center gap-2 cursor-pointer'
+              className='flex flex-row justify-start items-center rounded-lg p-1 gap-2 cursor-pointer focus:outline-none focus:ring focus:ring-background-color focus:border-background-color'
               onClick={() => handleChangeCurrentPage('about')}
             >
               <Icon
@@ -160,7 +160,7 @@ export function Sidebar() {
 
             <button
               title='Sair'
-              className='flex flex-row justify-start items-center gap-2 cursor-pointer'
+              className='flex flex-row justify-start items-center rounded-lg p-1 gap-2 cursor-pointer focus:outline-none focus:ring focus:ring-background-color focus:border-background-color'
               onClick={() => setIsOpenSignOutDialog(true)}
             >
               <Icon variant='sign-out' size='small' color='background-color' />

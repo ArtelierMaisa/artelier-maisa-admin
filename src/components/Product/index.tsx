@@ -42,7 +42,7 @@ export function Product(props: ProductProps) {
             <div className='flex flex-1 flex-row w-full justify-between items-center gap-1'>
               <button
                 type='button'
-                className='w-auto h-auto cursor-pointer hover:opacity-85 transition-opacity duration-200'
+                className='w-auto h-auto rounded-lg cursor-pointer hover:opacity-85 transition-opacity duration-200 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
                 onClick={() => onUpdate && onUpdate(id)}
               >
                 <Icon variant='pencil' {...commonIconProps} />
@@ -56,7 +56,7 @@ export function Product(props: ProductProps) {
 
               <button
                 type='button'
-                className='w-auto h-auto cursor-pointer hover:opacity-85 transition-opacity duration-200'
+                className='w-auto h-auto rounded-lg cursor-pointer hover:opacity-85 transition-opacity duration-200 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
                 onClick={() => onDelete && onDelete(id)}
               >
                 <Icon variant='trash' {...commonIconProps} />
@@ -67,7 +67,7 @@ export function Product(props: ProductProps) {
       ) : (
         <button
           type='button'
-          className='flex flex-col w-full h-full justify-center items-center p-2 gap-2 hover:opacity-90 transition-opacity duration-200'
+          className='flex flex-col w-full h-full justify-center items-center rounded-lg p-2 gap-2 hover:opacity-90 transition-opacity duration-200 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
           onClick={onAdd}
         >
           <DotButton type='add' mode='figure' variant='medium' />
