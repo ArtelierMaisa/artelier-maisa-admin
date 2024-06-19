@@ -5,13 +5,13 @@ import { GenericButton, Input } from '../../components';
 import { SECONDARY_LOGO } from '../../config';
 import { useAuth } from '../../hooks';
 
-
 export function Login() {
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
   const navigate = useNavigate();
   const { handleSignIn } = useAuth();
+
   // TODO: You should login with Firebase here!
   async function onSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
