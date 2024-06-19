@@ -4,11 +4,11 @@ export type UserSignInProps = Pick<User, 'email' | 'password'>;
 
 export interface AuthStorageProps {
   isAuthenticated: boolean;
-  lastAccess: Date;
+  lastAccess: number;
 }
 
 export interface AuthContextProps {
   isAuthenticated: boolean;
-  handleSignIn(user: UserSignInProps): void;
+  handleSignIn(user: UserSignInProps): Promise<boolean>;
   handleSignOut(): void;
 }
