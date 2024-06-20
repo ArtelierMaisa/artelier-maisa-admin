@@ -3,7 +3,7 @@ import { createContext, PropsWithChildren, useState } from 'react';
 import { About, UserContextProps } from '../@types';
 import { ref, get } from 'firebase/database';
 import { database } from '../services';
-import { toast } from 'sonner';
+import { ExternalToast, toast } from 'sonner';
 
 // TODO: Create type to UserContext in @types/contexts.
 export const UserContext = createContext({} as UserContextProps);
@@ -12,31 +12,30 @@ export const UserContext = createContext({} as UserContextProps);
 
 export function UserProvider({ children }: Required<PropsWithChildren>) {
   const [about, setAbout] = useState({} as About);
+  const toastOptions: ExternalToast = { duration: 7500 };
+
+
+  function handleGenericErrorToast(): void {
+    toast.error(
+      'Falha ao buscar suas informações! Algo deu errado durante a busca de informações. Por favor, tente novamente. Se o problema persistir, entre em contato com o suporte técnico.',
+      toastOptions
+    );
+  }
 
   async function handleGetAbout(): Promise<void> {
     const aboutRef = ref(database, 'about');
     const aboutSnapshot = await get(aboutRef);
 
-    if (!aboutSnapshot.exists()) {
-      toast.error('Falha ao buscar suas informações! Algo deu errado durante a busca de informações. Por favor, tente novamente. Se o problema persistir, entre em contato com o suporte técnico.', {
-        duration: 7500,
-      });
+    if (!aboutSnapshot.exists()) return handleGenericErrorToast();
 
-      return;
-    }
 
     const aboutFirebase: About = Object.keys(aboutSnapshot.val()).map(key => ({
       ...aboutSnapshot.val()[key],
       id: key,
     }))[0]
 
-    if (!aboutFirebase) {
-      toast.error('Falha ao buscar suas informações! Algo deu errado durante a busca de informações. Por favor, tente novamente. Se o problema persistir, entre em contato com o suporte técnico.', {
-        duration: 7500,
-      });
+    if (!aboutFirebase) return handleGenericErrorToast();
 
-      return;
-    }
 
     setAbout(aboutFirebase);
   }
