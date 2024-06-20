@@ -75,7 +75,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     if (!bannersSnapshot.exists()) return handleGenericErrorToast();
 
-    const bannersFirebase = Object.keys(bannersSnapshot.val()).map(key => ({
+    const bannersFirebase: Banner[] = Object.keys(bannersSnapshot.val()).map(key => ({
       ...bannersSnapshot.val()[key],
       id: key,
     }));
