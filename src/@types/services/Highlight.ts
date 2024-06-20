@@ -3,4 +3,6 @@ export interface Highlight {
   title: string;
   description: string;
   uri: string;
+  createdAt: number;
+  removedAt: number;
 }
