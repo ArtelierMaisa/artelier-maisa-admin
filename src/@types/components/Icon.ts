@@ -17,7 +17,8 @@ export type IconVariant =
   | 'sign-out'
   | 'list'
   | 'eye'
-  | 'eye-slash';
+  | 'eye-slash'
+  | 'package';
 
 export type IconSize = 'tiny' | 'xx-small' | 'x-small' | 'small' | 'medium';
 

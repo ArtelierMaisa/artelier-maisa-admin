@@ -53,7 +53,7 @@ export function ImageCard(props: ImageCardProps) {
 
       <button
         type='button'
-        className='flex flew-row w-64 sm:w-96 h-[4.5rem] justify-center items-center px-5 gap-2 bg-white ring-1 ring-primary rounded-lg cursor-pointer hover:opacity-90 transition-colors duration-300'
+        className='flex flew-row w-64 sm:w-96 h-[4.5rem] justify-center items-center px-5 gap-2 bg-white ring-1 ring-primary rounded-lg cursor-pointer hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
         onClick={handleOpenExplorer}
       >
         <div className='hidden sm:flex'>

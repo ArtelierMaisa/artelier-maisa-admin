@@ -26,7 +26,7 @@ export function Intro(props: IntroProps) {
     >
       <button
         type='button'
-        className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-none md:rounded-tr-lg cursor-pointer hover:opacity-90 transition-colors duration-300'
+        className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-none md:rounded-tr-lg cursor-pointer hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
         onClick={onClose}
       >
         <Icon variant='x' color='white' />

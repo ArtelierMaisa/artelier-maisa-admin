@@ -12,7 +12,7 @@ export function SearchInput(props: SearchInputProps) {
             <input
               value={searchValue}
               type='search'
-              className='block w-full h-16 z-20 p-4 sm:p-2 sm:pr-16 rounded-lg sm:rounded-s-lg bg-background-color text-primary font-normal text-base placeholder-primary60 border-transparent focus:border-transparent focus:ring-0'
+              className='block w-full h-16 z-20 p-4 sm:p-2 sm:pr-16 rounded-lg sm:rounded-s-lg bg-background-color text-primary font-normal text-base placeholder-primary60 border-transparent focus:ring focus:ring-primary60 focus:border-primary60'
               placeholder='Buscar produto ou categoria'
               onChange={onChange}
               required
@@ -20,7 +20,7 @@ export function SearchInput(props: SearchInputProps) {
 
             <button
               type='button'
-              className='absolute top-0 end-0 hidden sm:flex w-16 h-16 justify-center items-center p-2 bg-primary rounded-e-lg hover:transition-opacity hover:duration-300 hover:opacity-90'
+              className='absolute top-0 end-0 hidden sm:flex w-16 h-16 justify-center items-center p-2 bg-primary rounded-e-lg hover:transition-opacity hover:duration-300 hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
               onClick={onSearch}
             >
               <Icon variant='magnifying-glass' color='background-color' />

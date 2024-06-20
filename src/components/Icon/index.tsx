@@ -8,6 +8,7 @@ import {
   Info,
   List,
   MagnifyingGlass,
+  Package,
   Palette,
   Pencil,
   Plus,
@@ -55,6 +56,7 @@ export function Icon(props: IconProps) {
     pencil: <Pencil {...iconCommonProps} />,
     plus: <Plus {...iconCommonProps} />,
     trash: <Trash {...iconCommonProps} />,
+    package: <Package {...iconCommonProps} />,
   };
 
   return icons[variant];

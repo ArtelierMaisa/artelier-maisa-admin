@@ -52,8 +52,7 @@ export function ProductModal(props: ProductModalProps) {
         onClose={onClose}
         onAdd={photosData => {
           setProduct({ ...product!, ...photosData });
-          onAdd && onAdd();
-          onClose && onClose();
+          if (onAdd) onAdd();
         }}
         onGoBack={() => setCurrentModalContent('details')}
       />

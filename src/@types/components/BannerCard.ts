@@ -1,5 +1,7 @@
 export type BannerCardVariant = 'fill' | 'empty' | 'add';
 
+export type BannerCardType = 'file-system' | 'modal';
+
 export interface BannerProps {
   id: string;
   name: string;
@@ -8,8 +10,10 @@ export interface BannerProps {
 
 export interface BannerCardProps {
   variant?: BannerCardVariant;
+  type?: BannerCardType;
   banner?: BannerProps;
   isLoading?: boolean;
   onDelete?(id: string): void;
   onGetFile?(file: File | null): void;
+  onModal?(): void;
 }

@@ -34,6 +34,8 @@ export function Input(props: InputProps) {
     required: isRequired,
     disabled: isDisabled,
     shadow: true,
+    className:
+      'focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60',
     onChange: (event: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) =>
       onChange && onChange(event.target.value),
   };

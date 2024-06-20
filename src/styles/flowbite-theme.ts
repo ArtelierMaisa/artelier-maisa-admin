@@ -57,28 +57,9 @@ export const flowtibeTheme: CustomFlowbiteTheme = {
     },
   },
 
-  tooltip: {
-    arrow: {
-      base: 'absolute z-40 h-2 w-2 rotate-45 shadow-default',
-      style: {
-        dark: 'bg-primary',
-        light: 'bg-primary',
-        auto: 'bg-primary',
-      },
-      placement: 'hidden',
-    },
-    base: 'absolute z-40 inline-block rounded-e-lg px-3 py-2 text-sm font-medium',
-    style: {
-      dark: 'bg-primary',
-      light: 'bg-primary',
-      auto: 'bg-primary',
-    },
-    content: 'relative flex z-50 w-max',
-  },
-
   sidebar: {
     root: {
-      base: 'h-screen',
+      base: 'h-screen sm:h-full',
       collapsed: {
         on: 'flex w-auto',
         off: 'w-full sm:w-72',

@@ -11,6 +11,8 @@ export * from './ImageCard';
 export * from './Input';
 export * from './Modal';
 export * from './Product';
+export * from './ProductModal';
+export * from './ProtectedRoute';
 export * from './SearchInput';
 export * from './Sidebar';
 export * from './Spinner';

@@ -8,10 +8,12 @@ import { DotButton, Icon, Spinner, Text } from '../';
 export function BannerCard(props: BannerCardProps) {
   const {
     variant = 'add',
+    type = 'file-system',
     isLoading = false,
     banner,
     onGetFile,
     onDelete,
+    onModal,
   } = props;
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -46,6 +48,11 @@ export function BannerCard(props: BannerCardProps) {
     }
 
     handleGetFileError();
+  }
+
+  function handleInteractionWithCard(): void {
+    if (type === 'file-system') handleOpenExplorer();
+    else if (onModal) onModal();
   }
 
   const input: React.JSX.Element = (
@@ -85,7 +92,7 @@ export function BannerCard(props: BannerCardProps) {
           <div className='flex flex-row justify-between items-center w-full h-auto p-2'>
             <button
               type='button'
-              className='w-auto h-auto hover:opacity-90'
+              className='w-auto h-auto hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
               onClick={handleOpenExplorer}
             >
               <Icon variant='pencil' {...commonIconProps} />
@@ -93,7 +100,7 @@ export function BannerCard(props: BannerCardProps) {
 
             <button
               type='button'
-              className='w-auto h-auto hover:opacity-90'
+              className='w-auto h-auto hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
               onClick={handleBannerDelete}
             >
               <Icon variant='trash' {...commonIconProps} />
@@ -108,8 +115,8 @@ export function BannerCard(props: BannerCardProps) {
 
         <button
           type='button'
-          className={`flex ${commonClassNames} cursor-pointer hover:opacity-90 transition-opacity duration-200`}
-          onClick={handleOpenExplorer}
+          className={`flex ${commonClassNames} cursor-pointer hover:opacity-90 transition-opacity duration-200 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60`}
+          onClick={handleInteractionWithCard}
         >
           {isLoading ? <Spinner size='large' /> : <DotButton mode='figure' />}
         </button>
@@ -121,8 +128,8 @@ export function BannerCard(props: BannerCardProps) {
 
         <button
           type='button'
-          className={`flex flex-col gap-2 ${commonClassNames} cursor-pointer hover:opacity-90 transition-opacity duration-200`}
-          onClick={handleOpenExplorer}
+          className={`flex flex-col gap-2 ${commonClassNames} cursor-pointer hover:opacity-90 transition-opacity duration-200 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60`}
+          onClick={handleInteractionWithCard}
         >
           {isLoading ? (
             <Spinner size='large' />

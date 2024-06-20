@@ -11,7 +11,7 @@ export function Modal(props: ModalProps) {
       onRequestClose={onRequestClose}
       shouldCloseOnEsc
       ariaHideApp={false}
-      overlayClassName='fixed inset-0 bg-text50 border-none'
+      overlayClassName='fixed inset-0 bg-text50 border-none z-50'
       className={`flex flex-col w-full h-screen justify-center items-center ${className}`}
     >
       {children}

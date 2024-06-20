@@ -24,8 +24,6 @@
 
 html,
 body {
-  width: 100%;
-
   background: var(--background-color);
   color: var(--text);
 }
@@ -64,4 +62,8 @@ textarea {
   &:hover {
     background-color: var(--primary60);
   }
+}
+
+#root {
+  display: flex;
 }
