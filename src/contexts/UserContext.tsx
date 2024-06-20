@@ -1,7 +1,7 @@
 import { createContext, PropsWithChildren, useState } from 'react';
 import { ExternalToast, toast } from 'sonner';
 import { ref, get, remove } from 'firebase/database';
-import { About, Highlight, UserContextProps } from '../@types';
+import { About, Banner, Highlight, UserContextProps } from '../@types';
 import { database } from '../services';
 
 // TODO: Create type to UserContext in @types/contexts.
@@ -12,8 +12,8 @@ export const UserContext = createContext({} as UserContextProps);
 export function UserProvider({ children }: Required<PropsWithChildren>) {
   const [about, setAbout] = useState({} as About);
   const [highlights, setHighlights] = useState([] as Highlight[]);
+  const [banners, setBanners] = useState([] as Banner[]);
   const toastOptions: ExternalToast = { duration: 7500 };
-
 
   function handleGenericErrorToast(): void {
     toast.error(
@@ -69,7 +69,30 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     setHighlights(highlightsInPeriod);
   }
 
-  return <UserContext.Provider value={{ handleGetAbout, handleGetHighlights, about, highlights }}>{children}</UserContext.Provider>;
+  async function handleGetBanners(): Promise<void> {
+    const bannersRef = ref(database, 'banners');
+    const bannersSnapshot = await get(bannersRef);
+
+    if (!bannersSnapshot.exists()) return handleGenericErrorToast();
+
+    const bannersFirebase = Object.keys(bannersSnapshot.val()).map(key => ({
+      ...bannersSnapshot.val()[key],
+      id: key,
+    }));
+
+    if (!bannersFirebase) return handleGenericErrorToast();
+
+    setBanners(bannersFirebase);
+  }
+
+  return <UserContext.Provider value={{
+    handleGetAbout,
+    handleGetHighlights,
+    handleGetBanners,
+    about,
+    highlights,
+    banners
+  }}>{children}</UserContext.Provider>;
 }
 
 
