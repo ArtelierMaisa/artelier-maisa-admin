@@ -3,6 +3,7 @@ import { getAuth } from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
 
 import { envs } from '../config';
+import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: envs.apiKey,
@@ -17,5 +18,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const database = getDatabase(app);
+const storage = getStorage(app)
 
-export { app, auth, database };
+export { app, auth, database, storage };
