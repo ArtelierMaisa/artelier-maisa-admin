@@ -1,8 +1,9 @@
 import { createContext, PropsWithChildren, useState } from 'react';
 import { ExternalToast, toast } from 'sonner';
 import { ref, get, remove } from 'firebase/database';
+import { deleteObject, ref as refStorage } from 'firebase/storage';
 import { About, Banner, Highlight, UserContextProps } from '../@types';
-import { database } from '../services';
+import { database, storage } from '../services';
 
 // TODO: Create type to UserContext in @types/contexts.
 export const UserContext = createContext({} as UserContextProps);
@@ -60,6 +61,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     highlightsFirebase.forEach(async (hightlight) => {
       if (isGreaterThanPeriodRemove(hightlight)) {
         const highlightRef = ref(database, `highlights/${hightlight.id}`);
+
         remove(highlightRef);
       }
     })
@@ -67,6 +69,27 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     const highlightsInPeriod = highlightsFirebase.filter(highlight => !isGreaterThanPeriodRemove(highlight));
 
     setHighlights(highlightsInPeriod);
+  }
+
+  async function handleDeleteHighlight(id: string): Promise<void> {
+    const highlightRef = ref(database, `highlights/${id}`);
+    const highlightSnapshot = await get(highlightRef)
+
+    if (!highlightSnapshot.exists()) return handleGenericErrorToast();
+
+    const highlight: Highlight = highlightSnapshot.val();
+
+    const imageName = highlight.image.name;
+    const imageRef = refStorage(storage, `images/${imageName}`);
+
+    deleteObject(imageRef).then(() => {
+      console.log('Imagem excluída com sucesso');
+    }).catch((error) => {
+      console.log('Erro ao excluir a imagem', error);
+    });
+
+    await remove(highlightRef);
+    handleGetHighlights();
   }
 
   async function handleGetBanners(): Promise<void> {
@@ -89,6 +112,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     handleGetAbout,
     handleGetHighlights,
     handleGetBanners,
+    handleDeleteHighlight,
     about,
     highlights,
     banners
