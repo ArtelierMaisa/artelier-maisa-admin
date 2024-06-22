@@ -1,4 +1,4 @@
-import { About } from "../services";
+import { About } from '../services';
 
 export interface UserContextProps {
   about: About;
