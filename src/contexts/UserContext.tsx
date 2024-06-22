@@ -61,7 +61,6 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     highlightsFirebase.forEach(async (hightlight) => {
       if (isGreaterThanPeriodRemove(hightlight)) {
         const highlightRef = ref(database, `highlights/${hightlight.id}`);
-
         remove(highlightRef);
       }
     })
@@ -72,6 +71,8 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
   }
 
   async function handleDeleteHighlight(id: string): Promise<void> {
+    if (!id) return handleGenericErrorToast();
+
     const highlightRef = ref(database, `highlights/${id}`);
     const highlightSnapshot = await get(highlightRef)
 
@@ -82,10 +83,11 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     const imageName = highlight.image.name;
     const imageRef = refStorage(storage, `images/${imageName}`);
 
-    deleteObject(imageRef).then(() => {
-      console.log('Imagem excluída com sucesso');
-    }).catch((error) => {
-      console.log('Erro ao excluir a imagem', error);
+    if (!imageRef) return handleGenericErrorToast();
+
+    deleteObject(imageRef).then(() => { }).catch((error: Error) => {
+      console.error(error.message)
+      return handleGenericErrorToast();
     });
 
     await remove(highlightRef);
@@ -108,11 +110,36 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     setBanners(bannersFirebase);
   }
 
+  async function handleDeleteBanner(id: string): Promise<void> {
+    if (!id) return handleGenericErrorToast();
+
+    const bannerRef = ref(database, `banners/${id}`);
+    const bannerSnapshot = await get(bannerRef)
+
+    if (!bannerSnapshot.exists()) return handleGenericErrorToast();
+
+    const banner: Banner = bannerSnapshot.val();
+    console.log(banner)
+    const imageName = banner.image.name;
+    const imageRef = refStorage(storage, `images/${imageName}`);
+
+    if (!imageRef) return handleGenericErrorToast();
+
+    deleteObject(imageRef).then(() => { }).catch((error: Error) => {
+      console.error(error.message)
+      return handleGenericErrorToast();
+    });
+
+    await remove(bannerRef);
+    handleGetBanners();
+  }
+
   return <UserContext.Provider value={{
     handleGetAbout,
     handleGetHighlights,
     handleGetBanners,
     handleDeleteHighlight,
+    handleDeleteBanner,
     about,
     highlights,
     banners
