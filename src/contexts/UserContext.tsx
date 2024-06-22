@@ -1,3 +1,4 @@
+import { get, ref } from 'firebase/database';
 import { createContext, PropsWithChildren, useState } from 'react';
 import { ExternalToast, toast } from 'sonner';
 import { ref, get, remove } from 'firebase/database';
@@ -9,7 +10,6 @@ import { database, storage } from '../services';
 export const UserContext = createContext({} as UserContextProps);
 
 // TODO: Create the data user logic. Add all requests and states this context.
-
 export function UserProvider({ children }: Required<PropsWithChildren>) {
   const [about, setAbout] = useState({} as About);
   const [highlights, setHighlights] = useState([] as Highlight[]);
@@ -28,6 +28,13 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     return currentTime > highlight.removedAt;
   }
 
+  function handleAboutToastError(): void {
+    toast.error(
+      'Falha ao buscar suas informações! Algo deu errado durante a busca de informações. Por favor, tente novamente. Se o problema persistir, entre em contato com o suporte técnico.',
+      { duration: 7500 },
+    );
+  }
+
   async function handleGetAbout(): Promise<void> {
     const aboutRef = ref(database, 'about');
     const aboutSnapshot = await get(aboutRef);
@@ -37,7 +44,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     const aboutFirebase: About = Object.keys(aboutSnapshot.val()).map(key => ({
       ...aboutSnapshot.val()[key],
       id: key,
-    }))[0]
+    }))[0];
 
     if (!aboutFirebase) return handleGenericErrorToast();
 
@@ -145,5 +152,3 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     banners
   }}>{children}</UserContext.Provider>;
 }
-
-
