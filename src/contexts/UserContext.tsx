@@ -4,6 +4,7 @@ import { ExternalToast, toast } from 'sonner';
 import { deleteObject, ref as refStorage } from 'firebase/storage';
 import { About, Banner, Highlight, UserContextProps } from '../@types';
 import { database, storage } from '../services';
+import { mapper } from '../helpers/firebase';
 
 // TODO: Create type to UserContext in @types/contexts.
 export const UserContext = createContext({} as UserContextProps);
@@ -40,10 +41,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     if (!aboutSnapshot.exists()) return handleGenericErrorToast();
 
-    const aboutFirebase: About = Object.keys(aboutSnapshot.val()).map(key => ({
-      ...aboutSnapshot.val()[key],
-      id: key,
-    }))[0];
+    const aboutFirebase = mapper<About[]>(aboutSnapshot)[0];
 
     if (!aboutFirebase) return handleGenericErrorToast();
 
@@ -56,10 +54,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     if (!highlightsSnapshot.exists()) return setHighlights([]);
 
-    const highlightsFirebase: Highlight[] = Object.keys(highlightsSnapshot.val()).map(key => ({
-      ...highlightsSnapshot.val()[key],
-      id: key,
-    }));
+    const highlightsFirebase = mapper<Highlight[]>(highlightsSnapshot);
 
     if (!highlightsFirebase) return handleGenericErrorToast();
 
@@ -106,10 +101,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     if (!bannersSnapshot.exists()) return handleGenericErrorToast();
 
-    const bannersFirebase: Banner[] = Object.keys(bannersSnapshot.val()).map(key => ({
-      ...bannersSnapshot.val()[key],
-      id: key,
-    }));
+    const bannersFirebase = mapper<Banner[]>(bannersSnapshot);
 
     if (!bannersFirebase) return handleGenericErrorToast();
 
