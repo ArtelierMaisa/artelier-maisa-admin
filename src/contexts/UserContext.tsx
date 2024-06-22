@@ -1,7 +1,6 @@
-import { get, ref } from 'firebase/database';
+import { get, ref, remove } from 'firebase/database';
 import { createContext, PropsWithChildren, useState } from 'react';
 import { ExternalToast, toast } from 'sonner';
-import { ref, get, remove } from 'firebase/database';
 import { deleteObject, ref as refStorage } from 'firebase/storage';
 import { About, Banner, Highlight, UserContextProps } from '../@types';
 import { database, storage } from '../services';
