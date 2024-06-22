@@ -28,13 +28,6 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     return currentTime > highlight.removedAt;
   }
 
-  function handleAboutToastError(): void {
-    toast.error(
-      'Falha ao buscar suas informações! Algo deu errado durante a busca de informações. Por favor, tente novamente. Se o problema persistir, entre em contato com o suporte técnico.',
-      { duration: 7500 },
-    );
-  }
-
   async function handleGetAbout(): Promise<void> {
     const aboutRef = ref(database, 'about');
     const aboutSnapshot = await get(aboutRef);
@@ -86,8 +79,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     if (!imageRef) return handleGenericErrorToast();
 
-    deleteObject(imageRef).then(() => { }).catch((error: Error) => {
-      console.error(error.message)
+    deleteObject(imageRef).catch((error: Error) => {
       return handleGenericErrorToast();
     });
 
@@ -117,14 +109,13 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     if (!bannerSnapshot.exists()) return handleGenericErrorToast();
 
     const banner: Banner = bannerSnapshot.val();
-    console.log(banner)
+
     const imageName = banner.image.name;
     const imageRef = refStorage(storage, `images/${imageName}`);
 
     if (!imageRef) return handleGenericErrorToast();
 
-    deleteObject(imageRef).then(() => { }).catch((error: Error) => {
-      console.error(error.message)
+    deleteObject(imageRef).catch((error: Error) => {
       return handleGenericErrorToast();
     });
 
