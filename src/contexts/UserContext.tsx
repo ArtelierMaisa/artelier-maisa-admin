@@ -1,10 +1,11 @@
 import { get, ref, remove } from 'firebase/database';
+import { deleteObject, ref as refStorage } from 'firebase/storage';
 import { createContext, PropsWithChildren, useState } from 'react';
 import { ExternalToast, toast } from 'sonner';
-import { deleteObject, ref as refStorage } from 'firebase/storage';
+
 import { About, Banner, Highlight, UserContextProps } from '../@types';
-import { database, storage } from '../services';
 import { mapper } from '../helpers/firebase';
+import { database, storage } from '../services';
 
 // TODO: Create type to UserContext in @types/contexts.
 export const UserContext = createContext({} as UserContextProps);
@@ -19,7 +20,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
   function handleGenericErrorToast(): void {
     toast.error(
       'Falha ao buscar suas informações! Algo deu errado durante a busca de informações. Por favor, tente novamente. Se o problema persistir, entre em contato com o suporte técnico.',
-      toastOptions
+      toastOptions,
     );
   }
 
@@ -52,23 +53,23 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     if (!highlightsFirebase) return handleGenericErrorToast();
 
     // TODO -> REMOVE HIGHLIGHTS IMAGES FROM FIREBASE STORAGE
-    highlightsFirebase.forEach(async (hightlight) => {
+    highlightsFirebase.forEach(async hightlight => {
       if (isGreaterThanPeriodRemove(hightlight)) {
         const highlightRef = ref(database, `highlights/${hightlight.id}`);
         remove(highlightRef);
       }
-    })
+    });
 
-    const highlightsInPeriod = highlightsFirebase.filter(highlight => !isGreaterThanPeriodRemove(highlight));
+    const highlightsInPeriod = highlightsFirebase.filter(
+      highlight => !isGreaterThanPeriodRemove(highlight),
+    );
 
     setHighlights(highlightsInPeriod);
   }
 
   async function handleDeleteHighlight(id: string): Promise<void> {
-    if (!id) return handleGenericErrorToast();
-
     const highlightRef = ref(database, `highlights/${id}`);
-    const highlightSnapshot = await get(highlightRef)
+    const highlightSnapshot = await get(highlightRef);
 
     if (!highlightSnapshot.exists()) return handleGenericErrorToast();
 
@@ -79,9 +80,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     if (!imageRef) return handleGenericErrorToast();
 
-    deleteObject(imageRef).catch((error: Error) => {
-      return handleGenericErrorToast();
-    });
+    deleteObject(imageRef).catch(() => handleGenericErrorToast());
 
     await remove(highlightRef);
     handleGetHighlights();
@@ -101,10 +100,8 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
   }
 
   async function handleDeleteBanner(id: string): Promise<void> {
-    if (!id) return handleGenericErrorToast();
-
     const bannerRef = ref(database, `banners/${id}`);
-    const bannerSnapshot = await get(bannerRef)
+    const bannerSnapshot = await get(bannerRef);
 
     if (!bannerSnapshot.exists()) return handleGenericErrorToast();
 
@@ -115,22 +112,26 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     if (!imageRef) return handleGenericErrorToast();
 
-    deleteObject(imageRef).catch((error: Error) => {
-      return handleGenericErrorToast();
-    });
+    deleteObject(imageRef).catch(() => handleGenericErrorToast());
 
     await remove(bannerRef);
     handleGetBanners();
   }
 
-  return <UserContext.Provider value={{
-    handleGetAbout,
-    handleGetHighlights,
-    handleGetBanners,
-    handleDeleteHighlight,
-    handleDeleteBanner,
-    about,
-    highlights,
-    banners
-  }}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider
+      value={{
+        handleGetAbout,
+        handleGetHighlights,
+        handleGetBanners,
+        handleDeleteHighlight,
+        handleDeleteBanner,
+        about,
+        highlights,
+        banners,
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 }

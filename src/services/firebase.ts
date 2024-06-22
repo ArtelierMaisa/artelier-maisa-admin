@@ -1,9 +1,9 @@
 import { initializeApp } from 'firebase/app';
 import { getAuth } from 'firebase/auth';
 import { getDatabase } from 'firebase/database';
+import { getStorage } from 'firebase/storage';
 
 import { envs } from '../config';
-import { getStorage } from 'firebase/storage';
 
 const firebaseConfig = {
   apiKey: envs.apiKey,
@@ -18,6 +18,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const database = getDatabase(app);
-const storage = getStorage(app)
+const storage = getStorage(app);
 
 export { app, auth, database, storage };
