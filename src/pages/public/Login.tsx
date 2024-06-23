@@ -5,6 +5,7 @@ import { SECONDARY_LOGO } from '../../config';
 import { useAuth } from '../../hooks';
 
 export function Login() {
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [email, setEmail] = useState<string>('');
   const [password, setPassword] = useState<string>('');
 
@@ -12,7 +13,9 @@ export function Login() {
 
   async function onSubmit(event: FormEvent<HTMLFormElement>): Promise<void> {
     event.preventDefault();
+    setIsLoading(true);
     await handleSignIn({ email, password });
+    setIsLoading(false);
   }
 
   return (
@@ -37,6 +40,7 @@ export function Login() {
             label='E-mail'
             mode='normal'
             maxLength={256}
+            isDisabled={isLoading}
             isHugWidth
             isRequired
             onChange={setEmail}
@@ -50,6 +54,7 @@ export function Login() {
             placeholder='Senha'
             label='Senha'
             mode='normal'
+            isDisabled={isLoading}
             isHugWidth
             isRequired
             onChange={setPassword}
@@ -62,6 +67,8 @@ export function Login() {
             variant='primary'
             type='medium'
             title='Entrar'
+            isLoading={isLoading}
+            isDisabled={isLoading}
             isHugWidth
           />
         </div>
