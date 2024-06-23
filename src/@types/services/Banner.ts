@@ -6,5 +6,5 @@ interface ImageProps {
 
 export interface Banner {
   id: string;
-  image: ImageProps
+  image: ImageProps;
 }
