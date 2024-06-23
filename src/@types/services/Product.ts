@@ -1,4 +1,8 @@
-import { Uri } from './Uri';
+interface ImageProps {
+  id: string;
+  name: string;
+  uri: string;
+}
 
 export interface Product {
   id: string;
@@ -6,7 +10,7 @@ export interface Product {
   description: string;
   isOcult: boolean;
   price: number;
-  uri: Uri[];
+  images: ImageProps[];
   material: string;
   size: string;
   weight: number;
