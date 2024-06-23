@@ -1,6 +1,7 @@
 import { About, Banner, Categories, Highlight } from '../services';
 
 export interface UserContextProps {
+  isLoaded: boolean;
   about: About;
   banners: Banner[];
   highlights: Highlight[];
