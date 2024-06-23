@@ -14,13 +14,45 @@ import {
 import { useUser } from '../../hooks';
 
 export function Events() {
-  const { isLoaded, highlights: highlightsFirebase } = useUser();
+  const {
+    isLoaded,
+    highlights: highlightsFirebase,
+    handleDeleteHighlight,
+  } = useUser();
 
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [highlightId, setHighlightId] = useState<string>('');
   const [highlights, setHighlights] = useState<Highlight[]>([]);
 
   const quantityHighlights = new Array(3).fill(0);
+
+  // TODO: Test delete highlights to ensure they are deleted.
+  async function dialogDeleteHighlight(): Promise<void> {
+    setIsLoading(true);
+
+    await handleDeleteHighlight(highlightId);
+    const filteredHighlights = highlights.filter(
+      highlight => highlight.id !== highlightId,
+    );
+    setHighlights(filteredHighlights);
+
+    setIsOpenDialog(false);
+    setIsLoading(false);
+  }
+
+  // TODO: Test delete highlights to ensure they are deleted.
+  function onDeleteDialog(id: string): void {
+    setHighlightId(id);
+    setIsOpenDialog(true);
+  }
+
+  // TODO: Test delete highlights to ensure they are deleted.
+  function onCloseDialog(): void {
+    setHighlightId('');
+    setIsOpenDialog(false);
+  }
 
   useEffect(() => {
     if (highlightsFirebase.length) setHighlights(highlightsFirebase);
@@ -68,7 +100,7 @@ export function Events() {
                         }}
                         variant='fill'
                         type='modal'
-                        onDelete={() => setIsOpenDialog(true)}
+                        onDelete={onDeleteDialog}
                       />
                     );
                   }
@@ -116,8 +148,9 @@ export function Events() {
       <Dialog
         isOpen={isOpenDialog}
         variant='event'
-        onAccept={() => setIsOpenDialog(false)}
-        onClose={() => setIsOpenDialog(false)}
+        isLoading={isLoading}
+        onAccept={async () => await dialogDeleteHighlight()}
+        onClose={onCloseDialog}
       />
 
       {/**

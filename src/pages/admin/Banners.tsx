@@ -13,12 +13,7 @@ import {
 import { useUser } from '../../hooks';
 
 export function Banners() {
-  const {
-    isLoaded,
-    banners: bannersFirebase,
-    handleGetBanners,
-    handleDeleteBanner,
-  } = useUser();
+  const { isLoaded, banners: bannersFirebase, handleDeleteBanner } = useUser();
 
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -31,8 +26,9 @@ export function Banners() {
   async function dialogDeleteBanner(): Promise<void> {
     setIsLoading(true);
 
-    await handleDeleteBanner(bannerId || '');
-    await handleGetBanners();
+    await handleDeleteBanner(bannerId);
+    const filteredBanners = banners.filter(banner => banner.id !== bannerId);
+    setBanners(filteredBanners);
 
     setIsOpenDialog(false);
     setIsLoading(false);
