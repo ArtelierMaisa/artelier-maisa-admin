@@ -2,7 +2,7 @@ import { get, ref, remove } from 'firebase/database';
 import { createContext, PropsWithChildren, useState } from 'react';
 import { ExternalToast, toast } from 'sonner';
 import { deleteObject, ref as refStorage } from 'firebase/storage';
-import { About, Banner, Highlight, UserContextProps } from '../@types';
+import { About, Banner, Categories, Highlight, UserContextProps } from '../@types';
 import { database, storage } from '../services';
 import { mapper } from '../helpers/firebase';
 
@@ -12,8 +12,9 @@ export const UserContext = createContext({} as UserContextProps);
 // TODO: Create the data user logic. Add all requests and states this context.
 export function UserProvider({ children }: Required<PropsWithChildren>) {
   const [about, setAbout] = useState({} as About);
-  const [highlights, setHighlights] = useState([] as Highlight[]);
-  const [banners, setBanners] = useState([] as Banner[]);
+  const [highlights, setHighlights] = useState<Highlight[]>([]);
+  const [banners, setBanners] = useState<Banner[]>([]);
+  const [categories, setCategories] = useState<Categories[]>([]);
   const toastOptions: ExternalToast = { duration: 7500 };
 
   function handleGenericErrorToast(): void {
@@ -123,14 +124,29 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     handleGetBanners();
   }
 
+  async function handleGetCategories(): Promise<void> {
+    const categoriesRef = ref(database, 'categories');
+    const categoriesSnapshot = await get(categoriesRef);
+
+    if (!categoriesSnapshot.exists()) return handleGenericErrorToast();
+
+    const categoriesFirebase = mapper<Categories[]>(categoriesSnapshot);
+
+    if (!categoriesFirebase) return handleGenericErrorToast();
+    setCategories(categoriesFirebase);
+    console.log(categoriesFirebase)
+  }
+
   return <UserContext.Provider value={{
     handleGetAbout,
     handleGetHighlights,
     handleGetBanners,
     handleDeleteHighlight,
     handleDeleteBanner,
+    handleGetCategories,
     about,
     highlights,
-    banners
+    banners,
+    categories
   }}>{children}</UserContext.Provider>;
 }
