@@ -14,6 +14,7 @@ export interface DialogProps {
   isOpen: boolean;
   variant: DialogVariant;
   data?: DialogDataProps;
+  isLoading?: boolean;
   onAccept?(): void;
   onClose?(): void;
 }

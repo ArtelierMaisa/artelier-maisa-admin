@@ -92,7 +92,7 @@ export function BannerCard(props: BannerCardProps) {
           <div className='flex flex-row justify-between items-center w-full h-auto p-2'>
             <button
               type='button'
-              className='w-auto h-auto hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
+              className='w-auto h-auto rounded-lg hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
               onClick={handleOpenExplorer}
             >
               <Icon variant='pencil' {...commonIconProps} />
@@ -100,7 +100,7 @@ export function BannerCard(props: BannerCardProps) {
 
             <button
               type='button'
-              className='w-auto h-auto hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
+              className='w-auto h-auto rounded-lg hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
               onClick={handleBannerDelete}
             >
               <Icon variant='trash' {...commonIconProps} />

@@ -3,7 +3,7 @@ import { dialogTitles } from '../../constants';
 import { GenericButton, Icon, Modal, Text } from '../';
 
 export function Dialog(props: DialogProps) {
-  const { isOpen, variant, data, onAccept, onClose } = props;
+  const { isOpen, variant, data, isLoading = false, onAccept, onClose } = props;
 
   const commonTextProps: Omit<TextProps, 'children'> = {
     display: 'inline',
@@ -70,6 +70,7 @@ export function Dialog(props: DialogProps) {
         <button
           type='button'
           className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-tr-lg cursor-pointer hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
+          disabled={isLoading}
           onClick={onClose}
         >
           <Icon variant='x' color='white' />
@@ -86,6 +87,8 @@ export function Dialog(props: DialogProps) {
             variant='primary'
             type='medium'
             title='Sim'
+            isDisabled={isLoading}
+            isLoading={isLoading}
             isHugWidth
             onClick={onAccept}
           />
@@ -94,6 +97,7 @@ export function Dialog(props: DialogProps) {
             variant='secondary'
             type='medium'
             title='Não'
+            isDisabled={isLoading}
             isHugWidth
             onClick={onClose}
           />
