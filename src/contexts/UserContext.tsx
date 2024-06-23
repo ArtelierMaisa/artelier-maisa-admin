@@ -2,7 +2,13 @@ import { get, ref, remove } from 'firebase/database';
 import { createContext, PropsWithChildren, useState } from 'react';
 import { ExternalToast, toast } from 'sonner';
 import { deleteObject, ref as refStorage } from 'firebase/storage';
-import { About, Banner, Categories, Highlight, UserContextProps } from '../@types';
+import {
+  About,
+  Banner,
+  Categories,
+  Highlight,
+  UserContextProps,
+} from '../@types';
 import { mapper } from '../helpers/firebase';
 import { database, storage } from '../services';
 
@@ -128,19 +134,25 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     if (!categoriesFirebase) return handleGenericErrorToast();
     setCategories(categoriesFirebase);
-    console.log(categoriesFirebase)
+    console.log(categoriesFirebase);
   }
 
-  return <UserContext.Provider value={{
-    handleGetAbout,
-    handleGetHighlights,
-    handleGetBanners,
-    handleDeleteHighlight,
-    handleDeleteBanner,
-    handleGetCategories,
-    about,
-    highlights,
-    banners,
-    categories
-  }}>{children}</UserContext.Provider>;
+  return (
+    <UserContext.Provider
+      value={{
+        handleGetAbout,
+        handleGetHighlights,
+        handleGetBanners,
+        handleDeleteHighlight,
+        handleDeleteBanner,
+        handleGetCategories,
+        about,
+        highlights,
+        banners,
+        categories,
+      }}
+    >
+      {children}
+    </UserContext.Provider>
+  );
 }

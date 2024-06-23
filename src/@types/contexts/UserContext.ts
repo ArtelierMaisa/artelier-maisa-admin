@@ -1,4 +1,4 @@
-import { About, Banner, Categories, Highlight } from "../services";
+import { About, Banner, Categories, Highlight } from '../services';
 
 export interface UserContextProps {
   about: About;
