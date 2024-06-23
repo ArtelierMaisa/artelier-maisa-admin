@@ -15,4 +15,6 @@ export interface Product {
   size: string;
   weight: number;
   whatsapp: string;
+  createdAt: number;
+  updatedAt: number;
 }
