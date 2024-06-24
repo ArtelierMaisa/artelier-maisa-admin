@@ -1,4 +1,4 @@
-import { About, Banner, Categories, Highlight } from '../services';
+import { About, AboutEdit, Banner, Categories, Highlight } from '../services';
 
 export interface UserContextProps {
   isLoaded: boolean;
@@ -12,4 +12,5 @@ export interface UserContextProps {
   handleGetBanners(): Promise<void>;
   handleGetAbout(): Promise<void>;
   handleGetCategories(): Promise<void>;
+  handlePutAbout(newAbout: AboutEdit): Promise<void>;
 }

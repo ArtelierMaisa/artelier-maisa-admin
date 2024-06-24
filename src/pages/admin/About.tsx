@@ -16,10 +16,12 @@ import { ACCEPT_EXTENSION_FILES } from '../../config';
 import { useUser } from '../../hooks';
 
 export function About() {
-  const { isLoaded, about: aboutFirebase } = useUser();
+  const { isLoaded, about: aboutFirebase, handlePutAbout } = useUser();
 
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [profileImage, setProfileImage] = useState<string>('');
   const [about, setAbout] = useState<AboutData>({} as AboutData);
+  const [file, setFile] = useState<File | null>(null);
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -33,8 +35,9 @@ export function About() {
     const files = event.target.files;
 
     if (files) {
-      const file = files[0];
-      const isAcceptFile = ACCEPT_EXTENSION_FILES.includes(file.type);
+      const firstFile = files[0];
+      const fileType = files[0].type;
+      const isAcceptFile = ACCEPT_EXTENSION_FILES.includes(fileType);
 
       if (!isAcceptFile) {
         toast.error(
@@ -44,14 +47,20 @@ export function About() {
         return;
       }
 
-      // TODO: You must specify the file to uri
-      // setAbout({...about, uri: file})
+      const blob = new Blob([firstFile], { type: fileType });
+      const reader = new FileReader();
+      reader.onload = e => setProfileImage((e.target?.result as string) || '');
+      reader.readAsDataURL(blob);
+
+      setFile(firstFile);
     } else {
       toast.error('Não foi possível capturar a imagem. Tente novamente.');
     }
   }
 
-  function handleSubmitAbout(event: FormEvent<HTMLFormElement>): void {
+  async function handleSubmitAbout(
+    event: FormEvent<HTMLFormElement>,
+  ): Promise<void> {
     event.preventDefault();
 
     if (!about?.uri) {
@@ -63,12 +72,20 @@ export function About() {
     }
 
     setIsLoading(true);
-
+    await handlePutAbout({ ...about, file: file! });
+    setAbout({ ...about, uri: profileImage });
     setIsLoading(false);
+
+    toast.success('Sua edição de perfil foi realizada com sucesso!', {
+      duration: 3000,
+    });
   }
 
   useEffect(() => {
-    if (aboutFirebase?.id) setAbout(aboutFirebase);
+    if (aboutFirebase?.id) {
+      setProfileImage(aboutFirebase.uri);
+      setAbout(aboutFirebase);
+    }
   }, [aboutFirebase]);
 
   return (
@@ -90,7 +107,7 @@ export function About() {
 
         {isLoaded ? (
           <form
-            onSubmit={handleSubmitAbout}
+            onSubmit={async event => await handleSubmitAbout(event)}
             className='flex flex-col mx-auto lg:min-w-[40rem]'
           >
             <div className='flex flex-col lg:flex-row justify-center items-center lg:items-start gap-4'>
@@ -115,9 +132,9 @@ export function About() {
                     onChange={handleGetFile}
                   />
 
-                  {about.uri ? (
+                  {profileImage ? (
                     <img
-                      src={about.uri}
+                      src={profileImage}
                       alt={`Foto de ${about.name}`}
                       className='w-full h-full object-cover'
                     />
