@@ -80,7 +80,7 @@ export function BannerCard(props: BannerCardProps) {
 
   const justifyContentForBottomButtons = isDisabled
     ? 'justify-start'
-    : 'justify-center';
+    : 'justify-between';
 
   const bannerCardVariants: Record<BannerCardVariant, React.JSX.Element> = {
     fill: (

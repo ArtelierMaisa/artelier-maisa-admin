@@ -92,7 +92,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     deleteObject(imageRef).catch(() => handleGenericErrorToast());
 
     await remove(highlightRef);
-    handleGetHighlights();
+    await handleGetHighlights();
   }
 
   const handleGetBanners = useCallback(async () => {
@@ -119,7 +119,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     deleteObject(imageRef).catch(() => handleGenericErrorToast());
 
     await remove(bannerRef);
-    handleGetBanners();
+    await handleGetBanners();
   }
 
   const handleGetCategories = useCallback(async () => {
