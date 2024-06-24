@@ -13,6 +13,7 @@ export interface BannerCardProps {
   type?: BannerCardType;
   banner?: BannerProps;
   isLoading?: boolean;
+  isDisabled?: boolean;
   onDelete?(id: string): void;
   onGetFile?(file: File | null): void;
   onModal?(): void;

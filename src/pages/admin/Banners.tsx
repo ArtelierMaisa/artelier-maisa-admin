@@ -21,6 +21,7 @@ export function Banners() {
   const [banners, setBanners] = useState<Banner[]>([]);
 
   const quantityBanners = new Array(3).fill(0);
+  const hasOnlyOneBanner = banners.length === 1;
 
   // TODO: Test delete banners to ensure they are deleted.
   async function dialogDeleteBanner(): Promise<void> {
@@ -86,6 +87,7 @@ export function Banners() {
                       <BannerCard
                         key={banner.id}
                         variant='fill'
+                        isDisabled={hasOnlyOneBanner}
                         banner={{
                           id: banner.id,
                           name: banner.image.name,

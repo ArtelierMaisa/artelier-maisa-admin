@@ -10,6 +10,7 @@ export function BannerCard(props: BannerCardProps) {
     variant = 'add',
     type = 'file-system',
     isLoading = false,
+    isDisabled = false,
     banner,
     onGetFile,
     onDelete,
@@ -100,7 +101,8 @@ export function BannerCard(props: BannerCardProps) {
 
             <button
               type='button'
-              className='w-auto h-auto rounded-lg hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
+              className='w-auto h-auto rounded-lg hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60 disabled:bg-primary60'
+              disabled={isDisabled}
               onClick={handleBannerDelete}
             >
               <Icon variant='trash' {...commonIconProps} />

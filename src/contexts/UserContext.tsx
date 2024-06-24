@@ -82,14 +82,11 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
   async function handleDeleteHighlight(id: string): Promise<void> {
     const highlightRef = ref(database, `highlights/${id}`);
     const highlightSnapshot = await get(highlightRef);
-
     if (!highlightSnapshot.exists()) return handleGenericErrorToast();
 
     const highlight: Highlight = highlightSnapshot.val();
-
     const imageName = highlight.image.name;
     const imageRef = refStorage(storage, `images/${imageName}`);
-
     if (!imageRef) return handleGenericErrorToast();
 
     deleteObject(imageRef).catch(() => handleGenericErrorToast());
@@ -101,11 +98,9 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
   const handleGetBanners = useCallback(async () => {
     const bannersRef = ref(database, 'banners');
     const bannersSnapshot = await get(bannersRef);
-
-    if (!bannersSnapshot.exists()) return handleGenericErrorToast();
+    if (!bannersSnapshot.exists()) return setBanners([]);
 
     const bannersFirebase = mapper<Banner[]>(bannersSnapshot);
-
     if (!bannersFirebase) return handleGenericErrorToast();
 
     setBanners(bannersFirebase);
@@ -117,11 +112,10 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     if (!bannerSnapshot.exists()) return handleGenericErrorToast();
 
     const banner: Banner = bannerSnapshot.val();
-
     const imageName = banner.image.name;
     const imageRef = refStorage(storage, `images/${imageName}`);
-
     if (!imageRef) return handleGenericErrorToast();
+
     deleteObject(imageRef).catch(() => handleGenericErrorToast());
 
     await remove(bannerRef);
