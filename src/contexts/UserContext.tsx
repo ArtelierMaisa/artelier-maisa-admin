@@ -24,7 +24,7 @@ import {
   Highlight,
   UserContextProps,
 } from '../@types';
-import { categoryMapper, mapper } from '../helpers/firebase';
+import { categoryMapper, mapProducts, mapper } from '../helpers/firebase';
 import { useAuth } from '../hooks';
 import { database, storage } from '../services';
 
@@ -211,6 +211,29 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     setCategories(categoriesFirebase);
   }, [handleGetErrorToast]);
 
+  async function handleDeleteCategory(id: string): Promise<void> {
+    const categoryRef = ref(database, `categories/${id}`);
+    const categorySnapshot = await get(categoryRef);
+
+    const category: Categories = categorySnapshot.val();
+    const products = mapProducts(category);
+
+    products.forEach(async product => {
+      product.images.forEach(async image => {
+        const imageRef = refStorage(storage, `images/${image.id}`);
+        if (!imageRef) return handleDeleteErrorToast();
+
+        deleteObject(imageRef).catch(handleDeleteErrorToast);
+      });
+
+      const productRef = ref(database, `products/${product.id}`);
+      await remove(productRef);
+    });
+
+    await remove(categoryRef);
+    await handleGetCategories();
+  }
+
   const fetchFirebase = useCallback(async () => {
     await handleGetBanners();
     await handleGetCategories();
@@ -243,6 +266,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
         handleGetCategories,
         handleDeleteHighlight,
         handleDeleteBanner,
+        handleDeleteCategory,
         handlePutAbout,
       }}
     >

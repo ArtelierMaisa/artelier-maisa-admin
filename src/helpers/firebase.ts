@@ -1,4 +1,5 @@
 import { DataSnapshot } from 'firebase/database';
+import { Product } from '../@types';
 
 export function mapper<T>(snapshot: DataSnapshot): T {
   const values = snapshot.val();
@@ -22,4 +23,11 @@ export function categoryMapper<T>(snapshot: DataSnapshot): T {
 
     return { ...values[key], ...(products && { products }), id: key };
   }) as T;
+}
+
+export function mapProducts(data: any): Product[] {
+  return Object.entries(data.products).map(([id, product]) => ({
+    ...(product as Product),
+    id,
+  }));
 }

@@ -6,6 +6,7 @@ export interface UserContextProps {
   banners: Banner[];
   highlights: Highlight[];
   categories: Categories[];
+  handleDeleteCategory(id: string): Promise<void>;
   handleDeleteHighlight(id: string): Promise<void>;
   handleDeleteBanner(id: string): Promise<void>;
   handleGetHighlights(): Promise<void>;
