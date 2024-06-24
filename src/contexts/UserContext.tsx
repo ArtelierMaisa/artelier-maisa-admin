@@ -143,11 +143,9 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     const highlightsFirebase = mapper<Highlight[]>(highlightsSnapshot);
     if (!highlightsFirebase) return handleGetErrorToast();
 
-    // TODO -> REMOVE HIGHLIGHTS IMAGES FROM FIREBASE STORAGE
     highlightsFirebase.forEach(async highlight => {
       if (isGreaterThanPeriodRemove(highlight)) {
-        const highlightRef = ref(database, `highlights/${highlight.id}`);
-        remove(highlightRef);
+        await handleDeleteHighlight(highlight.id);
       }
     });
 
@@ -164,6 +162,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     if (!highlightSnapshot.exists()) return handleDeleteErrorToast();
 
     const highlight: Highlight = highlightSnapshot.val();
+
     const imageName = highlight.image.name;
     const imageRef = refStorage(storage, `images/${imageName}`);
     if (!imageRef) return handleDeleteErrorToast();
