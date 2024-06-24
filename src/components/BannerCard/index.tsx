@@ -78,6 +78,10 @@ export function BannerCard(props: BannerCardProps) {
   const commonClassNames =
     'items-center justify-center w-64 h-56 bg-transparent ring-2 ring-primary overflow-hidden rounded-lg';
 
+  const justifyContentForBottomButtons = isDisabled
+    ? 'justify-start'
+    : 'justify-center';
+
   const bannerCardVariants: Record<BannerCardVariant, React.JSX.Element> = {
     fill: (
       <>
@@ -90,7 +94,9 @@ export function BannerCard(props: BannerCardProps) {
             className='w-full h-44 object-cover'
           />
 
-          <div className='flex flex-row justify-between items-center w-full h-auto p-2'>
+          <div
+            className={`flex flex-row ${justifyContentForBottomButtons} items-center w-full h-auto p-2`}
+          >
             <button
               type='button'
               className='w-auto h-auto rounded-lg hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
@@ -99,14 +105,15 @@ export function BannerCard(props: BannerCardProps) {
               <Icon variant='pencil' {...commonIconProps} />
             </button>
 
-            <button
-              type='button'
-              className='w-auto h-auto rounded-lg hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60 disabled:bg-primary60'
-              disabled={isDisabled}
-              onClick={handleBannerDelete}
-            >
-              <Icon variant='trash' {...commonIconProps} />
-            </button>
+            {!isDisabled && (
+              <button
+                type='button'
+                className='w-auto h-auto rounded-lg hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
+                onClick={handleBannerDelete}
+              >
+                <Icon variant='trash' color='primary' {...commonIconProps} />
+              </button>
+            )}
           </div>
         </div>
       </>
