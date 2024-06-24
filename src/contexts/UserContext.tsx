@@ -16,7 +16,7 @@ import {
   Highlight,
   UserContextProps,
 } from '../@types';
-import { mapper } from '../helpers/firebase';
+import { categoryMapper, mapper } from '../helpers/firebase';
 import { useAuth } from '../hooks';
 import { database, storage } from '../services';
 
@@ -125,9 +125,9 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
   const handleGetCategories = useCallback(async () => {
     const categoriesRef = ref(database, 'categories');
     const categoriesSnapshot = await get(categoriesRef);
-    if (!categoriesSnapshot.exists()) return handleGenericErrorToast();
+    if (!categoriesSnapshot.exists()) return setCategories([]);
 
-    const categoriesFirebase = mapper<Categories[]>(categoriesSnapshot);
+    const categoriesFirebase = categoryMapper<Categories[]>(categoriesSnapshot);
     if (!categoriesFirebase) return handleGenericErrorToast();
 
     setCategories(categoriesFirebase);
