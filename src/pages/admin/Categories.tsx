@@ -106,7 +106,10 @@ export function Categories() {
                 onSearch={onSearch}
               />
 
-              <GenericButton title='Adicionar Nova Categoria' />
+              <GenericButton
+                title='Adicionar Nova Categoria'
+                onClick={() => setIsOpenCategoryModal(true)}
+              />
             </div>
 
             {categories.length === 0 && (

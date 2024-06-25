@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import { Banner } from '../../@types';
 import {
@@ -11,7 +12,6 @@ import {
   Text,
 } from '../../components';
 import { useUser } from '../../hooks';
-import { toast } from 'sonner';
 
 export function Banners() {
   const {
