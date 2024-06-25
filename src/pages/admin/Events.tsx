@@ -1,6 +1,5 @@
 import { useEffect, useState } from 'react';
-
-import { Highlight } from '../../@types';
+import { EventModalAdd, Highlight } from '../../@types';
 import {
   BannerCard,
   Container,
@@ -18,6 +17,7 @@ export function Events() {
     isLoaded,
     highlights: highlightsFirebase,
     handleDeleteHighlight,
+    handleCreateHighlight,
   } = useUser();
 
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -52,6 +52,11 @@ export function Events() {
   function onCloseDialog(): void {
     setHighlightId('');
     setIsOpenDialog(false);
+  }
+
+  async function onCreateHighlight(data: EventModalAdd): Promise<void> {
+    await handleCreateHighlight(data);
+    setIsOpenModal(false);
   }
 
   useEffect(() => {
@@ -160,7 +165,7 @@ export function Events() {
       <EventModal
         isOpen={isOpenModal}
         variant='add'
-        onAdd={() => setIsOpenModal(false)}
+        onAdd={onCreateHighlight}
         onClose={() => setIsOpenModal(false)}
       />
     </div>
