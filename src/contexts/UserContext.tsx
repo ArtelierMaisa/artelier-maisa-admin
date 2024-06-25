@@ -355,8 +355,10 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     const categoryId = nanoid();
 
     set(ref(database, `categories/${categoryId}`), { name }).catch(
-      handleEditErrorToast,
+      handleCreateErrorToast,
     );
+
+    await handleGetCategories();
   }
 
   async function handleDeleteCategory(id: string): Promise<void> {

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import { Categories as CategoriesData } from '../../@types';
 import {
@@ -15,7 +16,6 @@ import {
   Text,
 } from '../../components';
 import { useUser } from '../../hooks';
-import { toast } from 'sonner';
 
 export function Categories() {
   const [isOpenCategoryDialog, setIsOpenCategoryDialog] =
@@ -126,7 +126,7 @@ export function Categories() {
               </span>
             </Text>
 
-            <div className='flex flex-col lg:flex-row w-full justify-center items-stretch md:items-center gap-4'>
+            <div className='flex flex-col lg:flex-row w-full justify-center items-stretch md:items-center mb-6 gap-4'>
               <SearchInput
                 searchValue={searchValue}
                 onChange={event => setSearchValue(event.target.value)}
@@ -155,10 +155,10 @@ export function Categories() {
             )}
 
             {categories.length > 0 &&
-              categories.map(category => (
+              categories.map((category, index) => (
                 <div
                   key={category.id}
-                  className='flex flex-col w-full mt-6 gap-2 border-t-2 border-t-primary'
+                  className={`flex flex-col w-full gap-2 ${index === 0 ? 'border-t-2' : ''} border-t-primary`}
                 >
                   <div className='flex flex-col py-4 gap-2 border-b-2 border-b-primary'>
                     <div className='flex w-full justify-between items-center'>
@@ -205,24 +205,24 @@ export function Categories() {
                         ))}
                     </div>
                   </div>
-
-                  <div className='hidden md:flex flex-col items-center lg:items-start mt-4 gap-2'>
-                    <Text className='flex gap-1'>
-                      <Icon variant='info' color='primary' />
-                      Clique em
-                      <Icon variant='pencil' color='primary' />
-                      para editar uma categoria ou um produto.
-                    </Text>
-
-                    <Text className='flex gap-1'>
-                      <Icon variant='info' color='primary' />
-                      Clique em
-                      <Icon variant='trash' color='primary' />
-                      para excluir uma categoria ou um produto.
-                    </Text>
-                  </div>
                 </div>
               ))}
+
+            <div className='hidden md:flex flex-col items-center lg:items-start mt-4 gap-2'>
+              <Text className='flex gap-1'>
+                <Icon variant='info' color='primary' />
+                Clique em
+                <Icon variant='pencil' color='primary' />
+                para editar uma categoria ou um produto.
+              </Text>
+
+              <Text className='flex gap-1'>
+                <Icon variant='info' color='primary' />
+                Clique em
+                <Icon variant='trash' color='primary' />
+                para excluir uma categoria ou um produto.
+              </Text>
+            </div>
           </>
         ) : (
           <div className='flex flex-col w-full h-full gap-2 justify-center items-center'>
@@ -251,6 +251,7 @@ export function Categories() {
       <CategoryModal
         isOpen={isOpenCategoryModal}
         variant='add'
+        isLoading={isLoading}
         data={categorySelected}
         onAccept={async name => await onCreateCategory(name)}
         onClose={() => setIsOpenCategoryModal(false)}
