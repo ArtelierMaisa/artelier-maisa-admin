@@ -15,6 +15,7 @@ import {
   Text,
 } from '../../components';
 import { useUser } from '../../hooks';
+import { toast } from 'sonner';
 
 export function Categories() {
   const [isOpenCategoryDialog, setIsOpenCategoryDialog] =
@@ -35,6 +36,7 @@ export function Categories() {
     isLoaded,
     categories: categoriesFirebase,
     handleDeleteCategory,
+    handleCreateCategory,
   } = useUser();
 
   function onSearch(): void {
@@ -58,6 +60,31 @@ export function Categories() {
     setIsOpenCategoryDialog(false);
     setIsLoading(false);
     setCategorySelected({} as CategoriesData);
+  }
+
+  async function onCreateCategory(name: string): Promise<void> {
+    const categoryExists = !!categories.find(
+      category =>
+        category.name.toLowerCase().trim() === name.toLowerCase().trim(),
+    );
+
+    if (!name || categoryExists) {
+      toast.error(
+        'Ops! Para criar uma categoria deve ser informado um nome e ele deve ser único.',
+        {
+          duration: 7500,
+        },
+      );
+
+      return;
+    }
+
+    setIsLoading(true);
+
+    await handleCreateCategory(name);
+
+    setIsOpenCategoryModal(false);
+    setIsLoading(false);
   }
 
   useEffect(() => {
@@ -167,14 +194,15 @@ export function Categories() {
                         onAdd={() => setIsOpenProductModal(true)}
                       />
 
-                      {category.products.map(product => (
-                        <Product
-                          key={product.id}
-                          variant='fill'
-                          {...product}
-                          onDelete={() => setIsOpenProductDialog(true)}
-                        />
-                      ))}
+                      {category?.products &&
+                        category.products.map(product => (
+                          <Product
+                            key={product.id}
+                            variant='fill'
+                            {...product}
+                            onDelete={() => setIsOpenProductDialog(true)}
+                          />
+                        ))}
                     </div>
                   </div>
 
@@ -223,7 +251,8 @@ export function Categories() {
       <CategoryModal
         isOpen={isOpenCategoryModal}
         variant='add'
-        onAccept={() => setIsOpenCategoryModal(false)}
+        data={categorySelected}
+        onAccept={async name => await onCreateCategory(name)}
         onClose={() => setIsOpenCategoryModal(false)}
       />
 

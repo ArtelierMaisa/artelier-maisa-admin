@@ -57,6 +57,13 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     );
   }
 
+  function handleCreateErrorToast(): void {
+    toast.error(
+      'Falha na ação de criação! Algo deu errado ao tentar criar. Por favor, tente novamente. Se o problema persistir, entre em contato com o suporte técnico.',
+      toastOptions,
+    );
+  }
+
   function handleDeleteErrorToast(): void {
     toast.error(
       'Falha ao deletar as informações! Algo deu errado ao deletar as informações. Por favor, tente novamente. Se o problema persistir, entre em contato com o suporte técnico.',
@@ -344,6 +351,14 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     setCategories(categoriesFirebase);
   }, [handleGetErrorToast]);
 
+  async function handleCreateCategory(name: string): Promise<void> {
+    const categoryId = nanoid();
+
+    set(ref(database, `categories/${categoryId}`), { name }).catch(
+      handleEditErrorToast,
+    );
+  }
+
   async function handleDeleteCategory(id: string): Promise<void> {
     const categoryRef = ref(database, `categories/${id}`);
     const categorySnapshot = await get(categoryRef);
@@ -403,6 +418,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
         handlePutAbout,
         handlePutBanner,
         handleCreateBanner,
+        handleCreateCategory,
         handleCreateHighlight,
       }}
     >

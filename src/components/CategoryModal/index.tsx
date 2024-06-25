@@ -15,8 +15,12 @@ export function CategoryModal(props: CategoryModalProps) {
 
   const label = isEdit ? 'Novo Nome da Categoria' : 'Nome da Categoria';
 
+  function onSubmit(): void {
+    if (onAccept) onAccept(inputValue);
+  }
+
   return (
-    <Modal isOpen={isOpen} onRequestClose={onClose || onAccept}>
+    <Modal isOpen={isOpen} onRequestClose={onClose}>
       <div className='relative flex flex-col w-11/12 md:w-[32rem] lg:h-auto overflow-hidden items-center p-6 gap-4 rounded-2xl bg-white shadow-default'>
         <button
           type='button'
@@ -60,7 +64,7 @@ export function CategoryModal(props: CategoryModalProps) {
             type='medium'
             title='Sim'
             isHugWidth
-            onClick={onAccept}
+            onClick={onSubmit}
           />
 
           <GenericButton

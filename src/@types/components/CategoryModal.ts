@@ -10,5 +10,5 @@ export interface CategoryModalProps {
   variant: CategoryModalVariant;
   data?: CategoryModalDataProps;
   onClose?(): void;
-  onAccept?(): void;
+  onAccept?(name: string): void;
 }
