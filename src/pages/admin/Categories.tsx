@@ -34,7 +34,6 @@ export function Categories() {
   const {
     isLoaded,
     categories: categoriesFirebase,
-    handleGetCategories,
     handleDeleteCategory,
   } = useUser();
 
