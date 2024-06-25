@@ -24,6 +24,7 @@ import {
   Categories,
   EventModalAdd,
   Highlight,
+  HighlightEdit,
   UserContextProps,
 } from '../@types';
 import { categoryMapper, mapper, productMapper } from '../helpers';
@@ -181,11 +182,6 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
   }, [handleGetErrorToast]);
 
   async function handleCreateHighlight(data: EventModalAdd): Promise<void> {
-    const highlightRef = ref(database, 'highlights');
-    const highlightSnapshot = await get(highlightRef);
-
-    if (!highlightSnapshot.exists()) return handleEditErrorToast();
-
     const imageId = nanoid();
 
     const storageRef = refStorage(storage, `images/${imageId}`);
@@ -221,6 +217,64 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
           .catch(handleEditErrorToast);
       },
     );
+  }
+
+  async function handlePutHighlight(
+    newHighlight: HighlightEdit,
+  ): Promise<void> {
+    const highlightRef = ref(database, `highlights/${newHighlight.id}`);
+    const highlightSnapshot = await get(highlightRef);
+
+    if (!highlightSnapshot.exists()) return handleEditErrorToast();
+
+    const highlight: Highlight = highlightSnapshot.val();
+
+    if (newHighlight.file) {
+      const storageRef = refStorage(storage, `images/${highlight.image.id}`);
+      const uploadTask = uploadBytesResumable(storageRef, newHighlight.file);
+
+      uploadTask.on(
+        'state_changed',
+        () => {},
+        handleUpdateFileErrorToast,
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then(uri => {
+              const commonHighlightProps = {
+                title: newHighlight.title,
+                description: newHighlight.description,
+                image: {
+                  id: highlight.image.id,
+                  name: newHighlight.file.name,
+                  uri,
+                },
+              };
+              set(
+                ref(database, `highlights/${newHighlight.id}`),
+                commonHighlightProps,
+              ).catch(handleEditErrorToast);
+              handleGetHighlights();
+            })
+            .catch(handleEditErrorToast);
+        },
+      );
+    } else {
+      const commonHighlightProps = {
+        title: newHighlight.title,
+        description: newHighlight.description,
+        image: {
+          id: highlight.image.id,
+          name: highlight.image.name,
+          uri: highlight.image.uri,
+        },
+      };
+      set(
+        ref(database, `highlights/${newHighlight.id}`),
+        commonHighlightProps,
+      ).catch(handleEditErrorToast);
+
+      await handleGetHighlights();
+    }
   }
 
   async function handleDeleteHighlight(id: string): Promise<void> {
@@ -423,6 +477,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
         handleDeleteCategory,
         handlePutAbout,
         handlePutBanner,
+        handlePutHighlight,
         handleCreateBanner,
         handleCreateCategory,
         handleCreateHighlight,

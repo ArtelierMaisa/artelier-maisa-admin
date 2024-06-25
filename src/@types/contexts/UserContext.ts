@@ -1,5 +1,12 @@
 import { EventModalAdd } from '../components';
-import { About, AboutEdit, Banner, Categories, Highlight } from '../services';
+import {
+  About,
+  AboutEdit,
+  Banner,
+  Categories,
+  Highlight,
+  HighlightEdit,
+} from '../services';
 
 export interface UserContextProps {
   isLoaded: boolean;
@@ -16,6 +23,7 @@ export interface UserContextProps {
   handleGetCategories(): Promise<void>;
   handlePutAbout(newAbout: AboutEdit): Promise<void>;
   handlePutBanner(id: string, file: File): Promise<void>;
+  handlePutHighlight(newHighlight: HighlightEdit): Promise<void>;
   handleCreateBanner(file: File): Promise<void>;
   handleCreateCategory(name: string): Promise<void>;
   handleCreateHighlight(data: EventModalAdd): Promise<void>;
