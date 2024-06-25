@@ -16,6 +16,7 @@ export interface UserContextProps {
   handleGetCategories(): Promise<void>;
   handlePutAbout(newAbout: AboutEdit): Promise<void>;
   handlePutBanner(id: string, file: File): Promise<void>;
+  handlePutCategory(id: string, name: string): Promise<void>;
   handleCreateBanner(file: File): Promise<void>;
   handleCreateCategory(name: string): Promise<void>;
   handleCreateHighlight(data: EventModalAdd): Promise<void>;

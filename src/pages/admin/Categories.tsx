@@ -37,6 +37,7 @@ export function Categories() {
     categories: categoriesFirebase,
     handleDeleteCategory,
     handleCreateCategory,
+    handlePutCategory,
   } = useUser();
 
   function onSearch(): void {
@@ -62,7 +63,10 @@ export function Categories() {
     setCategorySelected({} as CategoriesData);
   }
 
-  async function onCreateCategory(name: string): Promise<void> {
+  async function onCreateOrPutCategory(
+    name: string,
+    type: 'add' | 'edit',
+  ): Promise<void> {
     const categoryExists = !!categories.find(
       category =>
         category.name.toLowerCase().trim() === name.toLowerCase().trim(),
@@ -81,10 +85,12 @@ export function Categories() {
 
     setIsLoading(true);
 
-    await handleCreateCategory(name);
+    if (type === 'add') await handleCreateCategory(name);
+    else await handlePutCategory(categorySelected.id, name);
 
     setIsOpenCategoryModal(false);
     setIsLoading(false);
+    setCategorySelected({} as CategoriesData);
   }
 
   useEffect(() => {
@@ -170,7 +176,10 @@ export function Categories() {
                         <button
                           type='button'
                           className='rounded-lg hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
-                          onClick={() => setIsOpenCategoryModal(true)}
+                          onClick={() => {
+                            setCategorySelected(category);
+                            setIsOpenCategoryModal(true);
+                          }}
                         >
                           <Icon variant='pencil' color='primary' />
                         </button>
@@ -247,13 +256,17 @@ export function Categories() {
         }}
       />
 
-      {/* TODO: You must change to `edit` when a category is selected */}
       <CategoryModal
         isOpen={isOpenCategoryModal}
-        variant='add'
+        variant={categorySelected.id ? 'edit' : 'add'}
         isLoading={isLoading}
         data={categorySelected}
-        onAccept={async name => await onCreateCategory(name)}
+        onAccept={async name =>
+          await onCreateOrPutCategory(
+            name,
+            categorySelected.id ? 'edit' : 'add',
+          )
+        }
         onClose={() => setIsOpenCategoryModal(false)}
       />
 

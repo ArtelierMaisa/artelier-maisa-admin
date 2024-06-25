@@ -388,6 +388,19 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     await handleGetCategories();
   }
 
+  async function handlePutCategory(id: string, name: string): Promise<void> {
+    const categoryRef = ref(database, `categories/${id}`);
+    const categorySnapshot = await get(categoryRef);
+
+    if (!categorySnapshot.exists()) return handleEditErrorToast();
+
+    set(ref(database, `categories/${id}`), { name }).catch(
+      handleEditErrorToast,
+    );
+
+    await handleGetCategories();
+  }
+
   const fetchFirebase = useCallback(async () => {
     await handleGetBanners();
     await handleGetCategories();
@@ -423,6 +436,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
         handleDeleteCategory,
         handlePutAbout,
         handlePutBanner,
+        handlePutCategory,
         handleCreateBanner,
         handleCreateCategory,
         handleCreateHighlight,
