@@ -56,6 +56,7 @@ export function Events() {
 
   useEffect(() => {
     if (highlightsFirebase.length) setHighlights(highlightsFirebase);
+    else setHighlights([]);
   }, [highlightsFirebase]);
 
   return (

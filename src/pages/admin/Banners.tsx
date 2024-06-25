@@ -53,6 +53,7 @@ export function Banners() {
 
   useEffect(() => {
     if (bannersFirebase.length) setBanners(bannersFirebase);
+    else setBanners([]);
   }, [bannersFirebase]);
 
   return (
