@@ -365,20 +365,24 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     const categoryRef = ref(database, `categories/${id}`);
     const categorySnapshot = await get(categoryRef);
 
+    if (!categorySnapshot.exists()) return handleDeleteErrorToast();
+
     const category: Categories = categorySnapshot.val();
-    const products = productMapper(category);
 
-    products.forEach(async product => {
-      product.images.forEach(async image => {
-        const imageRef = refStorage(storage, `images/${image.id}`);
-        if (!imageRef) return handleDeleteErrorToast();
+    if (category.products) {
+      const products = productMapper(category);
+      products.forEach(async product => {
+        product.images.forEach(async image => {
+          const imageRef = refStorage(storage, `images/${image.id}`);
+          if (!imageRef) return handleDeleteErrorToast();
 
-        deleteObject(imageRef).catch(handleDeleteErrorToast);
+          deleteObject(imageRef).catch(handleDeleteErrorToast);
+        });
+
+        const productRef = ref(database, `products/${product.id}`);
+        await remove(productRef);
       });
-
-      const productRef = ref(database, `products/${product.id}`);
-      await remove(productRef);
-    });
+    }
 
     await remove(categoryRef);
     await handleGetCategories();
