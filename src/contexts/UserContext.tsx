@@ -22,6 +22,7 @@ import {
   AboutEdit,
   Banner,
   Categories,
+  EventModalAdd,
   Highlight,
   UserContextProps,
 } from '../@types';
@@ -172,6 +173,49 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     setHighlights(highlightsInPeriod);
   }, [handleGetErrorToast]);
 
+  async function handleCreateHighlight(data: EventModalAdd): Promise<void> {
+    const highlightRef = ref(database, 'highlights');
+    const highlightSnapshot = await get(highlightRef);
+
+    if (!highlightSnapshot.exists()) return handleEditErrorToast();
+
+    const imageId = nanoid();
+
+    const storageRef = refStorage(storage, `images/${imageId}`);
+    const uploadTask = uploadBytesResumable(storageRef, data.file);
+
+    const createdAt = new Date().getTime();
+    const removedAt = createdAt + 14 * 24 * 60 * 60 * 1000; // 14 days
+
+    uploadTask.on(
+      'state_changed',
+      () => {},
+      handleUpdateFileErrorToast,
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref)
+          .then(uri => {
+            const commonhighlightProps = {
+              title: data.name,
+              description: data.description,
+              image: {
+                id: imageId,
+                name: data.file.name,
+                uri,
+              },
+              createdAt,
+              removedAt,
+            };
+            set(
+              ref(database, `highlights/${data.id}`),
+              commonhighlightProps,
+            ).catch(handleEditErrorToast);
+            handleGetHighlights();
+          })
+          .catch(handleEditErrorToast);
+      },
+    );
+  }
+
   async function handleDeleteHighlight(id: string): Promise<void> {
     const highlightRef = ref(database, `highlights/${id}`);
     const highlightSnapshot = await get(highlightRef);
@@ -321,6 +365,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
         handleDeleteCategory,
         handlePutAbout,
         handleCreateBanner,
+        handleCreateHighlight,
       }}
     >
       {children}
