@@ -5,7 +5,7 @@ import { categoryModalTitles } from '../../constants';
 import { GenericButton, Icon, Input, Modal, Text } from '../';
 
 export function CategoryModal(props: CategoryModalProps) {
-  const { isOpen, variant, data, onAccept, onClose } = props;
+  const { isOpen, variant, data, isLoading = false, onAccept, onClose } = props;
 
   const isEdit = variant === 'edit';
 
@@ -26,6 +26,7 @@ export function CategoryModal(props: CategoryModalProps) {
           type='button'
           className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-tr-lg cursor-pointer hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
           onClick={onClose}
+          disabled={isLoading}
         >
           <Icon variant='x' color='white' />
         </button>
@@ -43,6 +44,7 @@ export function CategoryModal(props: CategoryModalProps) {
           maxLength={64}
           isHugWidth
           isRequired
+          isDisabled={isLoading}
           onChange={setInputValue}
         />
 
@@ -65,6 +67,8 @@ export function CategoryModal(props: CategoryModalProps) {
             title='Sim'
             isHugWidth
             onClick={onSubmit}
+            isDisabled={isLoading}
+            isLoading={isLoading}
           />
 
           <GenericButton
@@ -72,6 +76,7 @@ export function CategoryModal(props: CategoryModalProps) {
             type='medium'
             title='Não'
             isHugWidth
+            isDisabled={isLoading}
             onClick={onClose}
           />
         </div>
