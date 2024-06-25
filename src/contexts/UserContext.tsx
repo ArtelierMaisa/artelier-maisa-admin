@@ -280,6 +280,43 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     );
   }
 
+  async function handlePutBanner(id: string, file: File): Promise<void> {
+    const bannerRef = ref(database, `banners/${id}`);
+    const bannerSnapshot = await get(bannerRef);
+
+    const banner: Banner = bannerSnapshot.val();
+
+    if (!bannerSnapshot.exists()) return handleEditErrorToast();
+
+    if (file) {
+      const storageRef = refStorage(storage, `images/${banner.image.id}`);
+      const uploadTask = uploadBytesResumable(storageRef, file);
+
+      uploadTask.on(
+        'state_changed',
+        () => {},
+        handleUpdateFileErrorToast,
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then(uri => {
+              const commonBannerProps = {
+                image: {
+                  id: banner.image.id,
+                  name: file.name,
+                  uri,
+                },
+              };
+              set(ref(database, `banners/${id}`), commonBannerProps).catch(
+                handleEditErrorToast,
+              );
+              handleGetBanners();
+            })
+            .catch(handleEditErrorToast);
+        },
+      );
+    }
+  }
+
   async function handleDeleteBanner(id: string): Promise<void> {
     const bannerRef = ref(database, `banners/${id}`);
     const bannerSnapshot = await get(bannerRef);
@@ -364,6 +401,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
         handleDeleteBanner,
         handleDeleteCategory,
         handlePutAbout,
+        handlePutBanner,
         handleCreateBanner,
         handleCreateHighlight,
       }}

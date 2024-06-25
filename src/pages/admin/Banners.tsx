@@ -11,6 +11,7 @@ import {
   Text,
 } from '../../components';
 import { useUser } from '../../hooks';
+import { toast } from 'sonner';
 
 export function Banners() {
   const {
@@ -18,6 +19,7 @@ export function Banners() {
     banners: bannersFirebase,
     handleDeleteBanner,
     handleCreateBanner,
+    handlePutBanner,
   } = useUser();
 
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
@@ -49,6 +51,16 @@ export function Banners() {
 
   async function onGetFile(file: File): Promise<void> {
     await handleCreateBanner(file);
+  }
+  async function onUpdate(id: string, file: File | null): Promise<void> {
+    if (!file) {
+      toast.error(
+        'Desculpe, não consegui encontrar a imagem que você selecionou.',
+      );
+      return;
+    }
+
+    await handlePutBanner(id, file);
   }
 
   useEffect(() => {
@@ -92,6 +104,9 @@ export function Banners() {
                         key={banner.id}
                         variant='fill'
                         isDisabled={hasOnlyOneBanner}
+                        onGetFile={async file =>
+                          await onUpdate(banner.id, file)
+                        }
                         banner={{
                           id: banner.id,
                           name: banner.image.name,
