@@ -13,10 +13,17 @@ export interface EventModalDataProps {
   image: EventModalImageProps;
 }
 
+export interface EventModalAdd {
+  id: string;
+  name: string;
+  description: string;
+  file: File;
+}
+
 export interface EventModalProps {
   variant: EventModalVariant;
   isOpen: boolean;
   data?: EventModalDataProps;
   onClose?(): void;
-  onAdd?(): void;
+  onAdd?(data: EventModalAdd): void;
 }

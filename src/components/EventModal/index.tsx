@@ -1,6 +1,8 @@
+import { nanoid } from 'nanoid';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
-import { EventModalProps } from '../../@types';
+import { EventModalAdd, EventModalProps } from '../../@types';
 import { eventModalTitles } from '../../constants';
 import { GenericButton, Icon, ImageCard, Input, Modal, Text } from '../';
 
@@ -17,8 +19,28 @@ export function EventModal(props: EventModalProps) {
 
   const imageCardType = isEdit || file ? 'edit' : 'photo';
 
+  function onSumbit(): void {
+    if (!file) {
+      toast.error(
+        'Ops! Você deve adicionar uma imagem para publicar uma divulgação.',
+        { duration: 7500 },
+      );
+
+      return;
+    }
+
+    const newHighlight: EventModalAdd = {
+      id: nanoid(),
+      description,
+      name,
+      file,
+    };
+
+    if (onAdd) onAdd(newHighlight);
+  }
+
   return (
-    <Modal isOpen={isOpen} onRequestClose={onClose || onAdd}>
+    <Modal isOpen={isOpen} onRequestClose={onClose}>
       <div className='relative flex flex-col w-full md:w-[32rem] h-full md:h-auto overflow-hidden justify-center items-center p-6 gap-4 rounded-none md:rounded-2xl bg-white shadow-default'>
         <button
           type='button'
@@ -64,7 +86,7 @@ export function EventModal(props: EventModalProps) {
           type='medium'
           variant='primary'
           title={isEdit ? 'Editar' : 'Cadastrar'}
-          onClick={onAdd}
+          onClick={onSumbit}
           isHugWidth
         />
       </div>
