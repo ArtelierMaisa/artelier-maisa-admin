@@ -12,3 +12,7 @@ export interface Highlight {
   createdAt: number;
   removedAt: number;
 }
+
+export type HighlightEdit = Omit<Highlight, 'createdAt' | 'removedAt'> & {
+  file: File;
+};
