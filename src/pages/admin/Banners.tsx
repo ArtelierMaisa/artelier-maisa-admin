@@ -28,25 +28,20 @@ export function Banners() {
   const quantityBanners = new Array(3).fill(0);
   const hasOnlyOneBanner = banners.length === 1;
 
-  // TODO: Test delete banners to ensure they are deleted.
   async function dialogDeleteBanner(): Promise<void> {
     setIsLoading(true);
 
     await handleDeleteBanner(bannerId);
-    const filteredBanners = banners.filter(banner => banner.id !== bannerId);
-    setBanners(filteredBanners);
 
     setIsOpenDialog(false);
     setIsLoading(false);
   }
 
-  // TODO: Test delete banners to ensure they are deleted.
   function onDelete(id: string): void {
     setBannerId(id);
     setIsOpenDialog(true);
   }
 
-  // TODO: Test delete banners to ensure they are deleted.
   function onClose(): void {
     setBannerId('');
     setIsOpenDialog(false);

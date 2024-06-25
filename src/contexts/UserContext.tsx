@@ -6,6 +6,7 @@ import {
   StorageError,
   uploadBytesResumable,
 } from 'firebase/storage';
+import { nanoid } from 'nanoid';
 import {
   createContext,
   PropsWithChildren,
@@ -24,10 +25,9 @@ import {
   Highlight,
   UserContextProps,
 } from '../@types';
-import { categoryMapper, mapProducts, mapper } from '../helpers/firebase';
+import { categoryMapper, mapper, productMapper } from '../helpers';
 import { useAuth } from '../hooks';
 import { database, storage } from '../services';
-import { nanoid } from 'nanoid';
 
 export const UserContext = createContext({} as UserContextProps);
 
@@ -165,8 +165,8 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     const highlight: Highlight = highlightSnapshot.val();
 
-    const imageName = highlight.image.name;
-    const imageRef = refStorage(storage, `images/${imageName}`);
+    const imageId = highlight.image.id;
+    const imageRef = refStorage(storage, `images/${imageId}`);
     if (!imageRef) return handleDeleteErrorToast();
 
     deleteObject(imageRef).catch(handleDeleteErrorToast);
@@ -228,8 +228,8 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     if (!bannerSnapshot.exists()) return handleDeleteErrorToast();
 
     const banner: Banner = bannerSnapshot.val();
-    const imageName = banner.image.name;
-    const imageRef = refStorage(storage, `images/${imageName}`);
+    const imageId = banner.image.id;
+    const imageRef = refStorage(storage, `images/${imageId}`);
     if (!imageRef) return handleDeleteErrorToast();
 
     deleteObject(imageRef).catch(handleDeleteErrorToast);
@@ -254,7 +254,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     const categorySnapshot = await get(categoryRef);
 
     const category: Categories = categorySnapshot.val();
-    const products = mapProducts(category);
+    const products = productMapper(category);
 
     products.forEach(async product => {
       product.images.forEach(async image => {
