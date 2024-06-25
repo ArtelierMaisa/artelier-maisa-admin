@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+
 import { EventModalAdd, Highlight } from '../../@types';
 import {
   BannerCard,
@@ -61,6 +62,7 @@ export function Events() {
 
   useEffect(() => {
     if (highlightsFirebase.length) setHighlights(highlightsFirebase);
+    else setHighlights([]);
   }, [highlightsFirebase]);
 
   return (

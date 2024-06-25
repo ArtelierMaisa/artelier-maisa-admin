@@ -1,5 +1,6 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
+import { Categories as CategoriesData } from '../../@types';
 import {
   CategoryModal,
   Container,
@@ -10,9 +11,10 @@ import {
   ProductModal,
   SearchInput,
   Sidebar,
+  Spinner,
   Text,
 } from '../../components';
-import { PRIMARY_LOGO, SECONDARY_LOGO } from '../../config';
+import { useUser } from '../../hooks';
 
 export function Categories() {
   const [isOpenCategoryDialog, setIsOpenCategoryDialog] =
@@ -22,10 +24,50 @@ export function Categories() {
   const [isOpenCategoryModal, setIsOpenCategoryModal] =
     useState<boolean>(false);
   const [isOpenProductModal, setIsOpenProductModal] = useState<boolean>(false);
+  const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [searchValue, setSearchValue] = useState<string>('');
+  const [categories, setCategories] = useState<CategoriesData[]>([]);
+  const [categorySelected, setCategorySelected] = useState<CategoriesData>(
+    {} as CategoriesData,
+  );
 
-  // TODO: This categories and products are mocked. The category object has products list inside his.
-  const categories = [0];
-  const products = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+  const {
+    isLoaded,
+    categories: categoriesFirebase,
+    handleDeleteCategory,
+  } = useUser();
+
+  function onSearch(): void {
+    const categoriesSearched = searchValue.trim()
+      ? categoriesFirebase.filter(category =>
+          searchValue
+            .trim()
+            .toLowerCase()
+            .includes(category.name.trim().toLowerCase()),
+        )
+      : categoriesFirebase;
+
+    setCategories(categoriesSearched);
+  }
+
+  async function onDeleteCategory(): Promise<void> {
+    setIsLoading(true);
+
+    await handleDeleteCategory(categorySelected.id);
+
+    setIsOpenCategoryDialog(false);
+    setIsLoading(false);
+    setCategorySelected({} as CategoriesData);
+  }
+
+  useEffect(() => {
+    if (!searchValue.trim()) setCategories(categoriesFirebase);
+  }, [searchValue, categoriesFirebase]);
+
+  useEffect(() => {
+    if (categoriesFirebase.length) setCategories(categoriesFirebase);
+    else setCategories([]);
+  }, [categoriesFirebase]);
 
   return (
     <div className='flex w-full h-screen'>
@@ -44,101 +86,120 @@ export function Categories() {
           </Text>
         </header>
 
-        <Text className='hidden md:flex mt-8 mb-10 mx-auto gap-1 text-center'>
-          Crie
-          <span className='font-semibold text-base text-text'>categorias</span>
-          para poder cadastrar os seus
-          <span className='font-semibold text-base text-text'>produtos</span>
-        </Text>
-
-        <div className='flex flex-col lg:flex-row w-full justify-center items-stretch md:items-center gap-4'>
-          <SearchInput />
-
-          <GenericButton title='Adicionar Nova Categoria' />
-        </div>
-
-        {/* TODO: Add correct logic to handle category list */}
-        {categories.length > 0 ? (
-          <div className='flex flex-col w-full mt-6 gap-2 border-t-2 border-t-primary'>
-            <div className='flex flex-col py-4 gap-2 border-b-2 border-b-primary'>
-              <div className='flex w-full justify-between items-center'>
-                <div className='flex gap-2'>
-                  <Text type='semibold' color='primary' size='xl'>
-                    Páscoa
-                  </Text>
-
-                  <button
-                    type='button'
-                    className='rounded-lg hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
-                    onClick={() => setIsOpenCategoryModal(true)}
-                  >
-                    <Icon variant='pencil' color='primary' />
-                  </button>
-                </div>
-
-                <button
-                  type='button'
-                  className='rounded-lg hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
-                  onClick={() => setIsOpenCategoryDialog(true)}
-                >
-                  <Icon variant='trash' color='primary' />
-                </button>
-              </div>
-
-              <div className='flex flex-row w-full h-auto p-1 md:p-0.5 pb-1.5 md:pb-2 gap-4 overflow-hidden overflow-x-auto scrollbar scrollbar-w-3 scrollbar-thumb-rounded-lg scrollbar-thumb-primary scrollbar-track-white-color'>
-                <Product
-                  variant='blank'
-                  onAdd={() => setIsOpenProductModal(true)}
-                />
-
-                {/* TODO: Add correct logic to handle product list */}
-                {products.map(() => (
-                  <Product
-                    id='123'
-                    variant='fill'
-                    name='fill'
-                    images={[
-                      {
-                        id: '123',
-                        name: 'fill',
-                        uri: PRIMARY_LOGO,
-                      },
-                      {
-                        id: '456',
-                        name: 'fill',
-                        uri: SECONDARY_LOGO,
-                      },
-                    ]}
-                    isOccult={false}
-                    onDelete={() => setIsOpenProductDialog(true)}
-                  />
-                ))}
-              </div>
-            </div>
-
-            <div className='hidden md:flex flex-col items-center lg:items-start mt-4 gap-2'>
-              <Text className='flex gap-1'>
-                <Icon variant='info' color='primary' />
-                Clique em
-                <Icon variant='pencil' color='primary' />
-                para editar uma categoria ou um produto.
-              </Text>
-
-              <Text className='flex gap-1'>
-                <Icon variant='info' color='primary' />
-                Clique em
-                <Icon variant='trash' color='primary' />
-                para excluir uma categoria ou um produto.
-              </Text>
-            </div>
-          </div>
-        ) : (
-          <div className='flex flex-col w-full h-full justify-center items-center gap-1'>
-            <Text type='medium' color='primary' className='max-w-60' toCenter>
-              Você ainda não tem categorias e produtos cadastrados!
+        {isLoaded ? (
+          <>
+            <Text className='hidden md:flex mt-8 mb-10 mx-auto gap-1 text-center'>
+              Crie
+              <span className='font-semibold text-base text-text'>
+                categorias
+              </span>
+              para poder cadastrar os seus
+              <span className='font-semibold text-base text-text'>
+                produtos
+              </span>
             </Text>
 
-            <Icon variant='package' color='primary' size='medium' />
+            <div className='flex flex-col lg:flex-row w-full justify-center items-stretch md:items-center gap-4'>
+              <SearchInput
+                searchValue={searchValue}
+                onChange={event => setSearchValue(event.target.value)}
+                onSearch={onSearch}
+              />
+
+              <GenericButton title='Adicionar Nova Categoria' />
+            </div>
+
+            {categories.length === 0 && (
+              <div className='flex flex-col w-full h-full justify-center items-center gap-1'>
+                <Text
+                  type='medium'
+                  color='primary'
+                  className='max-w-60'
+                  toCenter
+                >
+                  Você ainda não tem categorias e produtos cadastrados!
+                </Text>
+
+                <Icon variant='package' color='primary' size='medium' />
+              </div>
+            )}
+
+            {categories.length > 0 &&
+              categories.map(category => (
+                <div
+                  key={category.id}
+                  className='flex flex-col w-full mt-6 gap-2 border-t-2 border-t-primary'
+                >
+                  <div className='flex flex-col py-4 gap-2 border-b-2 border-b-primary'>
+                    <div className='flex w-full justify-between items-center'>
+                      <div className='flex gap-2'>
+                        <Text type='semibold' color='primary' size='xl'>
+                          {category.name}
+                        </Text>
+
+                        <button
+                          type='button'
+                          className='rounded-lg hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
+                          onClick={() => setIsOpenCategoryModal(true)}
+                        >
+                          <Icon variant='pencil' color='primary' />
+                        </button>
+                      </div>
+
+                      <button
+                        type='button'
+                        className='rounded-lg hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
+                        onClick={() => {
+                          setCategorySelected(category);
+                          setIsOpenCategoryDialog(true);
+                        }}
+                      >
+                        <Icon variant='trash' color='primary' />
+                      </button>
+                    </div>
+
+                    <div className='flex flex-row w-full h-auto p-1 md:p-0.5 pb-1.5 md:pb-2 gap-4 overflow-hidden overflow-x-auto scrollbar scrollbar-w-3 scrollbar-thumb-rounded-lg scrollbar-thumb-primary scrollbar-track-white-color'>
+                      <Product
+                        variant='blank'
+                        onAdd={() => setIsOpenProductModal(true)}
+                      />
+
+                      {category.products.map(product => (
+                        <Product
+                          key={product.id}
+                          variant='fill'
+                          {...product}
+                          onDelete={() => setIsOpenProductDialog(true)}
+                        />
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className='hidden md:flex flex-col items-center lg:items-start mt-4 gap-2'>
+                    <Text className='flex gap-1'>
+                      <Icon variant='info' color='primary' />
+                      Clique em
+                      <Icon variant='pencil' color='primary' />
+                      para editar uma categoria ou um produto.
+                    </Text>
+
+                    <Text className='flex gap-1'>
+                      <Icon variant='info' color='primary' />
+                      Clique em
+                      <Icon variant='trash' color='primary' />
+                      para excluir uma categoria ou um produto.
+                    </Text>
+                  </div>
+                </div>
+              ))}
+          </>
+        ) : (
+          <div className='flex flex-col w-full h-full gap-2 justify-center items-center'>
+            <Text color='primary' type='medium' toCenter>
+              Estamos carregando os seus produtos...
+            </Text>
+
+            <Spinner />
           </div>
         )}
       </Container>
@@ -146,8 +207,13 @@ export function Categories() {
       <Dialog
         isOpen={isOpenCategoryDialog}
         variant='category'
-        onAccept={() => setIsOpenCategoryDialog(false)}
-        onClose={() => setIsOpenCategoryDialog(false)}
+        isLoading={isLoading}
+        data={categorySelected}
+        onAccept={async () => await onDeleteCategory()}
+        onClose={() => {
+          setCategorySelected({} as CategoriesData);
+          setIsOpenCategoryDialog(false);
+        }}
       />
 
       {/* TODO: You must change to `edit` when a category is selected */}
