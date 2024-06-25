@@ -111,30 +111,44 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     if (!aboutSnapshot.exists()) return handleEditErrorToast();
 
-    const storageRef = refStorage(storage, `images/${newAbout.id}`);
-    const uploadTask = uploadBytesResumable(storageRef, newAbout.file);
+    if (newAbout.file) {
+      const storageRef = refStorage(storage, `images/${newAbout.id}`);
+      const uploadTask = uploadBytesResumable(storageRef, newAbout.file);
 
-    uploadTask.on(
-      'state_changed',
-      () => {},
-      handleUpdateFileErrorToast,
-      () => {
-        getDownloadURL(uploadTask.snapshot.ref)
-          .then(uri => {
-            const commonAboutProps = {
-              name: newAbout.name,
-              description: newAbout.description,
-              additional: newAbout.additional,
-              uri,
-            };
-            set(ref(database, `about/${newAbout.id}`), commonAboutProps).catch(
-              handleEditErrorToast,
-            );
-            setAbout({ ...about, ...commonAboutProps });
-          })
-          .catch(handleEditErrorToast);
-      },
-    );
+      uploadTask.on(
+        'state_changed',
+        () => {},
+        handleUpdateFileErrorToast,
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then(uri => {
+              const commonAboutProps = {
+                name: newAbout.name,
+                description: newAbout.description,
+                additional: newAbout.additional,
+                uri,
+              };
+              set(
+                ref(database, `about/${newAbout.id}`),
+                commonAboutProps,
+              ).catch(handleEditErrorToast);
+              setAbout({ ...about, ...commonAboutProps });
+            })
+            .catch(handleEditErrorToast);
+        },
+      );
+    } else {
+      const commonAboutProps = {
+        name: newAbout.name,
+        description: newAbout.description,
+        additional: newAbout.additional,
+        uri: about.uri,
+      };
+      set(ref(database, `about/${newAbout.id}`), commonAboutProps).catch(
+        handleEditErrorToast,
+      );
+      setAbout({ ...about, ...commonAboutProps });
+    }
   }
 
   const handleGetHighlights = useCallback(async () => {

@@ -63,14 +63,6 @@ export function About() {
   ): Promise<void> {
     event.preventDefault();
 
-    if (!about?.uri) {
-      toast.error(
-        'Cadastro Incompleto! Você precisa enviar uma foto de perfil para finalizar o processo.',
-        toastOptions,
-      );
-      return;
-    }
-
     setIsLoading(true);
     await handlePutAbout({ ...about, file: file! });
     setAbout({ ...about, uri: profileImage });
