@@ -13,7 +13,12 @@ import {
 import { useUser } from '../../hooks';
 
 export function Banners() {
-  const { isLoaded, banners: bannersFirebase, handleDeleteBanner } = useUser();
+  const {
+    isLoaded,
+    banners: bannersFirebase,
+    handleDeleteBanner,
+    handleCreateBanner,
+  } = useUser();
 
   const [isOpenDialog, setIsOpenDialog] = useState<boolean>(false);
   const [isLoading, setIsLoading] = useState<boolean>(false);
@@ -45,6 +50,10 @@ export function Banners() {
   function onClose(): void {
     setBannerId('');
     setIsOpenDialog(false);
+  }
+
+  async function onGetFile(file: File): Promise<void> {
+    await handleCreateBanner(file);
   }
 
   useEffect(() => {
@@ -98,7 +107,13 @@ export function Banners() {
                     );
                   }
 
-                  return <BannerCard key={index} variant='empty' />;
+                  return (
+                    <BannerCard
+                      key={index}
+                      onGetFile={onGetFile}
+                      variant='empty'
+                    />
+                  );
                 })}
               </div>
 

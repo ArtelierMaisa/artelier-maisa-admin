@@ -27,6 +27,7 @@ import {
 import { categoryMapper, mapProducts, mapper } from '../helpers/firebase';
 import { useAuth } from '../hooks';
 import { database, storage } from '../services';
+import { nanoid } from 'nanoid';
 
 export const UserContext = createContext({} as UserContextProps);
 
@@ -107,6 +108,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
   async function handlePutAbout(newAbout: AboutEdit): Promise<void> {
     const aboutRef = ref(database, 'about');
     const aboutSnapshot = await get(aboutRef);
+
     if (!aboutSnapshot.exists()) return handleEditErrorToast();
 
     const storageRef = refStorage(storage, `images/${newAbout.id}`);
@@ -183,6 +185,42 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     setBanners(bannersFirebase);
   }, [handleGetErrorToast]);
+
+  async function handleCreateBanner(file: File): Promise<void> {
+    const bannerRef = ref(database, 'banners');
+    const bannerSnapshot = await get(bannerRef);
+
+    if (!bannerSnapshot.exists()) return handleEditErrorToast();
+
+    const bannerId = nanoid();
+    const imageId = nanoid();
+
+    const storageRef = refStorage(storage, `images/${imageId}`);
+    const uploadTask = uploadBytesResumable(storageRef, file);
+
+    uploadTask.on(
+      'state_changed',
+      () => {},
+      handleUpdateFileErrorToast,
+      () => {
+        getDownloadURL(uploadTask.snapshot.ref)
+          .then(uri => {
+            const commonBannerProps = {
+              image: {
+                id: imageId,
+                name: file.name,
+                uri,
+              },
+            };
+            set(ref(database, `banners/${bannerId}`), commonBannerProps).catch(
+              handleEditErrorToast,
+            );
+            handleGetBanners();
+          })
+          .catch(handleEditErrorToast);
+      },
+    );
+  }
 
   async function handleDeleteBanner(id: string): Promise<void> {
     const bannerRef = ref(database, `banners/${id}`);
@@ -268,6 +306,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
         handleDeleteBanner,
         handleDeleteCategory,
         handlePutAbout,
+        handleCreateBanner,
       }}
     >
       {children}
