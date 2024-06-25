@@ -107,6 +107,7 @@ export function Events() {
                         }}
                         variant='fill'
                         type='modal'
+                        onModal={() => setIsOpenModal(true)}
                         onDelete={onDeleteDialog}
                       />
                     );

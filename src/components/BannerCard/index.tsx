@@ -100,7 +100,7 @@ export function BannerCard(props: BannerCardProps) {
             <button
               type='button'
               className='w-auto h-auto rounded-lg hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
-              onClick={handleOpenExplorer}
+              onClick={handleInteractionWithCard}
             >
               <Icon variant='pencil' {...commonIconProps} />
             </button>
