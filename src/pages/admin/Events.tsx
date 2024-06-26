@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { toast } from 'sonner';
 
 import { Highlight } from '../../@types';
 import {
@@ -37,9 +38,10 @@ export function Events() {
     );
     setHighlights(filteredHighlights);
 
-    setHighlightId('');
     setIsOpenDialog(false);
     setIsLoading(false);
+
+    toast.success('Divulgação excluída com sucesso!', { duration: 3000 });
   }
 
   function onDeleteDialog(id: string): void {
@@ -56,6 +58,7 @@ export function Events() {
     if (highlightsFirebase.length) setHighlights(highlightsFirebase);
     else setHighlights([]);
 
+    setHighlightId('');
     setIsOpenModal(false);
   }, [highlightsFirebase]);
 

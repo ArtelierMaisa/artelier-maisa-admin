@@ -41,6 +41,7 @@ export function EventModal(props: EventModalProps) {
         ...highlight!,
         file,
       });
+      toast.success('Divulgação editada com sucesso!', { duration: 3000 });
     } else {
       await handleCreateHighlight({
         ...highlight!,
@@ -48,6 +49,7 @@ export function EventModal(props: EventModalProps) {
         id: nanoid(),
         file,
       });
+      toast.success('Divulgação criada com sucesso!', { duration: 3000 });
     }
   }
 
@@ -55,6 +57,7 @@ export function EventModal(props: EventModalProps) {
     if (!isOpen) {
       setIsLoading(false);
       setHighlight(null);
+      setFile(null);
     }
   }, [isOpen]);
 
@@ -64,6 +67,7 @@ export function EventModal(props: EventModalProps) {
 
   useEffect(() => {
     if (highlight && highlight.removedAt !== currentHighlight?.removedAt) {
+      setFile(null);
       onClose && onClose();
     }
   }, [highlight, currentHighlight, onClose]);
