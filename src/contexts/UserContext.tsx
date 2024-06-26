@@ -5,7 +5,6 @@ import {
   ref as refStorage,
   StorageError,
   uploadBytesResumable,
-  UploadTask,
 } from 'firebase/storage';
 import { nanoid } from 'nanoid';
 import {
@@ -131,7 +130,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
       uploadTask.on(
         'state_changed',
-        () => { },
+        () => {},
         handleUpdateFileErrorToast,
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
@@ -197,7 +196,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     uploadTask.on(
       'state_changed',
-      () => { },
+      () => {},
       handleUpdateFileErrorToast,
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
@@ -241,7 +240,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
       uploadTask.on(
         'state_changed',
-        () => { },
+        () => {},
         handleUpdateFileErrorToast,
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
@@ -327,7 +326,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     uploadTask.on(
       'state_changed',
-      () => { },
+      () => {},
       handleUpdateFileErrorToast,
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
@@ -363,7 +362,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
       uploadTask.on(
         'state_changed',
-        () => { },
+        () => {},
         handleUpdateFileErrorToast,
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
@@ -468,19 +467,17 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
   async function handleCreateProduct(newProduct: ProductCreateProps) {
     const productId = nanoid();
 
-    console.log(newProduct);
-
     const { categoryId } = newProduct;
 
-    const uploadImage = (file) => {
-      return new Promise((resolve, reject) => {
+    const uploadImage = file =>
+      new Promise((resolve, reject) => {
         const imageId = nanoid();
         const storageRef = refStorage(storage, `images/${imageId}`);
         const uploadTask = uploadBytesResumable(storageRef, file);
 
         uploadTask.on(
           'state_changed',
-          () => { },
+          () => {},
           reject,
           () => {
             getDownloadURL(uploadTask.snapshot.ref)
@@ -491,22 +488,18 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
                   uri,
                 };
 
-                resolve(newImage)
+                resolve(newImage);
               })
               .catch(reject);
           },
         );
       });
-    };
 
-    const images = await Promise.all(newProduct.files.map(file => uploadImage(file)))
-      .then(images => {
-        console.log(images);
-        return images;
-      })
-      .catch(error => {
-        console.error(error);
-      });
+    const images = await Promise.all(
+      newProduct.files.map(file => uploadImage(file)),
+    )
+      .then(images => images)
+      .catch(handleCreateErrorToast);
 
     const whatsapp = newProduct.whatsapp
       ? newProduct.whatsapp.replace(/\D/g, '')
@@ -537,6 +530,10 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
   }
 
   async function handlePutProduct(newProduct: ProductEditProps): Promise<void> {
+    const whatsapp = newProduct.whatsapp
+      ? newProduct.whatsapp.replace(/\D/g, '')
+      : DEFAULT_PHONE;
+
     if (newProduct.files) {
       const images = newProduct.files.map(file => {
         const imageId = nanoid();
@@ -545,7 +542,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
         uploadTask.on(
           'state_changed',
-          () => { },
+          () => {},
           handleUpdateFileErrorToast,
           () => {
             getDownloadURL(uploadTask.snapshot.ref)
@@ -566,8 +563,6 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
         );
       });
 
-      const whatsapp = newProduct.whatsapp.replace(/\D/g, '');
-
       const product = {
         ...newProduct,
         whatsapp,
@@ -576,12 +571,13 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       };
 
       set(
-        ref(database, `categories/${newProduct.categoryId}/products/${newProduct.id}`),
+        ref(
+          database,
+          `categories/${newProduct.categoryId}/products/${newProduct.id}`,
+        ),
         product,
       ).catch(handleEditErrorToast);
     } else {
-      const whatsapp = newProduct.whatsapp.replace(/\D/g, '');
-
       const product = {
         ...newProduct,
         whatsapp,
@@ -589,7 +585,10 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       };
 
       set(
-        ref(database, `categories/${newProduct.categoryId}/products/${newProduct.id}`),
+        ref(
+          database,
+          `categories/${newProduct.categoryId}/products/${newProduct.id}`,
+        ),
         product,
       ).catch(handleEditErrorToast);
     }
