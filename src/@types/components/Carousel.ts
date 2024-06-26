@@ -5,11 +5,6 @@ export interface CarouselImageProps {
 }
 
 export interface CarouselProps {
-  images?: [
-    CarouselImageProps,
-    CarouselImageProps?,
-    CarouselImageProps?,
-    CarouselImageProps?,
-  ];
+  images?: CarouselImageProps[];
   isDisabled?: boolean;
 }

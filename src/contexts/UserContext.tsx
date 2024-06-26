@@ -438,19 +438,21 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     if (category.products) {
       const products = productMapper(category);
-      products.forEach(async product => {
-        product.images.forEach(async image => {
-          if (image) {
+
+      for (const product of products) {
+        if (product.images) {
+          const imagesArray = Object.values(product.images);
+
+          for (const image of imagesArray) {
+            if (!image) return handleDeleteErrorToast();
+
             const imageRef = refStorage(storage, `images/${image.id}`);
-            if (!imageRef) return handleDeleteErrorToast();
-
-            deleteObject(imageRef).catch(handleDeleteErrorToast);
+            if (imageRef) {
+              await deleteObject(imageRef).catch(handleDeleteErrorToast);
+            }
           }
-        });
-
-        const productRef = ref(database, `products/${product.id}`);
-        await remove(productRef);
-      });
+        }
+      }
     }
 
     await remove(categoryRef);
@@ -462,10 +464,12 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     const categorySnapshot = await get(categoryRef);
 
     if (!categorySnapshot.exists()) return handleEditErrorToast();
+    const category: Categories = categorySnapshot.val();
 
-    set(ref(database, `categories/${id}`), { name }).catch(
-      handleEditErrorToast,
-    );
+    set(ref(database, `categories/${id}`), {
+      name,
+      products: category?.products || null,
+    }).catch(handleEditErrorToast);
 
     await handleGetCategories();
   }
@@ -614,21 +618,26 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       `categories/${categoryId}/products/${productId}`,
     );
     const productSnapshot = await get(productRef);
-    if (!productSnapshot.exists()) return handleDeleteErrorToast();
 
-    const product: Product = productSnapshot.val();
-    console.log(productImagesMapper(productSnapshot.val()));
-    // product.images.forEach(async image => {
-    //   if (image) {
-    //     const imageRef = refStorage(storage, `images/${image.id}`);
-    //     if (!imageRef) return handleDeleteErrorToast();
+    if (!productSnapshot.exists()) {
+      return handleDeleteErrorToast();
+    }
 
-    //     deleteObject(imageRef).catch(handleDeleteErrorToast);
-    //   }
-    // });
+    const product: Product = productImagesMapper(productSnapshot.val());
 
-    // await remove(productRef);
-    // await handleGetCategories();
+    if (product.images) {
+      const imagesArray = Object.values(product.images);
+
+      for (const image of imagesArray) {
+        const imageRef = refStorage(storage, `images/${image.id}`);
+        if (imageRef) {
+          await deleteObject(imageRef).catch(handleDeleteErrorToast);
+        }
+      }
+    }
+
+    await remove(productRef).catch(handleDeleteErrorToast);
+    await handleGetCategories();
   }
 
   async function handleOccultProduct(
@@ -640,17 +649,16 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       `categories/${categoryId}/products/${productId}`,
     );
     const productSnapshot = await get(productRef);
-
     if (!productSnapshot.exists()) return handleDeleteErrorToast();
 
     const product: Product = productSnapshot.val();
-
     const newProduct = {
       ...product,
       isOccult: !product.isOccult,
     };
 
     set(productRef, newProduct).catch(handleEditErrorToast);
+    await handleGetCategories();
   }
 
   const fetchFirebase = useCallback(async () => {
@@ -690,6 +698,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
         handlePutAbout,
         handlePutBanner,
         handlePutCategory,
+        handlePutProduct,
         handlePutHighlight,
         handleOccultProduct,
         handleCreateBanner,

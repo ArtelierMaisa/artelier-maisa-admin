@@ -10,7 +10,7 @@ export interface Product {
   description: string;
   isOccult: boolean;
   price: string;
-  images: [ImageProps, ImageProps?, ImageProps?, ImageProps?];
+  images: ImageProps[];
   material: string | null;
   size: string | null;
   weight: string | null;

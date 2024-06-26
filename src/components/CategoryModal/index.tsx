@@ -9,15 +9,17 @@ export function CategoryModal(props: CategoryModalProps) {
 
   const isEdit = variant === 'edit';
 
-  const [inputValue, setInputValue] = useState<string>(
-    isEdit ? data!.name : '',
-  );
+  const [inputValue, setInputValue] = useState<string>(data?.name || '');
 
   const label = isEdit ? 'Novo Nome da Categoria' : 'Nome da Categoria';
 
   function onSubmit(): void {
     if (onAccept) onAccept(inputValue);
   }
+
+  useEffect(() => {
+    if (isEdit && data) setInputValue(data.name);
+  }, [isEdit, data]);
 
   useEffect(() => {
     if (!isOpen) setInputValue('');

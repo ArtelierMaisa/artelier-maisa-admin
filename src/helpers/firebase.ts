@@ -47,13 +47,9 @@ export function productMapper(data: Categories): Product[] {
   }));
 }
 
-export function productImagesMapper(data: Product) {
-  return Object.entries(data).map(([id, product]) => ({
-    ...product,
-    images: Object.keys(product.images).map(imageKey => ({
-      ...product.images[imageKey],
-      id: imageKey,
-    })),
-    id,
-  }));
+export function productImagesMapper(data: Product): Product {
+  return {
+    ...data,
+    images: Object.values(data.images),
+  };
 }

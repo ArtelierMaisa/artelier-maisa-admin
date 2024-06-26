@@ -10,15 +10,9 @@ export interface ProductProps {
   variant?: ProductVariant;
   id?: string;
   name?: string;
-  images?: [
-    ProductImageProps,
-    ProductImageProps?,
-    ProductImageProps?,
-    ProductImageProps?,
-  ];
+  images?: ProductImageProps[];
   isOccult?: boolean;
   onAdd?(): void;
   onUpdate?(id: string): void;
   onDelete?(id: string): void;
-  onChecked?(): void;
 }

@@ -48,8 +48,6 @@ export function Categories() {
     handleCreateCategory,
     handleCreateProduct,
     handlePutCategory,
-    handleOccultProduct,
-    handleGetCategories,
   } = useUser();
 
   const toastOptions: ExternalToast = { duration: 3000 };
@@ -283,12 +281,6 @@ export function Categories() {
                               setCategorySelected(category);
                               setIsOpenProductDialog(true);
                             }}
-                            onChecked={async () => {
-                              await handleOccultProduct(
-                                category.id,
-                                product.id,
-                              );
-                            }}
                           />
                         ))}
                     </div>
@@ -339,7 +331,7 @@ export function Categories() {
         isOpen={isOpenCategoryModal}
         variant={categorySelected.id ? 'edit' : 'add'}
         isLoading={isLoading}
-        data={categorySelected}
+        data={categorySelected?.id ? categorySelected : undefined}
         onAccept={async name =>
           await onCreateOrPutCategory(
             name,
