@@ -13,6 +13,7 @@ export function Product(props: ProductProps) {
     onAdd,
     onDelete,
     onUpdate,
+    onChecked,
   } = props;
 
   const [isChecked, setIsChecked] = useState<boolean>(isOccult);
@@ -23,6 +24,11 @@ export function Product(props: ProductProps) {
     size: 'medium',
     color: 'primary',
   };
+
+  function handleChecked(checked: boolean): void {
+    setIsChecked(checked);
+    if (onChecked) onChecked();
+  }
 
   return (
     <div className='flex flex-col w-64 min-w-64 sm:w-80 sm:min-w-80 h-64 sm:min-h-[19rem] rounded-lg ring-1 ring-primary bg-background-color'>
@@ -54,7 +60,7 @@ export function Product(props: ProductProps) {
               <Switch
                 checked={isChecked}
                 variant='eyes'
-                onToggle={setIsChecked}
+                onToggle={handleChecked}
               />
 
               <button

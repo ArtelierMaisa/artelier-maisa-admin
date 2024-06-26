@@ -3,6 +3,7 @@ import { ExternalToast, toast } from 'sonner';
 
 import {
   Categories as CategoriesData,
+  Product as ProductData,
   ProductCreateProps,
   ProductModalAddDataProps,
 } from '../../@types';
@@ -35,6 +36,9 @@ export function Categories() {
   const [categorySelected, setCategorySelected] = useState<CategoriesData>(
     {} as CategoriesData,
   );
+  const [productSelected, setProductSelected] = useState<ProductData>(
+    {} as ProductData,
+  );
 
   const {
     isLoaded,
@@ -44,6 +48,8 @@ export function Categories() {
     handleCreateCategory,
     handleCreateProduct,
     handlePutCategory,
+    handleOccultProduct,
+    handleGetCategories,
   } = useUser();
 
   const toastOptions: ExternalToast = { duration: 3000 };
@@ -76,13 +82,14 @@ export function Categories() {
   async function onDeleteProduct(): Promise<void> {
     setIsLoading(true);
 
-    // await handleDeleteProduct(categorySelected.id, productSelected.id);
+    await handleDeleteProduct(categorySelected.id, productSelected.id);
 
     toast.success('Produto foi excluída com sucesso!', toastOptions);
 
     setIsOpenProductDialog(false);
     setIsLoading(false);
     setCategorySelected({} as CategoriesData);
+    setProductSelected({} as ProductData);
   }
 
   async function onCreateOrPutCategory(
@@ -131,7 +138,7 @@ export function Categories() {
       categoryId: categorySelected.id,
       description: newProduct.description,
       files: newProduct.files,
-      isOcult: newProduct.isOccult,
+      isOccult: newProduct.isOccult,
       material: newProduct.material,
       name: newProduct.name,
       price: newProduct.price,
@@ -158,6 +165,7 @@ export function Categories() {
     else setCategories([]);
 
     setCategorySelected({} as CategoriesData);
+    setProductSelected({} as ProductData);
   }, [categoriesFirebase]);
 
   return (
@@ -271,8 +279,15 @@ export function Categories() {
                             variant='fill'
                             {...product}
                             onDelete={() => {
+                              setProductSelected(product);
                               setCategorySelected(category);
                               setIsOpenProductDialog(true);
+                            }}
+                            onChecked={async () => {
+                              await handleOccultProduct(
+                                category.id,
+                                product.id,
+                              );
                             }}
                           />
                         ))}
@@ -340,7 +355,9 @@ export function Categories() {
       <Dialog
         isOpen={isOpenProductDialog}
         variant='product'
-        onAccept={() => setIsOpenProductDialog(false)}
+        data={productSelected}
+        isLoading={isLoading}
+        onAccept={async () => await onDeleteProduct()}
         onClose={() => setIsOpenProductDialog(false)}
       />
 

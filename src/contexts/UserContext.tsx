@@ -25,14 +25,19 @@ import {
   EventModalAdd,
   Highlight,
   HighlightEdit,
-  Product,
   Image,
+  Product,
   ProductCreateProps,
   ProductEditProps,
   UserContextProps,
 } from '../@types';
 import { DEFAULT_PHONE } from '../config';
-import { categoryMapper, mapper, productMapper } from '../helpers';
+import {
+  categoryMapper,
+  mapper,
+  productImagesMapper,
+  productMapper,
+} from '../helpers';
 import { useAuth } from '../hooks';
 import { database, storage } from '../services';
 
@@ -612,17 +617,18 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     if (!productSnapshot.exists()) return handleDeleteErrorToast();
 
     const product: Product = productSnapshot.val();
-    product.images.forEach(async image => {
-      if (image) {
-        const imageRef = refStorage(storage, `images/${image.id}`);
-        if (!imageRef) return handleDeleteErrorToast();
+    console.log(productImagesMapper(productSnapshot.val()));
+    // product.images.forEach(async image => {
+    //   if (image) {
+    //     const imageRef = refStorage(storage, `images/${image.id}`);
+    //     if (!imageRef) return handleDeleteErrorToast();
 
-        deleteObject(imageRef).catch(handleDeleteErrorToast);
-      }
-    });
+    //     deleteObject(imageRef).catch(handleDeleteErrorToast);
+    //   }
+    // });
 
-    await remove(productRef);
-    await handleGetCategories();
+    // await remove(productRef);
+    // await handleGetCategories();
   }
 
   async function handleOccultProduct(
@@ -643,8 +649,6 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       ...product,
       isOccult: !product.isOccult,
     };
-
-    console.log(newProduct);
 
     set(productRef, newProduct).catch(handleEditErrorToast);
   }
@@ -687,6 +691,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
         handlePutBanner,
         handlePutCategory,
         handlePutHighlight,
+        handleOccultProduct,
         handleCreateBanner,
         handleCreateCategory,
         handleCreateHighlight,

@@ -27,6 +27,7 @@ export interface UserContextProps {
   handlePutBanner(id: string, file: File): Promise<void>;
   handlePutCategory(id: string, name: string): Promise<void>;
   handlePutHighlight(newHighlight: HighlightEdit): Promise<void>;
+  handleOccultProduct(categoryId: string, productId: string): Promise<void>;
   handleCreateBanner(file: File): Promise<void>;
   handleCreateCategory(name: string): Promise<void>;
   handleCreateHighlight(data: EventModalAdd): Promise<void>;

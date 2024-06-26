@@ -20,4 +20,5 @@ export interface ProductProps {
   onAdd?(): void;
   onUpdate?(id: string): void;
   onDelete?(id: string): void;
+  onChecked?(): void;
 }
