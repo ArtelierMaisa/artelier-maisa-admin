@@ -1,26 +1,31 @@
 import { nanoid } from 'nanoid';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { toast } from 'sonner';
 
-import { EventModalAdd, EventModalProps } from '../../@types';
+import { EventModalProps, Highlight } from '../../@types';
 import { eventModalTitles } from '../../constants';
+import { useUser } from '../../hooks';
 import { GenericButton, Icon, ImageCard, Input, Modal, Text } from '../';
 
 export function EventModal(props: EventModalProps) {
-  const { isOpen, variant, data, onAdd, onClose } = props;
+  const { isOpen, variant, data, onClose } = props;
 
-  const isEdit = variant === 'edit';
+  const { highlights, handleCreateHighlight, handlePutHighlight } = useUser();
 
-  const [name, setName] = useState<string>(isEdit ? data!.name : '');
-  const [description, setDescription] = useState<string>(
-    isEdit ? data!.description : '',
+  const currentHighlight = highlights.find(
+    highlight => highlight.id === data?.id,
   );
+
+  const [highlight, setHighlight] = useState<Highlight | null>(
+    currentHighlight || null,
+  );
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [file, setFile] = useState<File | null>(null);
 
-  const imageCardType = isEdit || file ? 'edit' : 'photo';
+  const imageCardType = currentHighlight || file ? 'edit' : 'photo';
 
-  function onSumbit(): void {
-    if (!file) {
+  async function onSumbit(): Promise<void> {
+    if (!currentHighlight && !file) {
       toast.error(
         'Ops! Você deve adicionar uma imagem para publicar uma divulgação.',
         { duration: 7500 },
@@ -29,15 +34,41 @@ export function EventModal(props: EventModalProps) {
       return;
     }
 
-    const newHighlight: EventModalAdd = {
-      id: nanoid(),
-      description,
-      name,
-      file,
-    };
+    setIsLoading(true);
 
-    if (onAdd) onAdd(newHighlight);
+    if (currentHighlight) {
+      await handlePutHighlight({
+        ...highlight!,
+        file,
+      });
+    } else {
+      await handleCreateHighlight({
+        ...highlight!,
+        name: highlight!.title,
+        id: nanoid(),
+        file,
+      });
+    }
   }
+
+  useEffect(() => {
+    if (!isOpen) {
+      setIsLoading(false);
+      setHighlight(null);
+    }
+  }, [isOpen]);
+
+  useEffect(() => {
+    if (currentHighlight) setHighlight(currentHighlight);
+  }, [currentHighlight]);
+
+  useEffect(() => {
+    if (highlight && highlight.removedAt !== currentHighlight?.removedAt) {
+      onClose && onClose();
+    }
+  }, [highlight, currentHighlight, onClose]);
+
+  console.log(currentHighlight);
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose}>
@@ -46,6 +77,7 @@ export function EventModal(props: EventModalProps) {
           type='button'
           className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-none md:rounded-tr-lg cursor-pointer hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
           onClick={onClose}
+          disabled={isLoading}
         >
           <Icon variant='x' color='white' />
         </button>
@@ -58,36 +90,44 @@ export function EventModal(props: EventModalProps) {
           id='input-name'
           variant='input'
           type='text'
-          value={name}
+          value={highlight ? highlight.title : ''}
           placeholder='Título da divulgação'
           label='Título'
           maxLength={64}
           isHugWidth
           isRequired
-          onChange={setName}
+          isDisabled={isLoading}
+          onChange={name => setHighlight({ ...highlight!, title: name })}
         />
 
         <Input
           id='input-description'
           variant='textarea'
           type='text'
-          value={description}
+          value={highlight ? highlight.description : ''}
           placeholder='Descreva como foi...'
           label='Descrição'
           maxLength={512}
           isHugWidth
           isRequired
-          onChange={setDescription}
+          isDisabled={isLoading}
+          onChange={description => setHighlight({ ...highlight!, description })}
         />
 
-        <ImageCard type={imageCardType} onGetFile={setFile} />
+        <ImageCard
+          type={imageCardType}
+          isDisabled={isLoading}
+          onGetFile={setFile}
+        />
 
         <GenericButton
           type='medium'
           variant='primary'
-          title={isEdit ? 'Editar' : 'Cadastrar'}
-          onClick={onSumbit}
+          title={currentHighlight ? 'Editar' : 'Cadastrar'}
+          onClick={async () => await onSumbit()}
           isHugWidth
+          isDisabled={isLoading}
+          isLoading={isLoading}
         />
       </div>
     </Modal>

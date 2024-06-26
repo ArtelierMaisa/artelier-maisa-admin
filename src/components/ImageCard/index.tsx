@@ -7,7 +7,7 @@ import { imageCardTitles, imageCardTypes } from '../../constants';
 import { DotButton, Text } from '../';
 
 export function ImageCard(props: ImageCardProps) {
-  const { type = 'photo', onGetFile } = props;
+  const { type = 'photo', isDisabled = false, onGetFile } = props;
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -55,6 +55,7 @@ export function ImageCard(props: ImageCardProps) {
         type='button'
         className='flex flew-row w-64 sm:w-96 h-[4.5rem] justify-center items-center px-5 gap-2 bg-white ring-1 ring-primary rounded-lg cursor-pointer hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
         onClick={handleOpenExplorer}
+        disabled={isDisabled}
       >
         <div className='hidden sm:flex'>
           <DotButton mode='figure' type={imageCardTypes[type]} />

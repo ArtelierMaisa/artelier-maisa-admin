@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { EventModalAdd, Highlight } from '../../@types';
+import { Highlight } from '../../@types';
 import {
   BannerCard,
   Container,
@@ -18,7 +18,6 @@ export function Events() {
     isLoaded,
     highlights: highlightsFirebase,
     handleDeleteHighlight,
-    handleCreateHighlight,
   } = useUser();
 
   const [isOpenModal, setIsOpenModal] = useState<boolean>(false);
@@ -29,7 +28,6 @@ export function Events() {
 
   const quantityHighlights = new Array(3).fill(0);
 
-  // TODO: Test delete highlights to ensure they are deleted.
   async function dialogDeleteHighlight(): Promise<void> {
     setIsLoading(true);
 
@@ -39,30 +37,26 @@ export function Events() {
     );
     setHighlights(filteredHighlights);
 
+    setHighlightId('');
     setIsOpenDialog(false);
     setIsLoading(false);
   }
 
-  // TODO: Test delete highlights to ensure they are deleted.
   function onDeleteDialog(id: string): void {
     setHighlightId(id);
     setIsOpenDialog(true);
   }
 
-  // TODO: Test delete highlights to ensure they are deleted.
   function onCloseDialog(): void {
     setHighlightId('');
     setIsOpenDialog(false);
   }
 
-  async function onCreateHighlight(data: EventModalAdd): Promise<void> {
-    await handleCreateHighlight(data);
-    setIsOpenModal(false);
-  }
-
   useEffect(() => {
     if (highlightsFirebase.length) setHighlights(highlightsFirebase);
     else setHighlights([]);
+
+    setIsOpenModal(false);
   }, [highlightsFirebase]);
 
   return (
@@ -107,7 +101,7 @@ export function Events() {
                         }}
                         variant='fill'
                         type='modal'
-                        onModal={() => setIsOpenModal(true)}
+                        onModal={() => setHighlightId(highlight.id)}
                         onDelete={onDeleteDialog}
                       />
                     );
@@ -161,15 +155,17 @@ export function Events() {
         onClose={onCloseDialog}
       />
 
-      {/**
-       * TODO: You must change the variant to `edit` when event object exists.
-       * TODO: You must create an `handleAddEvent` to handle the event added.
-       */}
       <EventModal
         isOpen={isOpenModal}
         variant='add'
-        onAdd={onCreateHighlight}
         onClose={() => setIsOpenModal(false)}
+      />
+
+      <EventModal
+        isOpen={!!highlightId && !isOpenDialog}
+        variant='edit'
+        data={{ id: highlightId }}
+        onClose={() => setHighlightId('')}
       />
     </div>
   );

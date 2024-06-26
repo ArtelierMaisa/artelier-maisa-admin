@@ -185,7 +185,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     const imageId = nanoid();
 
     const storageRef = refStorage(storage, `images/${imageId}`);
-    const uploadTask = uploadBytesResumable(storageRef, data.file);
+    const uploadTask = uploadBytesResumable(storageRef, data.file!);
 
     const createdAt = new Date().getTime();
     const removedAt = createdAt + 14 * 24 * 60 * 60 * 1000; // 14 days
@@ -197,12 +197,12 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
           .then(uri => {
-            const commonhighlightProps = {
+            const commonHighlightProps = {
               title: data.name,
               description: data.description,
               image: {
                 id: imageId,
-                name: data.file.name,
+                name: data.file!.name,
                 uri,
               },
               createdAt,
@@ -210,7 +210,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
             };
             set(
               ref(database, `highlights/${data.id}`),
-              commonhighlightProps,
+              commonHighlightProps,
             ).catch(handleEditErrorToast);
             handleGetHighlights();
           })
@@ -224,10 +224,11 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
   ): Promise<void> {
     const highlightRef = ref(database, `highlights/${newHighlight.id}`);
     const highlightSnapshot = await get(highlightRef);
-
     if (!highlightSnapshot.exists()) return handleEditErrorToast();
 
     const highlight: Highlight = highlightSnapshot.val();
+
+    const removedAt = new Date().getTime() + 14 * 24 * 60 * 60 * 1000; // 14 days
 
     if (newHighlight.file) {
       const storageRef = refStorage(storage, `images/${highlight.image.id}`);
@@ -243,9 +244,10 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
               const commonHighlightProps = {
                 title: newHighlight.title,
                 description: newHighlight.description,
+                removedAt,
                 image: {
                   id: highlight.image.id,
-                  name: newHighlight.file.name,
+                  name: newHighlight.file!.name,
                   uri,
                 },
               };
@@ -262,6 +264,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       const commonHighlightProps = {
         title: newHighlight.title,
         description: newHighlight.description,
+        removedAt,
         image: {
           id: highlight.image.id,
           name: highlight.image.name,
