@@ -131,7 +131,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
       uploadTask.on(
         'state_changed',
-        () => {},
+        () => { },
         handleUpdateFileErrorToast,
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
@@ -197,7 +197,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     uploadTask.on(
       'state_changed',
-      () => {},
+      () => { },
       handleUpdateFileErrorToast,
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
@@ -241,7 +241,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
       uploadTask.on(
         'state_changed',
-        () => {},
+        () => { },
         handleUpdateFileErrorToast,
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
@@ -327,7 +327,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     uploadTask.on(
       'state_changed',
-      () => {},
+      () => { },
       handleUpdateFileErrorToast,
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
@@ -363,7 +363,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
       uploadTask.on(
         'state_changed',
-        () => {},
+        () => { },
         handleUpdateFileErrorToast,
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
@@ -472,37 +472,50 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     const { categoryId } = newProduct;
 
-    const images = newProduct.files.map(file => {
-      const imageId = nanoid();
-      const storageRef = refStorage(storage, `images/${imageId}`);
-      const uploadTask = uploadBytesResumable(storageRef, file!);
+    const uploadImage = (file) => {
+      return new Promise((resolve, reject) => {
+        const imageId = nanoid();
+        const storageRef = refStorage(storage, `images/${imageId}`);
+        const uploadTask = uploadBytesResumable(storageRef, file);
 
-      uploadTask.on(
-        'state_changed',
-        () => {},
-        handleUpdateFileErrorToast,
-        () => {
-          getDownloadURL(uploadTask.snapshot.ref)
-            .then(uri => {
-              const newImage = {
-                id: imageId,
-                name: file?.name,
-                uri,
-              };
-              set(ref(database, `images/${imageId}`), newImage).catch(
-                handleCreateErrorToast,
-              );
-            })
-            .catch(handleCreateErrorToast);
-        },
-      );
+        uploadTask.on(
+          'state_changed',
+          () => { },
+          reject,
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref)
+              .then(uri => {
+                const newImage = {
+                  id: imageId,
+                  name: file.name,
+                  uri,
+                };
 
-      return { id: imageId, name: file?.name, uri: imageUri };
-    });
+                resolve(newImage)
+              })
+              .catch(reject);
+          },
+        );
+      });
+    };
+
+    const images = await Promise.all(newProduct.files.map(file => uploadImage(file)))
+      .then(images => {
+        console.log(images);
+        return images;
+      })
+      .catch(error => {
+        console.error(error);
+      });
 
     const whatsapp = newProduct.whatsapp
       ? newProduct.whatsapp.replace(/\D/g, '')
       : DEFAULT_PHONE;
+
+    const imagesObject = images.reduce((acc, image) => {
+      acc[image.id] = image;
+      return acc;
+    }, {});
 
     const product = {
       ...newProduct,
@@ -510,7 +523,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       size: newProduct.size || '',
       weight: newProduct.size || '',
       whatsapp,
-      images,
+      images: imagesObject,
       createdAt: new Date().getTime(),
       updatedAt: 0,
     };
