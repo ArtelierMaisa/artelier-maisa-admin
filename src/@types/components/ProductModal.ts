@@ -26,6 +26,7 @@ export type ProductModalAddDataProps = ProductModalDataProps & {
 export interface ProductModalProps {
   variant: ProductModalVariant;
   isOpen: boolean;
+  isLoading?: boolean;
   onClose?(): void;
   onAdd?(product: ProductModalAddDataProps): void;
 }
@@ -59,6 +60,7 @@ export interface DetailsProps {
 
 export interface PhotosProps {
   variant: ProductModalVariant;
+  isLoading?: boolean;
   data?: ProductModalImageProps[];
   onAdd(images: ProductModalImageProps[], files: File[]): void;
   onGoBack(): void;

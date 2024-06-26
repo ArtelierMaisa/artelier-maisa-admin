@@ -347,6 +347,7 @@ export function Categories() {
       <ProductModal
         isOpen={isOpenProductModal}
         variant='add'
+        isLoading={isLoading}
         onAdd={async product => await onCreateProduct(product)}
         onClose={() => {
           setIsOpenProductModal(false);
