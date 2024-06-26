@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { ExternalToast, toast } from 'sonner';
 
 import { Banner } from '../../@types';
 import {
@@ -29,6 +29,7 @@ export function Banners() {
 
   const quantityBanners = new Array(3).fill(0);
   const hasOnlyOneBanner = banners.length === 1;
+  const toastOptions: ExternalToast = { duration: 3000 };
 
   async function dialogDeleteBanner(): Promise<void> {
     setIsLoading(true);
@@ -37,6 +38,8 @@ export function Banners() {
 
     setIsOpenDialog(false);
     setIsLoading(false);
+
+    toast.success('Banner excluído com sucesso!', toastOptions);
   }
 
   function onDelete(id: string): void {
@@ -49,23 +52,33 @@ export function Banners() {
     setIsOpenDialog(false);
   }
 
-  async function onGetFile(file: File): Promise<void> {
+  async function onGetFile(file: File | null): Promise<void> {
+    if (!file) return setBannerId('');
+
     await handleCreateBanner(file);
+
+    toast.success(
+      'Banner está sendo adicionado! Aguarde um momento...',
+      toastOptions,
+    );
   }
+
   async function onUpdate(id: string, file: File | null): Promise<void> {
-    if (!file) {
-      toast.error(
-        'Desculpe, não consegui encontrar a imagem que você selecionou.',
-      );
-      return;
-    }
+    if (!file) return setBannerId('');
 
     await handlePutBanner(id, file);
+
+    toast.success(
+      'Banner está sendo editado! Aguarde um momento...',
+      toastOptions,
+    );
   }
 
   useEffect(() => {
     if (bannersFirebase.length) setBanners(bannersFirebase);
     else setBanners([]);
+
+    setBannerId('');
   }, [bannersFirebase]);
 
   return (

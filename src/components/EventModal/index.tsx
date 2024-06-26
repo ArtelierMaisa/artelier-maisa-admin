@@ -41,7 +41,9 @@ export function EventModal(props: EventModalProps) {
         ...highlight!,
         file,
       });
-      toast.success('Divulgação editada com sucesso!', { duration: 3000 });
+      toast.success('Divulgação editada com sucesso!', {
+        duration: 3000,
+      });
     } else {
       await handleCreateHighlight({
         ...highlight!,
@@ -49,7 +51,9 @@ export function EventModal(props: EventModalProps) {
         id: nanoid(),
         file,
       });
-      toast.success('Divulgação criada com sucesso!', { duration: 3000 });
+      toast.success('Divulgação está sendo criada! Aguarde um momento...', {
+        duration: 3000,
+      });
     }
   }
 
