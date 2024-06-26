@@ -25,6 +25,7 @@ import {
   EventModalAdd,
   Highlight,
   HighlightEdit,
+  Product,
   ProductCreateProps,
   UserContextProps,
 } from '../@types';
@@ -127,7 +128,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
       uploadTask.on(
         'state_changed',
-        () => {},
+        () => { },
         handleUpdateFileErrorToast,
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
@@ -193,7 +194,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     uploadTask.on(
       'state_changed',
-      () => {},
+      () => { },
       handleUpdateFileErrorToast,
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
@@ -237,7 +238,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
       uploadTask.on(
         'state_changed',
-        () => {},
+        () => { },
         handleUpdateFileErrorToast,
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
@@ -323,7 +324,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     uploadTask.on(
       'state_changed',
-      () => {},
+      () => { },
       handleUpdateFileErrorToast,
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
@@ -359,7 +360,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
       uploadTask.on(
         'state_changed',
-        () => {},
+        () => { },
         handleUpdateFileErrorToast,
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
@@ -471,7 +472,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
       uploadTask.on(
         'state_changed',
-        () => {},
+        () => { },
         handleUpdateFileErrorToast,
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
@@ -506,6 +507,31 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       ref(database, `categories/${categoryId}/products/${productId}`),
       product,
     ).catch(handleCreateErrorToast);
+
+    await handleGetCategories();
+  }
+
+  async function handleDeleteProduct(
+    categoryId: string,
+    productId: string,
+  ): Promise<void> {
+    const productRef = ref(
+      database,
+      `categories/${categoryId}/products/${productId}`,
+    );
+    const productSnapshot = await get(productRef);
+    if (!productSnapshot.exists()) return handleDeleteErrorToast();
+
+    const product: Product = productSnapshot.val();
+    product.images.forEach(async image => {
+      const imageRef = refStorage(storage, `images/${image.id}`);
+      if (!imageRef) return handleDeleteErrorToast();
+
+      deleteObject(imageRef).catch(handleDeleteErrorToast);
+    });
+
+    await remove(productRef);
+    await handleGetCategories();
   }
 
   const fetchFirebase = useCallback(async () => {
@@ -541,6 +567,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
         handleDeleteHighlight,
         handleDeleteBanner,
         handleDeleteCategory,
+        handleDeleteProduct,
         handlePutAbout,
         handlePutBanner,
         handlePutCategory,

@@ -17,6 +17,7 @@ export interface UserContextProps {
   handleDeleteCategory(id: string): Promise<void>;
   handleDeleteHighlight(id: string): Promise<void>;
   handleDeleteBanner(id: string): Promise<void>;
+  handleDeleteProduct(categoryId: string, productId: string): Promise<void>;
   handleGetHighlights(): Promise<void>;
   handleGetBanners(): Promise<void>;
   handleGetAbout(): Promise<void>;
