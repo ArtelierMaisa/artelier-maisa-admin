@@ -26,6 +26,7 @@ import {
   Highlight,
   HighlightEdit,
   Product,
+  Image,
   ProductCreateProps,
   ProductEditProps,
   UserContextProps,
@@ -469,7 +470,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     const { categoryId } = newProduct;
 
-    const uploadImage = file =>
+    const uploadImage = (file: File): Promise<Image> =>
       new Promise((resolve, reject) => {
         const imageId = nanoid();
         const storageRef = refStorage(storage, `images/${imageId}`);
@@ -501,14 +502,19 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       .then(images => images)
       .catch(handleCreateErrorToast);
 
+    if (!images) return handleCreateErrorToast();
+
+    const imagesObject = images.reduce(
+      (acc: { [key: string]: Image }, image) => {
+        acc[image.id] = image;
+        return acc;
+      },
+      {},
+    );
+
     const whatsapp = newProduct.whatsapp
       ? newProduct.whatsapp.replace(/\D/g, '')
       : DEFAULT_PHONE;
-
-    const imagesObject = images.reduce((acc, image) => {
-      acc[image.id] = image;
-      return acc;
-    }, {});
 
     const product = {
       ...newProduct,
@@ -535,7 +541,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       : DEFAULT_PHONE;
 
     if (newProduct.files) {
-      const images = newProduct.files.map(file => {
+      const images = newProduct.files.map((file: File) => {
         const imageId = nanoid();
         const storageRef = refStorage(storage, `images/${imageId}`);
         const uploadTask = uploadBytesResumable(storageRef, file!);

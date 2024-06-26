@@ -27,10 +27,7 @@ export type ProductCreateProps = Omit<
   files: File[];
 };
 
-export type ProductEditProps = Omit<
-  Product,
-  'createdAt' | 'updatedAt'
-> & {
+export type ProductEditProps = Omit<Product, 'createdAt' | 'updatedAt'> & {
   categoryId: string;
   files?: ProductFiles;
 };

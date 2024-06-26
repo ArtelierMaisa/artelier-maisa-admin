@@ -32,3 +32,9 @@ export interface UserContextProps {
   handleCreateHighlight(data: EventModalAdd): Promise<void>;
   handleCreateProduct(newProduct: ProductCreateProps): Promise<void>;
 }
+
+export type Image = {
+  id: string;
+  name: string;
+  uri: string;
+};
