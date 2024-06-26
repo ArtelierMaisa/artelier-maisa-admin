@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   ProductModalActiveType,
@@ -11,7 +11,7 @@ import { Intro } from './Intro';
 import { Photos } from './Photos';
 
 export function ProductModal(props: ProductModalProps) {
-  const { isOpen, variant, onAdd, onClose } = props;
+  const { isOpen, variant, isLoading = false, onAdd, onClose } = props;
 
   const [currentModalContent, setCurrentModalContent] =
     useState<ProductModalActiveType>('intro');
@@ -47,6 +47,7 @@ export function ProductModal(props: ProductModalProps) {
       <Photos
         variant={variant}
         data={product?.images}
+        isLoading={isLoading}
         onClose={onClose}
         onAdd={(images, files) => {
           if (onAdd) onAdd({ ...product!, images, files });
@@ -55,6 +56,13 @@ export function ProductModal(props: ProductModalProps) {
       />
     ),
   };
+
+  useEffect(() => {
+    if (!isOpen) {
+      setCurrentModalContent('intro');
+      setProduct(undefined);
+    }
+  }, [isOpen]);
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose}>

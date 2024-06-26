@@ -6,7 +6,7 @@ import { productModalTitles } from '../../../constants';
 import { BannerCard, GenericButton, Icon, Text } from '../../';
 
 export function Photos(props: PhotosProps) {
-  const { variant, data, onAdd, onGoBack, onClose } = props;
+  const { variant, data, isLoading = false, onAdd, onGoBack, onClose } = props;
 
   const [images, setImages] = useState<ProductModalImageProps[] | null>(
     data || null,
@@ -16,14 +16,14 @@ export function Photos(props: PhotosProps) {
   const quantityBanners = new Array(4).fill(0);
 
   function onDeleteImage(id: string): void {
-    if (images) {
+    if (images && !isLoading) {
       const imagesFiltered = images.filter(image => image.id !== id);
       setImages(imagesFiltered);
     }
   }
 
   function handleGetFile(file: File | null): void {
-    if (file) {
+    if (file && !isLoading) {
       const blob = new Blob([file], { type: file.type });
       const reader = new FileReader();
       reader.onload = e => {
@@ -54,6 +54,7 @@ export function Photos(props: PhotosProps) {
           type='button'
           className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-none cursor-pointer hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
           onClick={onClose}
+          disabled={isLoading}
         >
           <Icon variant='x' color='white' />
         </button>
@@ -83,8 +84,8 @@ export function Photos(props: PhotosProps) {
                   key={image!.id}
                   variant='fill'
                   banner={image}
-                  isDelete
                   onDelete={onDeleteImage}
+                  isDelete
                 />
               );
             } else
@@ -118,6 +119,7 @@ export function Photos(props: PhotosProps) {
             type='medium'
             title='Voltar'
             isHugWidth
+            isDisabled={isLoading}
             onClick={onGoBack}
           />
 
@@ -127,6 +129,8 @@ export function Photos(props: PhotosProps) {
             type='medium'
             title='Cadastrar'
             isHugWidth
+            isDisabled={isLoading}
+            isLoading={isLoading}
             onClick={handleAdd}
           />
         </div>
