@@ -16,5 +16,15 @@ export interface Product {
   weight: number;
   whatsapp: string;
   createdAt: number;
-  updatedAt: number;
+  updatedAt?: number;
 }
+
+type ProductFiles = [File, File?, File?, File?];
+
+export type ProductCreateProps = Omit<
+  Product,
+  'images' | 'createdAt' | 'updatedAt' | 'id'
+> & {
+  categoryId: string;
+  files: ProductFiles;
+};

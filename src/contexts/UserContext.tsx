@@ -25,6 +25,7 @@ import {
   EventModalAdd,
   Highlight,
   HighlightEdit,
+  ProductCreateProps,
   UserContextProps,
 } from '../@types';
 import { categoryMapper, mapper, productMapper } from '../helpers';
@@ -456,6 +457,55 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     );
 
     await handleGetCategories();
+  }
+
+  async function handleCreateProduct(newProduct: ProductCreateProps) {
+    const productId = nanoid();
+
+    const { categoryId } = newProduct;
+
+    const images = newProduct.files.map(file => {
+      const imageId = nanoid();
+      const storageRef = refStorage(storage, `images/${imageId}`);
+      const uploadTask = uploadBytesResumable(storageRef, file!);
+
+      uploadTask.on(
+        'state_changed',
+        () => {},
+        handleUpdateFileErrorToast,
+        () => {
+          getDownloadURL(uploadTask.snapshot.ref)
+            .then(uri => {
+              const image = {
+                id: imageId,
+                name: file?.name,
+                uri,
+              };
+              set(ref(database, `images/${imageId}`), image).catch(
+                handleCreateErrorToast,
+              );
+
+              return image;
+            })
+            .catch(handleCreateErrorToast);
+        },
+      );
+    });
+
+    const whatsapp = newProduct.whatsapp.replace(/\D/g, '');
+
+    const product = {
+      ...newProduct,
+      whatsapp,
+      images,
+      createdAt: new Date().getTime(),
+      updatedAt: 0,
+    };
+
+    set(
+      ref(database, `categories/${categoryId}/products/${productId}`),
+      product,
+    ).catch(handleCreateErrorToast);
   }
 
   const fetchFirebase = useCallback(async () => {
