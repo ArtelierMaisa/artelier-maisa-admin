@@ -68,8 +68,6 @@ export function EventModal(props: EventModalProps) {
     }
   }, [highlight, currentHighlight, onClose]);
 
-  console.log(currentHighlight);
-
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose}>
       <div className='relative flex flex-col w-full md:w-[32rem] h-full md:h-auto overflow-hidden justify-center items-center p-6 gap-4 rounded-none md:rounded-2xl bg-white shadow-default'>
