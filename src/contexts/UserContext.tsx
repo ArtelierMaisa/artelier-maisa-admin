@@ -5,6 +5,7 @@ import {
   ref as refStorage,
   StorageError,
   uploadBytesResumable,
+  UploadTask,
 } from 'firebase/storage';
 import { nanoid } from 'nanoid';
 import {
@@ -29,6 +30,7 @@ import {
   ProductCreateProps,
   UserContextProps,
 } from '../@types';
+import { DEFAULT_PHONE } from '../config';
 import { categoryMapper, mapper, productMapper } from '../helpers';
 import { useAuth } from '../hooks';
 import { database, storage } from '../services';
@@ -128,7 +130,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
       uploadTask.on(
         'state_changed',
-        () => { },
+        () => {},
         handleUpdateFileErrorToast,
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
@@ -194,7 +196,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     uploadTask.on(
       'state_changed',
-      () => { },
+      () => {},
       handleUpdateFileErrorToast,
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
@@ -238,7 +240,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
       uploadTask.on(
         'state_changed',
-        () => { },
+        () => {},
         handleUpdateFileErrorToast,
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
@@ -324,7 +326,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     uploadTask.on(
       'state_changed',
-      () => { },
+      () => {},
       handleUpdateFileErrorToast,
       () => {
         getDownloadURL(uploadTask.snapshot.ref)
@@ -360,7 +362,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
       uploadTask.on(
         'state_changed',
-        () => { },
+        () => {},
         handleUpdateFileErrorToast,
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
@@ -432,10 +434,12 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       const products = productMapper(category);
       products.forEach(async product => {
         product.images.forEach(async image => {
-          const imageRef = refStorage(storage, `images/${image.id}`);
-          if (!imageRef) return handleDeleteErrorToast();
+          if (image) {
+            const imageRef = refStorage(storage, `images/${image.id}`);
+            if (!imageRef) return handleDeleteErrorToast();
 
-          deleteObject(imageRef).catch(handleDeleteErrorToast);
+            deleteObject(imageRef).catch(handleDeleteErrorToast);
+          }
         });
 
         const productRef = ref(database, `products/${product.id}`);
@@ -463,6 +467,8 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
   async function handleCreateProduct(newProduct: ProductCreateProps) {
     const productId = nanoid();
 
+    console.log(newProduct);
+
     const { categoryId } = newProduct;
 
     const images = newProduct.files.map(file => {
@@ -472,31 +478,36 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
       uploadTask.on(
         'state_changed',
-        () => { },
+        () => {},
         handleUpdateFileErrorToast,
         () => {
           getDownloadURL(uploadTask.snapshot.ref)
             .then(uri => {
-              const image = {
+              const newImage = {
                 id: imageId,
                 name: file?.name,
                 uri,
               };
-              set(ref(database, `images/${imageId}`), image).catch(
+              set(ref(database, `images/${imageId}`), newImage).catch(
                 handleCreateErrorToast,
               );
-
-              return image;
             })
             .catch(handleCreateErrorToast);
         },
       );
+
+      return { id: imageId, name: file?.name, uri: imageUri };
     });
 
-    const whatsapp = newProduct.whatsapp.replace(/\D/g, '');
+    const whatsapp = newProduct.whatsapp
+      ? newProduct.whatsapp.replace(/\D/g, '')
+      : DEFAULT_PHONE;
 
     const product = {
       ...newProduct,
+      material: newProduct.material || '',
+      size: newProduct.size || '',
+      weight: newProduct.size || '',
       whatsapp,
       images,
       createdAt: new Date().getTime(),
@@ -524,10 +535,12 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
 
     const product: Product = productSnapshot.val();
     product.images.forEach(async image => {
-      const imageRef = refStorage(storage, `images/${image.id}`);
-      if (!imageRef) return handleDeleteErrorToast();
+      if (image) {
+        const imageRef = refStorage(storage, `images/${image.id}`);
+        if (!imageRef) return handleDeleteErrorToast();
 
-      deleteObject(imageRef).catch(handleDeleteErrorToast);
+        deleteObject(imageRef).catch(handleDeleteErrorToast);
+      }
     });
 
     await remove(productRef);
@@ -575,6 +588,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
         handleCreateBanner,
         handleCreateCategory,
         handleCreateHighlight,
+        handleCreateProduct,
       }}
     >
       {children}

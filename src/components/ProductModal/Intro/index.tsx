@@ -16,7 +16,7 @@ export function Intro(props: IntroProps) {
   function handleContinue(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
 
-    onContinue({ description, isOccult, name });
+    onContinue({ description, name, isOccult: !isOccult });
   }
 
   return (
@@ -62,9 +62,9 @@ export function Intro(props: IntroProps) {
         onChange={setDescription}
       />
 
-      <div className='flex flex-row w-full justify-end items-center mb-4 gap-1'>
+      <div className='flex flex-row w-full justify-end items-center mb-4 gap-2'>
         <Text type='medium' color='primary'>
-          Disponível para a venda:
+          Indisponível para a venda:
         </Text>
 
         <Switch checked={!isOccult} onToggle={setIsOccult} variant='neutral' />

@@ -15,7 +15,8 @@ export function Carousel(props: CarouselProps) {
     mode: 'figure',
   };
 
-  const hasOneImage = images.length === 1;
+  const existingImages = images.filter(image => !!image?.id);
+  const hasOneImage = existingImages.length === 1;
 
   const rightControl: React.JSX.Element = hasOneImage ? (
     <span />
@@ -40,7 +41,7 @@ export function Carousel(props: CarouselProps) {
         rightControl={rightControl}
         leftControl={leftControl}
       >
-        {images.map(image => (
+        {existingImages.map(image => (
           <img
             key={image.id}
             src={image.uri}

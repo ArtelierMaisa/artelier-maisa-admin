@@ -1,7 +1,11 @@
 import { useEffect, useState } from 'react';
 import { ExternalToast, toast } from 'sonner';
 
-import { Categories as CategoriesData } from '../../@types';
+import {
+  Categories as CategoriesData,
+  ProductCreateProps,
+  ProductModalAddDataProps,
+} from '../../@types';
 import {
   CategoryModal,
   Container,
@@ -36,7 +40,9 @@ export function Categories() {
     isLoaded,
     categories: categoriesFirebase,
     handleDeleteCategory,
+    handleDeleteProduct,
     handleCreateCategory,
+    handleCreateProduct,
     handlePutCategory,
   } = useUser();
 
@@ -63,6 +69,18 @@ export function Categories() {
     toast.success('Categoria foi excluída com sucesso!', toastOptions);
 
     setIsOpenCategoryDialog(false);
+    setIsLoading(false);
+    setCategorySelected({} as CategoriesData);
+  }
+
+  async function onDeleteProduct(): Promise<void> {
+    setIsLoading(true);
+
+    // await handleDeleteProduct(categorySelected.id, productSelected.id);
+
+    toast.success('Produto foi excluída com sucesso!', toastOptions);
+
+    setIsOpenProductDialog(false);
     setIsLoading(false);
     setCategorySelected({} as CategoriesData);
   }
@@ -100,6 +118,33 @@ export function Categories() {
     }
 
     setIsOpenCategoryModal(false);
+    setIsLoading(false);
+    setCategorySelected({} as CategoriesData);
+  }
+
+  async function onCreateProduct(
+    newProduct: ProductModalAddDataProps,
+  ): Promise<void> {
+    setIsLoading(true);
+
+    const product: ProductCreateProps = {
+      categoryId: categorySelected.id,
+      description: newProduct.description,
+      files: newProduct.files,
+      isOcult: newProduct.isOccult,
+      material: newProduct.material,
+      name: newProduct.name,
+      price: newProduct.price,
+      size: newProduct.size,
+      weight: newProduct.weight,
+      whatsapp: newProduct.whatsapp,
+    };
+
+    await handleCreateProduct(product);
+
+    toast.success('Produto criada com sucesso!', toastOptions);
+
+    setIsOpenProductModal(false);
     setIsLoading(false);
     setCategorySelected({} as CategoriesData);
   }
@@ -213,7 +258,10 @@ export function Categories() {
                     <div className='flex flex-row w-full h-auto p-1 md:p-0.5 pb-1.5 md:pb-2 gap-4 overflow-hidden overflow-x-auto scrollbar scrollbar-w-3 scrollbar-thumb-rounded-lg scrollbar-thumb-primary scrollbar-track-white-color'>
                       <Product
                         variant='blank'
-                        onAdd={() => setIsOpenProductModal(true)}
+                        onAdd={async () => {
+                          setCategorySelected(category);
+                          setIsOpenProductModal(true);
+                        }}
                       />
 
                       {category?.products &&
@@ -222,7 +270,10 @@ export function Categories() {
                             key={product.id}
                             variant='fill'
                             {...product}
-                            onDelete={() => setIsOpenProductDialog(true)}
+                            onDelete={() => {
+                              setCategorySelected(category);
+                              setIsOpenProductDialog(true);
+                            }}
                           />
                         ))}
                     </div>
@@ -293,12 +344,14 @@ export function Categories() {
         onClose={() => setIsOpenProductDialog(false)}
       />
 
-      {/* TODO: You must change to `edit` when a product is selected */}
       <ProductModal
         isOpen={isOpenProductModal}
         variant='add'
-        onAdd={() => setIsOpenProductModal(false)}
-        onClose={() => setIsOpenProductModal(false)}
+        onAdd={async product => await onCreateProduct(product)}
+        onClose={() => {
+          setIsOpenProductModal(false);
+          setCategorySelected({} as CategoriesData);
+        }}
       />
     </div>
   );

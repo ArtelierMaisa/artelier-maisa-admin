@@ -9,22 +9,20 @@ export interface Product {
   name: string;
   description: string;
   isOcult: boolean;
-  price: number;
-  images: ImageProps[];
-  material: string;
-  size: string;
-  weight: number;
-  whatsapp: string;
+  price: string;
+  images: [ImageProps, ImageProps?, ImageProps?, ImageProps?];
+  material: string | null;
+  size: string | null;
+  weight: string | null;
+  whatsapp: string | null;
   createdAt: number;
   updatedAt?: number;
 }
-
-type ProductFiles = [File, File?, File?, File?];
 
 export type ProductCreateProps = Omit<
   Product,
   'images' | 'createdAt' | 'updatedAt' | 'id'
 > & {
   categoryId: string;
-  files: ProductFiles;
+  files: File[];
 };

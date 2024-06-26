@@ -10,7 +10,12 @@ export interface ProductProps {
   variant?: ProductVariant;
   id?: string;
   name?: string;
-  images?: ProductImageProps[];
+  images?: [
+    ProductImageProps,
+    ProductImageProps?,
+    ProductImageProps?,
+    ProductImageProps?,
+  ];
   isOccult?: boolean;
   onAdd?(): void;
   onUpdate?(id: string): void;

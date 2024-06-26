@@ -11,13 +11,11 @@ import { Intro } from './Intro';
 import { Photos } from './Photos';
 
 export function ProductModal(props: ProductModalProps) {
-  const { isOpen, variant, data, onAdd, onClose } = props;
+  const { isOpen, variant, onAdd, onClose } = props;
 
-  const [product, setProduct] = useState<ProductModalDataProps | undefined>(
-    data,
-  );
   const [currentModalContent, setCurrentModalContent] =
     useState<ProductModalActiveType>('intro');
+  const [product, setProduct] = useState<ProductModalDataProps>();
 
   const commonModalContentProps = {
     variant,
@@ -48,11 +46,10 @@ export function ProductModal(props: ProductModalProps) {
     photos: (
       <Photos
         variant={variant}
-        data={data?.images}
+        data={product?.images}
         onClose={onClose}
-        onAdd={photosData => {
-          setProduct({ ...product!, ...photosData });
-          if (onAdd) onAdd();
+        onAdd={(images, files) => {
+          if (onAdd) onAdd({ ...product!, images, files });
         }}
         onGoBack={() => setCurrentModalContent('details')}
       />

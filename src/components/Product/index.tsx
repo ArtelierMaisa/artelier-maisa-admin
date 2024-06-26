@@ -28,7 +28,10 @@ export function Product(props: ProductProps) {
     <div className='flex flex-col w-64 min-w-64 sm:w-80 sm:min-w-80 h-64 sm:min-h-[19rem] rounded-lg ring-1 ring-primary bg-background-color'>
       {isFilled ? (
         <>
-          <Carousel images={images} isDisabled={isChecked} />
+          <Carousel
+            images={images.length ? images : undefined}
+            isDisabled={isChecked}
+          />
 
           <div className='flex flex-col h-auto justify-center items-center p-2 gap-1 sm:gap-2 overflow-hidden'>
             <Text

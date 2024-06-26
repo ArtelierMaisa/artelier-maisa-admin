@@ -1,21 +1,50 @@
+import { nanoid } from 'nanoid';
 import { useState } from 'react';
 
-import { PhotosProps, ProductModalImagesProps } from '../../../@types';
+import { PhotosProps, ProductModalImageProps } from '../../../@types';
 import { productModalTitles } from '../../../constants';
 import { BannerCard, GenericButton, Icon, Text } from '../../';
 
 export function Photos(props: PhotosProps) {
   const { variant, data, onAdd, onGoBack, onClose } = props;
 
-  const [images, setImages] = useState<ProductModalImagesProps | null>(
+  const [images, setImages] = useState<ProductModalImageProps[] | null>(
     data || null,
   );
+  const [filesImages, setFilesImages] = useState<File[]>([]);
 
   const quantityBanners = new Array(4).fill(0);
 
-  // TODO: You should develop the logic to add new product here!
+  function onDeleteImage(id: string): void {
+    if (images) {
+      const imagesFiltered = images.filter(image => image.id !== id);
+      setImages(imagesFiltered);
+    }
+  }
+
+  function handleGetFile(file: File | null): void {
+    if (file) {
+      const blob = new Blob([file], { type: file.type });
+      const reader = new FileReader();
+      reader.onload = e => {
+        const newImage = {
+          id: nanoid(),
+          name: file.name,
+          uri: (e.target?.result as string) || '',
+        };
+
+        if (images) setImages([...images, newImage]);
+        else setImages([newImage]);
+      };
+      reader.readAsDataURL(blob);
+
+      setFilesImages([...filesImages, file]);
+    }
+  }
+
   function handleAdd(): void {
-    if (images) onAdd(images);
+    if (images) onAdd(images, filesImages);
+    else onAdd([], filesImages);
   }
 
   return (
@@ -50,9 +79,22 @@ export function Photos(props: PhotosProps) {
             if (images && images[index]) {
               const image = images[index];
               return (
-                <BannerCard key={image!.id} variant='fill' banner={image} />
+                <BannerCard
+                  key={image!.id}
+                  variant='fill'
+                  banner={image}
+                  isDelete
+                  onDelete={onDeleteImage}
+                />
               );
-            } else return <BannerCard key={index} variant='add' />;
+            } else
+              return (
+                <BannerCard
+                  key={index}
+                  variant='add'
+                  onGetFile={handleGetFile}
+                />
+              );
           })}
         </div>
 

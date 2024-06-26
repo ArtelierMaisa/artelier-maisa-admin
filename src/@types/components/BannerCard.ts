@@ -14,6 +14,7 @@ export interface BannerCardProps {
   banner?: BannerProps;
   isLoading?: boolean;
   isDisabled?: boolean;
+  isDelete?: boolean;
   onDelete?(id: string): void;
   onGetFile?(file: File | null): void;
   onModal?(): void;

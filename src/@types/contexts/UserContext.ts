@@ -6,6 +6,7 @@ import {
   Categories,
   Highlight,
   HighlightEdit,
+  ProductCreateProps,
 } from '../services';
 
 export interface UserContextProps {
@@ -29,4 +30,5 @@ export interface UserContextProps {
   handleCreateBanner(file: File): Promise<void>;
   handleCreateCategory(name: string): Promise<void>;
   handleCreateHighlight(data: EventModalAdd): Promise<void>;
+  handleCreateProduct(newProduct: ProductCreateProps): Promise<void>;
 }

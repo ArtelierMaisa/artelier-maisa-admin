@@ -11,6 +11,7 @@ export function BannerCard(props: BannerCardProps) {
     type = 'file-system',
     isLoading = false,
     isDisabled = false,
+    isDelete = false,
     banner,
     onGetFile,
     onDelete,
@@ -97,13 +98,15 @@ export function BannerCard(props: BannerCardProps) {
           <div
             className={`flex flex-row ${justifyContentForBottomButtons} items-center w-full h-auto p-2`}
           >
-            <button
-              type='button'
-              className='w-auto h-auto rounded-lg hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
-              onClick={handleInteractionWithCard}
-            >
-              <Icon variant='pencil' {...commonIconProps} />
-            </button>
+            {!isDelete && (
+              <button
+                type='button'
+                className='w-auto h-auto rounded-lg hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
+                onClick={handleInteractionWithCard}
+              >
+                <Icon variant='pencil' {...commonIconProps} />
+              </button>
+            )}
 
             {!isDisabled && (
               <button
