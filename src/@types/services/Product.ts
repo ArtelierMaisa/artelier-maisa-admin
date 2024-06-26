@@ -8,7 +8,7 @@ export interface Product {
   id: string;
   name: string;
   description: string;
-  isOcult: boolean;
+  isOccult: boolean;
   price: string;
   images: [ImageProps, ImageProps?, ImageProps?, ImageProps?];
   material: string | null;
@@ -29,5 +29,5 @@ export type ProductCreateProps = Omit<
 
 export type ProductEditProps = Omit<Product, 'createdAt' | 'updatedAt'> & {
   categoryId: string;
-  files?: ProductFiles;
+  files?: File[];
 };

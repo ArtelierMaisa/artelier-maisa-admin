@@ -625,6 +625,30 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     await handleGetCategories();
   }
 
+  async function handleOccultProduct(
+    categoryId: string,
+    productId: string,
+  ): Promise<void> {
+    const productRef = ref(
+      database,
+      `categories/${categoryId}/products/${productId}`,
+    );
+    const productSnapshot = await get(productRef);
+
+    if (!productSnapshot.exists()) return handleDeleteErrorToast();
+
+    const product: Product = productSnapshot.val();
+
+    const newProduct = {
+      ...product,
+      isOccult: !product.isOccult,
+    };
+
+    console.log(newProduct);
+
+    set(productRef, newProduct).catch(handleEditErrorToast);
+  }
+
   const fetchFirebase = useCallback(async () => {
     await handleGetBanners();
     await handleGetCategories();
