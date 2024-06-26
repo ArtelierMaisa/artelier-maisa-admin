@@ -28,3 +28,11 @@ export type ProductCreateProps = Omit<
   categoryId: string;
   files: ProductFiles;
 };
+
+export type ProductEditProps = Omit<
+  Product,
+  'createdAt' | 'updatedAt'
+> & {
+  categoryId: string;
+  files?: ProductFiles;
+};
