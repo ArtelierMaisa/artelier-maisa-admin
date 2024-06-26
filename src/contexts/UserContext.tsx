@@ -28,6 +28,7 @@ import {
   HighlightEdit,
   Product,
   ProductCreateProps,
+  ProductEditProps,
   UserContextProps,
 } from '../@types';
 import { DEFAULT_PHONE } from '../config';
@@ -520,6 +521,65 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     ).catch(handleCreateErrorToast);
 
     await handleGetCategories();
+  }
+
+  async function handlePutProduct(newProduct: ProductEditProps): Promise<void> {
+    if (newProduct.files) {
+      const images = newProduct.files.map(file => {
+        const imageId = nanoid();
+        const storageRef = refStorage(storage, `images/${imageId}`);
+        const uploadTask = uploadBytesResumable(storageRef, file!);
+
+        uploadTask.on(
+          'state_changed',
+          () => { },
+          handleUpdateFileErrorToast,
+          () => {
+            getDownloadURL(uploadTask.snapshot.ref)
+              .then(uri => {
+                const image = {
+                  id: imageId,
+                  name: file?.name,
+                  uri,
+                };
+                set(ref(database, `images/${imageId}`), image).catch(
+                  handleEditErrorToast,
+                );
+
+                return image;
+              })
+              .catch(handleEditErrorToast);
+          },
+        );
+      });
+
+      const whatsapp = newProduct.whatsapp.replace(/\D/g, '');
+
+      const product = {
+        ...newProduct,
+        whatsapp,
+        images,
+        updatedAt: new Date().getTime(),
+      };
+
+      set(
+        ref(database, `categories/${newProduct.categoryId}/products/${newProduct.id}`),
+        product,
+      ).catch(handleEditErrorToast);
+    } else {
+      const whatsapp = newProduct.whatsapp.replace(/\D/g, '');
+
+      const product = {
+        ...newProduct,
+        whatsapp,
+        updatedAt: new Date().getTime(),
+      };
+
+      set(
+        ref(database, `categories/${newProduct.categoryId}/products/${newProduct.id}`),
+        product,
+      ).catch(handleEditErrorToast);
+    }
   }
 
   async function handleDeleteProduct(
