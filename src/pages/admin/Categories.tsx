@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { ExternalToast, toast } from 'sonner';
 
 import { Categories as CategoriesData } from '../../@types';
 import {
@@ -40,6 +40,8 @@ export function Categories() {
     handlePutCategory,
   } = useUser();
 
+  const toastOptions: ExternalToast = { duration: 3000 };
+
   function onSearch(): void {
     const categoriesSearched = searchValue.trim()
       ? categoriesFirebase.filter(category =>
@@ -58,6 +60,8 @@ export function Categories() {
 
     await handleDeleteCategory(categorySelected.id);
 
+    toast.success('Categoria foi excluída com sucesso!', toastOptions);
+
     setIsOpenCategoryDialog(false);
     setIsLoading(false);
     setCategorySelected({} as CategoriesData);
@@ -72,7 +76,7 @@ export function Categories() {
         category.name.toLowerCase().trim() === name.toLowerCase().trim(),
     );
 
-    if (!name || categoryExists) {
+    if (!name.trim() || categoryExists) {
       toast.error(
         'Ops! Para criar uma categoria deve ser informado um nome e ele deve ser único.',
         {
@@ -85,8 +89,15 @@ export function Categories() {
 
     setIsLoading(true);
 
-    if (type === 'add') await handleCreateCategory(name);
-    else await handlePutCategory(categorySelected.id, name);
+    if (type === 'add') {
+      await handleCreateCategory(name);
+
+      toast.success('Categoria criada com sucesso!', toastOptions);
+    } else {
+      await handlePutCategory(categorySelected.id, name);
+
+      toast.success('Nome da categoria foi editado com sucesso!', toastOptions);
+    }
 
     setIsOpenCategoryModal(false);
     setIsLoading(false);
@@ -100,6 +111,8 @@ export function Categories() {
   useEffect(() => {
     if (categoriesFirebase.length) setCategories(categoriesFirebase);
     else setCategories([]);
+
+    setCategorySelected({} as CategoriesData);
   }, [categoriesFirebase]);
 
   return (
@@ -251,8 +264,8 @@ export function Categories() {
         data={categorySelected}
         onAccept={async () => await onDeleteCategory()}
         onClose={() => {
-          setCategorySelected({} as CategoriesData);
           setIsOpenCategoryDialog(false);
+          setCategorySelected({} as CategoriesData);
         }}
       />
 
@@ -267,7 +280,10 @@ export function Categories() {
             categorySelected.id ? 'edit' : 'add',
           )
         }
-        onClose={() => setIsOpenCategoryModal(false)}
+        onClose={() => {
+          setIsOpenCategoryModal(false);
+          setCategorySelected({} as CategoriesData);
+        }}
       />
 
       <Dialog

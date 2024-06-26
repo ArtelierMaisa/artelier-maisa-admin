@@ -1,6 +1,6 @@
 import { nanoid } from 'nanoid';
 import { useEffect, useState } from 'react';
-import { toast } from 'sonner';
+import { ExternalToast, toast } from 'sonner';
 
 import { EventModalProps, Highlight } from '../../@types';
 import { eventModalTitles } from '../../constants';
@@ -12,6 +12,7 @@ export function EventModal(props: EventModalProps) {
 
   const { highlights, handleCreateHighlight, handlePutHighlight } = useUser();
 
+  const toastOptions: ExternalToast = { duration: 3000 };
   const currentHighlight = highlights.find(
     highlight => highlight.id === data?.id,
   );
@@ -41,9 +42,7 @@ export function EventModal(props: EventModalProps) {
         ...highlight!,
         file,
       });
-      toast.success('Divulgação editada com sucesso!', {
-        duration: 3000,
-      });
+      toast.success('Divulgação editada com sucesso!', toastOptions);
     } else {
       await handleCreateHighlight({
         ...highlight!,
@@ -51,9 +50,10 @@ export function EventModal(props: EventModalProps) {
         id: nanoid(),
         file,
       });
-      toast.success('Divulgação está sendo criada! Aguarde um momento...', {
-        duration: 3000,
-      });
+      toast.success(
+        'Divulgação está sendo criada! Aguarde um momento...',
+        toastOptions,
+      );
     }
   }
 

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { CategoryModalProps } from '../../@types';
 import { categoryModalTitles } from '../../constants';
@@ -18,6 +18,10 @@ export function CategoryModal(props: CategoryModalProps) {
   function onSubmit(): void {
     if (onAccept) onAccept(inputValue);
   }
+
+  useEffect(() => {
+    if (!isOpen) setInputValue('');
+  }, [isOpen]);
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose}>
