@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 import { BannerCardProps, BannerCardVariant, IconProps } from '../../@types';
@@ -17,6 +17,8 @@ export function BannerCard(props: BannerCardProps) {
     onDelete,
     onModal,
   } = props;
+
+  const [fileValue, setFileValue] = useState<string>('');
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -60,11 +62,13 @@ export function BannerCard(props: BannerCardProps) {
   const input: React.JSX.Element = (
     <input
       type='file'
+      value={fileValue}
       ref={inputRef}
       accept='image/png, image/jpg, image/jpeg'
       className='hidden'
       multiple={false}
       readOnly
+      onClick={() => setFileValue('')}
       onChange={handleGetFile}
       onError={handleGetFileError}
     />
