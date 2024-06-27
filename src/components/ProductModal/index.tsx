@@ -15,9 +15,7 @@ export function ProductModal(props: ProductModalProps) {
 
   const [currentModalContent, setCurrentModalContent] =
     useState<ProductModalActiveType>('intro');
-  const [product, setProduct] = useState<ProductModalDataProps | undefined>(
-    data,
-  );
+  const [product, setProduct] = useState<ProductModalDataProps | undefined>();
 
   const commonModalContentProps = {
     variant,
@@ -64,8 +62,8 @@ export function ProductModal(props: ProductModalProps) {
     if (!isOpen) {
       setCurrentModalContent('intro');
       setProduct(undefined);
-    }
-  }, [isOpen]);
+    } else if (data?.id && variant === 'edit') setProduct(data);
+  }, [isOpen, variant, data]);
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose}>

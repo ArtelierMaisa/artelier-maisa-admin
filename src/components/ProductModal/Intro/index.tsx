@@ -1,4 +1,4 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, useEffect, useState } from 'react';
 
 import { IntroProps } from '../../../@types';
 import { productModalTitles } from '../../../constants';
@@ -7,17 +7,27 @@ import { GenericButton, Icon, Input, Switch, Text } from '../../';
 export function Intro(props: IntroProps) {
   const { variant, data, onClose, onContinue } = props;
 
-  const [name, setName] = useState<string>(data?.name || '');
+  const [name, setName] = useState<string>(data ? data.name : '');
   const [description, setDescription] = useState<string>(
-    data?.description || '',
+    data ? data.description : '',
   );
-  const [isOccult, setIsOccult] = useState<boolean>(data?.isOccult || false);
+  const [isOccult, setIsOccult] = useState<boolean>(
+    data ? data.isOccult : false,
+  );
 
   function handleContinue(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
 
     onContinue({ description, name, isOccult });
   }
+
+  useEffect(() => {
+    if (variant === 'edit' && data) {
+      setName(data.name);
+      setDescription(data.description);
+      setIsOccult(data.isOccult);
+    }
+  }, [variant, data]);
 
   return (
     <form

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import { SwitchProps } from '../../@types';
 import { Icon } from '../';
@@ -12,6 +12,8 @@ export function Switch(props: SwitchProps) {
     onToggle,
   } = props;
 
+  // console.log(checked);
+
   const [isChecked, setIsChecked] = useState<boolean>(checked);
 
   const backgroundColorDisabled = isDisabled ? 'bg-primary60' : 'bg-primary';
@@ -23,6 +25,8 @@ export function Switch(props: SwitchProps) {
     if (onToggle) onToggle(!isChecked);
     setIsChecked(!isChecked);
   }
+
+  useEffect(() => setIsChecked(checked), [checked]);
 
   return (
     <div className='relative rounded-full w-16 h-8 transition duration-300 linear'>
