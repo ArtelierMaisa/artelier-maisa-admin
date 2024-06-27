@@ -1,5 +1,6 @@
 import { nanoid } from 'nanoid';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
 import { PhotosProps, ProductModalImageProps } from '../../../@types';
 import { productModalTitles } from '../../../constants';
@@ -43,6 +44,14 @@ export function Photos(props: PhotosProps) {
   }
 
   function handleAdd(): void {
+    if (!filesImages.length) {
+      toast.error(
+        'Você deve adicionar no mínimo uma imagem para cadastrar o novo produto!',
+        { duration: 7500 },
+      );
+      return;
+    }
+
     if (images) onAdd(images, filesImages);
     else onAdd([], filesImages);
   }
@@ -81,7 +90,7 @@ export function Photos(props: PhotosProps) {
               const image = images[index];
               return (
                 <BannerCard
-                  key={image!.id}
+                  key={image.id}
                   variant='fill'
                   banner={image}
                   onDelete={onDeleteImage}
