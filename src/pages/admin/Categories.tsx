@@ -6,6 +6,7 @@ import {
   Product as ProductData,
   ProductCreateProps,
   ProductModalAddDataProps,
+  ProductEditProps,
 } from '../../@types';
 import {
   CategoryModal,
@@ -48,6 +49,7 @@ export function Categories() {
     handleCreateCategory,
     handleCreateProduct,
     handlePutCategory,
+    handlePutProduct,
     handleOccultProduct,
   } = useUser();
 
@@ -153,6 +155,26 @@ export function Categories() {
     setIsOpenProductModal(false);
     setIsLoading(false);
     setCategorySelected({} as CategoriesData);
+  }
+
+  async function onPutProduct(newProduct: ProductModalAddDataProps) {
+    setIsLoading(true);
+
+    const product: ProductEditProps = {
+      ...productSelected,
+      ...newProduct,
+      categoryId: categorySelected.id,
+      id: productSelected.id,
+    };
+
+    await handlePutProduct(product);
+
+    toast.success('Produto editado com sucesso!', toastOptions);
+
+    setIsOpenProductModal(false);
+    setIsLoading(false);
+    setCategorySelected({} as CategoriesData);
+    setProductSelected({} as ProductData);
   }
 
   const renderProducts = useCallback(
@@ -400,7 +422,7 @@ export function Categories() {
         variant='edit'
         isLoading={isLoading}
         data={productSelected?.id ? productSelected : undefined}
-        onAdd={async product => await onCreateProduct(product)}
+        onAdd={async product => await onPutProduct(product)}
         onClose={() => {
           setIsOpenProductModal(false);
           setCategorySelected({} as CategoriesData);

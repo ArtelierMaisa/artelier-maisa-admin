@@ -531,64 +531,19 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       ? newProduct.whatsapp.replace(/\D/g, '')
       : DEFAULT_PHONE;
 
-    if (newProduct.files) {
-      const images = newProduct.files.map((file: File) => {
-        const imageId = nanoid();
-        const storageRef = refStorage(storage, `images/${imageId}`);
-        const uploadTask = uploadBytesResumable(storageRef, file!);
+    const product = {
+      ...newProduct,
+      whatsapp,
+      updatedAt: new Date().getTime(),
+    };
 
-        uploadTask.on(
-          'state_changed',
-          () => {},
-          handleUpdateFileErrorToast,
-          () => {
-            getDownloadURL(uploadTask.snapshot.ref)
-              .then(uri => {
-                const image = {
-                  id: imageId,
-                  name: file?.name,
-                  uri,
-                };
-                set(ref(database, `images/${imageId}`), image).catch(
-                  handleEditErrorToast,
-                );
-
-                return image;
-              })
-              .catch(handleEditErrorToast);
-          },
-        );
-      });
-
-      const product = {
-        ...newProduct,
-        whatsapp,
-        images,
-        updatedAt: new Date().getTime(),
-      };
-
-      set(
-        ref(
-          database,
-          `categories/${newProduct.categoryId}/products/${newProduct.id}`,
-        ),
-        product,
-      ).catch(handleEditErrorToast);
-    } else {
-      const product = {
-        ...newProduct,
-        whatsapp,
-        updatedAt: new Date().getTime(),
-      };
-
-      set(
-        ref(
-          database,
-          `categories/${newProduct.categoryId}/products/${newProduct.id}`,
-        ),
-        product,
-      ).catch(handleEditErrorToast);
-    }
+    set(
+      ref(
+        database,
+        `categories/${newProduct.categoryId}/products/${newProduct.id}`,
+      ),
+      product,
+    ).catch(handleEditErrorToast);
   }
 
   async function handleDeleteProduct(
