@@ -5,8 +5,8 @@ import {
   Categories as CategoriesData,
   Product as ProductData,
   ProductCreateProps,
-  ProductModalAddDataProps,
   ProductEditProps,
+  ProductModalAddDataProps,
 } from '../../@types';
 import {
   CategoryModal,
