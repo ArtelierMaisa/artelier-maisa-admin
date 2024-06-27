@@ -9,7 +9,7 @@ export function CategoryModal(props: CategoryModalProps) {
 
   const isEdit = variant === 'edit';
 
-  const [inputValue, setInputValue] = useState<string>(data?.name || '');
+  const [inputValue, setInputValue] = useState<string>('');
 
   const label = isEdit ? 'Novo Nome da Categoria' : 'Nome da Categoria';
 
@@ -18,7 +18,8 @@ export function CategoryModal(props: CategoryModalProps) {
   }
 
   useEffect(() => {
-    if (isEdit && data) setInputValue(data.name);
+    if (isEdit && data?.id) setInputValue(data.name);
+    else setInputValue('');
   }, [isEdit, data]);
 
   useEffect(() => {

@@ -166,6 +166,16 @@ export function Categories() {
     setProductSelected({} as ProductData);
   }, [categoriesFirebase]);
 
+  useEffect(() => {
+    if (!isOpenCategoryModal && !isLoading)
+      setCategorySelected({} as CategoriesData);
+  }, [isOpenCategoryModal, isLoading]);
+
+  useEffect(() => {
+    if (!isOpenCategoryDialog && !isLoading)
+      setCategorySelected({} as CategoriesData);
+  }, [isOpenCategoryDialog, isLoading]);
+
   return (
     <div className='flex w-full h-screen'>
       <Sidebar />
@@ -319,38 +329,34 @@ export function Categories() {
         isOpen={isOpenCategoryDialog}
         variant='category'
         isLoading={isLoading}
-        data={categorySelected}
         onAccept={async () => await onDeleteCategory()}
-        onClose={() => {
-          setIsOpenCategoryDialog(false);
-          setCategorySelected({} as CategoriesData);
-        }}
+        onClose={() => setIsOpenCategoryDialog(false)}
       />
 
       <CategoryModal
         isOpen={isOpenCategoryModal}
-        variant={categorySelected.id ? 'edit' : 'add'}
+        variant={categorySelected?.id ? 'edit' : 'add'}
         isLoading={isLoading}
         data={categorySelected?.id ? categorySelected : undefined}
         onAccept={async name =>
           await onCreateOrPutCategory(
             name,
-            categorySelected.id ? 'edit' : 'add',
+            categorySelected?.id ? 'edit' : 'add',
           )
         }
-        onClose={() => {
-          setIsOpenCategoryModal(false);
-          setCategorySelected({} as CategoriesData);
-        }}
+        onClose={() => setIsOpenCategoryModal(false)}
       />
 
       <Dialog
         isOpen={isOpenProductDialog}
         variant='product'
-        data={productSelected}
         isLoading={isLoading}
         onAccept={async () => await onDeleteProduct()}
-        onClose={() => setIsOpenProductDialog(false)}
+        onClose={() => {
+          setIsOpenProductDialog(false);
+          setCategorySelected({} as CategoriesData);
+          setProductSelected({} as ProductData);
+        }}
       />
 
       <ProductModal
@@ -361,6 +367,7 @@ export function Categories() {
         onClose={() => {
           setIsOpenProductModal(false);
           setCategorySelected({} as CategoriesData);
+          setProductSelected({} as ProductData);
         }}
       />
     </div>
