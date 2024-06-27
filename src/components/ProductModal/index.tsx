@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   ProductModalActiveType,
@@ -11,13 +11,11 @@ import { Intro } from './Intro';
 import { Photos } from './Photos';
 
 export function ProductModal(props: ProductModalProps) {
-  const { isOpen, variant, data, onAdd, onClose } = props;
+  const { isOpen, variant, data, isLoading = false, onAdd, onClose } = props;
 
-  const [product, setProduct] = useState<ProductModalDataProps | undefined>(
-    data,
-  );
   const [currentModalContent, setCurrentModalContent] =
     useState<ProductModalActiveType>('intro');
+  const [product, setProduct] = useState<ProductModalDataProps | undefined>();
 
   const commonModalContentProps = {
     variant,
@@ -31,7 +29,8 @@ export function ProductModal(props: ProductModalProps) {
         onGoBack={() => setCurrentModalContent('intro')}
         onContinue={detailsData => {
           setProduct({ ...product!, ...detailsData });
-          setCurrentModalContent('photos');
+          if (variant === 'add') setCurrentModalContent('photos');
+          else if (onAdd) onAdd({ ...product!, ...detailsData, files: [] });
         }}
         {...commonModalContentProps}
       />
@@ -48,16 +47,23 @@ export function ProductModal(props: ProductModalProps) {
     photos: (
       <Photos
         variant={variant}
-        data={data?.images}
+        data={product?.images}
+        isLoading={isLoading}
         onClose={onClose}
-        onAdd={photosData => {
-          setProduct({ ...product!, ...photosData });
-          if (onAdd) onAdd();
+        onAdd={(images, files) => {
+          if (onAdd) onAdd({ ...product!, images, files });
         }}
         onGoBack={() => setCurrentModalContent('details')}
       />
     ),
   };
+
+  useEffect(() => {
+    if (!isOpen) {
+      setCurrentModalContent('intro');
+      setProduct(undefined);
+    } else if (data?.id && variant === 'edit') setProduct(data);
+  }, [isOpen, variant, data]);
 
   return (
     <Modal isOpen={isOpen} onRequestClose={onClose}>

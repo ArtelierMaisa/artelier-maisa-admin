@@ -1,21 +1,59 @@
+import { nanoid } from 'nanoid';
 import { useState } from 'react';
+import { toast } from 'sonner';
 
-import { PhotosProps, ProductModalImagesProps } from '../../../@types';
+import { PhotosProps, ProductModalImageProps } from '../../../@types';
 import { productModalTitles } from '../../../constants';
 import { BannerCard, GenericButton, Icon, Text } from '../../';
 
 export function Photos(props: PhotosProps) {
-  const { variant, data, onAdd, onGoBack, onClose } = props;
+  const { variant, data, isLoading = false, onAdd, onGoBack, onClose } = props;
 
-  const [images, setImages] = useState<ProductModalImagesProps | null>(
+  const [images, setImages] = useState<ProductModalImageProps[] | null>(
     data || null,
   );
+  const [filesImages, setFilesImages] = useState<File[]>([]);
 
   const quantityBanners = new Array(4).fill(0);
 
-  // TODO: You should develop the logic to add new product here!
+  function onDeleteImage(id: string): void {
+    if (images && !isLoading) {
+      const imagesFiltered = images.filter(image => image.id !== id);
+      setImages(imagesFiltered);
+    }
+  }
+
+  function handleGetFile(file: File | null): void {
+    if (file && !isLoading) {
+      const blob = new Blob([file], { type: file.type });
+      const reader = new FileReader();
+      reader.onload = e => {
+        const newImage = {
+          id: nanoid(),
+          name: file.name,
+          uri: (e.target?.result as string) || '',
+        };
+
+        if (images) setImages([...images, newImage]);
+        else setImages([newImage]);
+      };
+      reader.readAsDataURL(blob);
+
+      setFilesImages([...filesImages, file]);
+    }
+  }
+
   function handleAdd(): void {
-    if (images) onAdd(images);
+    if (!filesImages.length) {
+      toast.error(
+        'Você deve adicionar no mínimo uma imagem para cadastrar o novo produto!',
+        { duration: 7500 },
+      );
+      return;
+    }
+
+    if (images) onAdd(images, filesImages);
+    else onAdd([], filesImages);
   }
 
   return (
@@ -25,6 +63,7 @@ export function Photos(props: PhotosProps) {
           type='button'
           className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-none cursor-pointer hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
           onClick={onClose}
+          disabled={isLoading}
         >
           <Icon variant='x' color='white' />
         </button>
@@ -50,9 +89,22 @@ export function Photos(props: PhotosProps) {
             if (images && images[index]) {
               const image = images[index];
               return (
-                <BannerCard key={image!.id} variant='fill' banner={image} />
+                <BannerCard
+                  key={image.id}
+                  variant='fill'
+                  banner={image}
+                  onDelete={onDeleteImage}
+                  isDelete
+                />
               );
-            } else return <BannerCard key={index} variant='add' />;
+            } else
+              return (
+                <BannerCard
+                  key={index}
+                  variant='add'
+                  onGetFile={handleGetFile}
+                />
+              );
           })}
         </div>
 
@@ -76,6 +128,7 @@ export function Photos(props: PhotosProps) {
             type='medium'
             title='Voltar'
             isHugWidth
+            isDisabled={isLoading}
             onClick={onGoBack}
           />
 
@@ -85,6 +138,8 @@ export function Photos(props: PhotosProps) {
             type='medium'
             title='Cadastrar'
             isHugWidth
+            isDisabled={isLoading}
+            isLoading={isLoading}
             onClick={handleAdd}
           />
         </div>

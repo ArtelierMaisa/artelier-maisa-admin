@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef } from 'react';
+import { ChangeEvent, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 import { BannerCardProps, BannerCardVariant, IconProps } from '../../@types';
@@ -10,11 +10,15 @@ export function BannerCard(props: BannerCardProps) {
     variant = 'add',
     type = 'file-system',
     isLoading = false,
+    isDisabled = false,
+    isDelete = false,
     banner,
     onGetFile,
     onDelete,
     onModal,
   } = props;
+
+  const [fileValue, setFileValue] = useState<string>('');
 
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -58,11 +62,13 @@ export function BannerCard(props: BannerCardProps) {
   const input: React.JSX.Element = (
     <input
       type='file'
+      value={fileValue}
       ref={inputRef}
       accept='image/png, image/jpg, image/jpeg'
       className='hidden'
       multiple={false}
       readOnly
+      onClick={() => setFileValue('')}
       onChange={handleGetFile}
       onError={handleGetFileError}
     />
@@ -77,6 +83,10 @@ export function BannerCard(props: BannerCardProps) {
   const commonClassNames =
     'items-center justify-center w-64 h-56 bg-transparent ring-2 ring-primary overflow-hidden rounded-lg';
 
+  const justifyContentForBottomButtons = isDisabled
+    ? 'justify-start'
+    : 'justify-between';
+
   const bannerCardVariants: Record<BannerCardVariant, React.JSX.Element> = {
     fill: (
       <>
@@ -89,22 +99,28 @@ export function BannerCard(props: BannerCardProps) {
             className='w-full h-44 object-cover'
           />
 
-          <div className='flex flex-row justify-between items-center w-full h-auto p-2'>
-            <button
-              type='button'
-              className='w-auto h-auto hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
-              onClick={handleOpenExplorer}
-            >
-              <Icon variant='pencil' {...commonIconProps} />
-            </button>
+          <div
+            className={`flex flex-row ${justifyContentForBottomButtons} items-center w-full h-auto p-2`}
+          >
+            {!isDelete && (
+              <button
+                type='button'
+                className='w-auto h-auto rounded-lg hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
+                onClick={handleInteractionWithCard}
+              >
+                <Icon variant='pencil' {...commonIconProps} />
+              </button>
+            )}
 
-            <button
-              type='button'
-              className='w-auto h-auto hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
-              onClick={handleBannerDelete}
-            >
-              <Icon variant='trash' {...commonIconProps} />
-            </button>
+            {!isDisabled && (
+              <button
+                type='button'
+                className='w-auto h-auto rounded-lg hover:opacity-90 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
+                onClick={handleBannerDelete}
+              >
+                <Icon variant='trash' color='primary' {...commonIconProps} />
+              </button>
+            )}
           </div>
         </div>
       </>

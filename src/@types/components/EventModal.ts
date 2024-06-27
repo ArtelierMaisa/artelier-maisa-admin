@@ -1,16 +1,14 @@
 export type EventModalVariant = 'edit' | 'add';
 
-export interface EventModalImageProps {
+export interface EventModalDataProps {
   id: string;
-  name: string;
-  uri: string;
 }
 
-export interface EventModalDataProps {
+export interface EventModalAdd {
   id: string;
   name: string;
   description: string;
-  image: EventModalImageProps;
+  file: File | null;
 }
 
 export interface EventModalProps {
@@ -18,5 +16,4 @@ export interface EventModalProps {
   isOpen: boolean;
   data?: EventModalDataProps;
   onClose?(): void;
-  onAdd?(): void;
 }

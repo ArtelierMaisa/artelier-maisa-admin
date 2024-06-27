@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { IconProps, ProductProps } from '../../@types';
 import { Carousel, DotButton, Icon, Switch, Text } from '../';
 
@@ -13,9 +11,8 @@ export function Product(props: ProductProps) {
     onAdd,
     onDelete,
     onUpdate,
+    onCheck,
   } = props;
-
-  const [isChecked, setIsChecked] = useState<boolean>(isOccult);
 
   const isFilled = variant === 'fill';
 
@@ -25,15 +22,18 @@ export function Product(props: ProductProps) {
   };
 
   return (
-    <div className='flex flex-col w-64 min-w-64 sm:w-80 sm:min-w-80 h-auto rounded-lg ring-1 ring-primary bg-background-color'>
+    <div className='flex flex-col w-64 min-w-64 sm:w-80 sm:min-w-80 h-64 sm:min-h-[19rem] rounded-lg ring-1 ring-primary bg-background-color'>
       {isFilled ? (
         <>
-          <Carousel images={images} isDisabled={isChecked} />
+          <Carousel
+            images={images.length ? images : undefined}
+            isDisabled={isOccult}
+          />
 
           <div className='flex flex-col h-auto justify-center items-center p-2 gap-1 sm:gap-2 overflow-hidden'>
             <Text
               type='semibold'
-              color={isChecked ? 'primary60' : 'primary'}
+              color={isOccult ? 'primary60' : 'primary'}
               toCenter
             >
               {name}
@@ -49,9 +49,10 @@ export function Product(props: ProductProps) {
               </button>
 
               <Switch
-                checked={isChecked}
+                htmlFor={id}
+                checked={isOccult}
                 variant='eyes'
-                onToggle={setIsChecked}
+                onToggle={() => onCheck && onCheck()}
               />
 
               <button

@@ -3,7 +3,7 @@ import { dialogTitles } from '../../constants';
 import { GenericButton, Icon, Modal, Text } from '../';
 
 export function Dialog(props: DialogProps) {
-  const { isOpen, variant, data, onAccept, onClose } = props;
+  const { isOpen, variant, isLoading = false, onAccept, onClose } = props;
 
   const commonTextProps: Omit<TextProps, 'children'> = {
     display: 'inline',
@@ -29,8 +29,7 @@ export function Dialog(props: DialogProps) {
         <div className='flex flex-col gap-4'>
           <Text {...commonTextProps}>
             Tem certeza que deseja{' '}
-            <span className={commonSpanClassNames}>excluir</span> à categoria{' '}
-            <span className={commonSpanClassNames}>{data?.name || ''}</span>?
+            <span className={commonSpanClassNames}>excluir</span> à categoria?
           </Text>
 
           <div className='flex flex-row items-center gap-2'>
@@ -46,8 +45,7 @@ export function Dialog(props: DialogProps) {
       product: (
         <Text {...commonTextProps}>
           Tem certeza que deseja{' '}
-          <span className={commonSpanClassNames}>excluir</span> o produto{' '}
-          <span className={commonSpanClassNames}>{data?.name || ''}</span>?
+          <span className={commonSpanClassNames}>excluir</span> o produto?
         </Text>
       ),
       event: (
@@ -70,6 +68,7 @@ export function Dialog(props: DialogProps) {
         <button
           type='button'
           className='absolute flex top-0 right-0 justify-center items-center w-8 h-8 bg-primary rounded-tr-lg cursor-pointer hover:opacity-90 transition-colors duration-300 focus:outline-none focus:ring focus:ring-primary60 focus:border-primary60'
+          disabled={isLoading}
           onClick={onClose}
         >
           <Icon variant='x' color='white' />
@@ -86,6 +85,8 @@ export function Dialog(props: DialogProps) {
             variant='primary'
             type='medium'
             title='Sim'
+            isDisabled={isLoading}
+            isLoading={isLoading}
             isHugWidth
             onClick={onAccept}
           />
@@ -94,6 +95,7 @@ export function Dialog(props: DialogProps) {
             variant='secondary'
             type='medium'
             title='Não'
+            isDisabled={isLoading}
             isHugWidth
             onClick={onClose}
           />

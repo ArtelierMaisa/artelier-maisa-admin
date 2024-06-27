@@ -13,7 +13,7 @@ export function SearchInput(props: SearchInputProps) {
               value={searchValue}
               type='search'
               className='block w-full h-16 z-20 p-4 sm:p-2 sm:pr-16 rounded-lg sm:rounded-s-lg bg-background-color text-primary font-normal text-base placeholder-primary60 border-transparent focus:ring focus:ring-primary60 focus:border-primary60'
-              placeholder='Buscar produto ou categoria'
+              placeholder='Buscar categoria'
               onChange={onChange}
               required
             />

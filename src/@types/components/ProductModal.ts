@@ -6,13 +6,6 @@ export interface ProductModalImageProps {
   uri: string;
 }
 
-export type ProductModalImagesProps = [
-  ProductModalImageProps,
-  ProductModalImageProps?,
-  ProductModalImageProps?,
-  ProductModalImageProps?,
-];
-
 export interface ProductModalDataProps {
   id: string;
   name: string;
@@ -23,15 +16,20 @@ export interface ProductModalDataProps {
   weight: string | null;
   whatsapp: string | null;
   price: string;
-  images: ProductModalImagesProps;
+  images: ProductModalImageProps[];
 }
+
+export type ProductModalAddDataProps = ProductModalDataProps & {
+  files: File[];
+};
 
 export interface ProductModalProps {
   variant: ProductModalVariant;
   isOpen: boolean;
   data?: ProductModalDataProps;
+  isLoading?: boolean;
   onClose?(): void;
-  onAdd?(): void;
+  onAdd?(product: ProductModalAddDataProps): void;
 }
 
 export type ProductModalActiveType = 'intro' | 'details' | 'photos';
@@ -63,8 +61,9 @@ export interface DetailsProps {
 
 export interface PhotosProps {
   variant: ProductModalVariant;
-  data?: ProductModalImagesProps;
-  onAdd(photosData: ProductModalImagesProps): void;
+  isLoading?: boolean;
+  data?: ProductModalImageProps[];
+  onAdd(images: ProductModalImageProps[], files: File[]): void;
   onGoBack(): void;
   onClose?(): void;
 }

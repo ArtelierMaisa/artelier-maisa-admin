@@ -5,3 +5,7 @@ export interface About {
   additional: string;
   uri: string;
 }
+
+export type AboutEdit = Omit<About, 'uri'> & {
+  file: File;
+};
