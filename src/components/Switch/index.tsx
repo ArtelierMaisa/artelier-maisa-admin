@@ -12,8 +12,6 @@ export function Switch(props: SwitchProps) {
     onToggle,
   } = props;
 
-  // console.log(checked);
-
   const [isChecked, setIsChecked] = useState<boolean>(checked);
 
   const backgroundColorDisabled = isDisabled ? 'bg-primary60' : 'bg-primary';
