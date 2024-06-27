@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { ExternalToast, toast } from 'sonner';
 
 import {
@@ -48,6 +48,7 @@ export function Categories() {
     handleCreateCategory,
     handleCreateProduct,
     handlePutCategory,
+    handleOccultProduct,
   } = useUser();
 
   const toastOptions: ExternalToast = { duration: 3000 };
@@ -153,6 +154,32 @@ export function Categories() {
     setIsLoading(false);
     setCategorySelected({} as CategoriesData);
   }
+
+  const renderProducts = useCallback(
+    (category: CategoriesData) =>
+      category?.products &&
+      category.products.map(product => {
+        return (
+          <Product
+            id={product.id}
+            key={product.id}
+            variant='fill'
+            images={product.images}
+            isOccult={product.isOccult}
+            name={product.name}
+            onDelete={() => {
+              setProductSelected(product);
+              setCategorySelected(category);
+              setIsOpenProductDialog(true);
+            }}
+            onCheck={async () =>
+              await handleOccultProduct(category.id, product.id)
+            }
+          />
+        );
+      }),
+    [handleOccultProduct],
+  );
 
   useEffect(() => {
     if (!searchValue.trim()) setCategories(categoriesFirebase);
@@ -280,19 +307,7 @@ export function Categories() {
                         }}
                       />
 
-                      {category?.products &&
-                        category.products.map(product => (
-                          <Product
-                            key={product.id}
-                            variant='fill'
-                            {...product}
-                            onDelete={() => {
-                              setProductSelected(product);
-                              setCategorySelected(category);
-                              setIsOpenProductDialog(true);
-                            }}
-                          />
-                        ))}
+                      {renderProducts(category)}
                     </div>
                   </div>
                 </div>
@@ -360,7 +375,7 @@ export function Categories() {
       />
 
       <ProductModal
-        isOpen={isOpenProductModal}
+        isOpen={isOpenProductModal && !!categorySelected?.id}
         variant='add'
         isLoading={isLoading}
         onAdd={async product => await onCreateProduct(product)}

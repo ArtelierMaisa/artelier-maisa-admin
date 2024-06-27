@@ -1,4 +1,4 @@
-import { get, ref, remove, set } from 'firebase/database';
+import { get, onValue, ref, remove, set } from 'firebase/database';
 import {
   deleteObject,
   getDownloadURL,
@@ -407,25 +407,12 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     await handleGetBanners();
   }
 
-  const handleGetCategories = useCallback(async () => {
-    const categoriesRef = ref(database, 'categories');
-    const categoriesSnapshot = await get(categoriesRef);
-    if (!categoriesSnapshot.exists()) return setCategories([]);
-
-    const categoriesFirebase = categoryMapper<Categories[]>(categoriesSnapshot);
-    if (!categoriesFirebase) return handleGetErrorToast();
-
-    setCategories(categoriesFirebase);
-  }, [handleGetErrorToast]);
-
   async function handleCreateCategory(name: string): Promise<void> {
     const categoryId = nanoid();
 
     set(ref(database, `categories/${categoryId}`), { name }).catch(
       handleCreateErrorToast,
     );
-
-    await handleGetCategories();
   }
 
   async function handleDeleteCategory(id: string): Promise<void> {
@@ -456,7 +443,6 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     }
 
     await remove(categoryRef);
-    await handleGetCategories();
   }
 
   async function handlePutCategory(id: string, name: string): Promise<void> {
@@ -470,8 +456,6 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       name,
       products: category?.products || null,
     }).catch(handleEditErrorToast);
-
-    await handleGetCategories();
   }
 
   async function handleCreateProduct(newProduct: ProductCreateProps) {
@@ -540,8 +524,6 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       ref(database, `categories/${categoryId}/products/${productId}`),
       product,
     ).catch(handleCreateErrorToast);
-
-    await handleGetCategories();
   }
 
   async function handlePutProduct(newProduct: ProductEditProps): Promise<void> {
@@ -637,7 +619,6 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     }
 
     await remove(productRef).catch(handleDeleteErrorToast);
-    await handleGetCategories();
   }
 
   async function handleOccultProduct(
@@ -658,26 +639,42 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
     };
 
     set(productRef, newProduct).catch(handleEditErrorToast);
-    await handleGetCategories();
   }
 
   const fetchFirebase = useCallback(async () => {
     await handleGetBanners();
-    await handleGetCategories();
     await handleGetHighlights();
     await handleGetAbout();
 
     setIsLoaded(true);
-  }, [
-    handleGetAbout,
-    handleGetBanners,
-    handleGetCategories,
-    handleGetHighlights,
-  ]);
+  }, [handleGetAbout, handleGetBanners, handleGetHighlights]);
 
   useEffect(() => {
     if (isAuthenticated) fetchFirebase();
   }, [isAuthenticated, fetchFirebase]);
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      const categoriesRef = ref(database, 'categories');
+
+      const unsubscribe = onValue(categoriesRef, categoriesSnapshot => {
+        if (!categoriesSnapshot.val()) return setCategories([]);
+
+        const categoriesFirebase =
+          categoryMapper<Categories[]>(categoriesSnapshot);
+        if (!categoriesFirebase) {
+          setCategories([]);
+          return handleGetErrorToast();
+        }
+
+        setCategories(categoriesFirebase);
+      });
+
+      () => {
+        unsubscribe();
+      };
+    }
+  }, [isAuthenticated, handleGetErrorToast]);
 
   return (
     <UserContext.Provider
@@ -690,7 +687,6 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
         handleGetAbout,
         handleGetHighlights,
         handleGetBanners,
-        handleGetCategories,
         handleDeleteHighlight,
         handleDeleteBanner,
         handleDeleteCategory,

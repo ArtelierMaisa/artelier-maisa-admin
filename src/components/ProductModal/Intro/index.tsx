@@ -16,7 +16,7 @@ export function Intro(props: IntroProps) {
   function handleContinue(event: FormEvent<HTMLFormElement>): void {
     event.preventDefault();
 
-    onContinue({ description, name, isOccult: !isOccult });
+    onContinue({ description, name, isOccult });
   }
 
   return (
@@ -67,7 +67,12 @@ export function Intro(props: IntroProps) {
           Indisponível para a venda:
         </Text>
 
-        <Switch checked={!isOccult} onToggle={setIsOccult} variant='neutral' />
+        <Switch
+          htmlFor='toggle'
+          checked={!isOccult}
+          onToggle={checked => setIsOccult(!checked)}
+          variant='neutral'
+        />
       </div>
 
       <GenericButton

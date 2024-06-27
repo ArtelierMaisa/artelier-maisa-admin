@@ -23,7 +23,6 @@ export interface UserContextProps {
   handleGetHighlights(): Promise<void>;
   handleGetBanners(): Promise<void>;
   handleGetAbout(): Promise<void>;
-  handleGetCategories(): Promise<void>;
   handlePutAbout(newAbout: AboutEdit): Promise<void>;
   handlePutBanner(id: string, file: File): Promise<void>;
   handlePutCategory(id: string, name: string): Promise<void>;

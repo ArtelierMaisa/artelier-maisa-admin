@@ -1,5 +1,3 @@
-import { useState } from 'react';
-
 import { IconProps, ProductProps } from '../../@types';
 import { Carousel, DotButton, Icon, Switch, Text } from '../';
 
@@ -13,9 +11,8 @@ export function Product(props: ProductProps) {
     onAdd,
     onDelete,
     onUpdate,
+    onCheck,
   } = props;
-
-  const [isChecked, setIsChecked] = useState<boolean>(isOccult);
 
   const isFilled = variant === 'fill';
 
@@ -30,13 +27,13 @@ export function Product(props: ProductProps) {
         <>
           <Carousel
             images={images.length ? images : undefined}
-            isDisabled={isChecked}
+            isDisabled={isOccult}
           />
 
           <div className='flex flex-col h-auto justify-center items-center p-2 gap-1 sm:gap-2 overflow-hidden'>
             <Text
               type='semibold'
-              color={isChecked ? 'primary60' : 'primary'}
+              color={isOccult ? 'primary60' : 'primary'}
               toCenter
             >
               {name}
@@ -52,9 +49,10 @@ export function Product(props: ProductProps) {
               </button>
 
               <Switch
-                checked={isChecked}
+                htmlFor={id}
+                checked={isOccult}
                 variant='eyes'
-                onToggle={setIsChecked}
+                onToggle={() => onCheck && onCheck()}
               />
 
               <button
