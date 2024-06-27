@@ -375,9 +375,26 @@ export function Categories() {
       />
 
       <ProductModal
-        isOpen={isOpenProductModal && !!categorySelected?.id}
+        isOpen={
+          isOpenProductModal && !!categorySelected?.id && !productSelected?.id
+        }
         variant='add'
         isLoading={isLoading}
+        onAdd={async product => await onCreateProduct(product)}
+        onClose={() => {
+          setIsOpenProductModal(false);
+          setCategorySelected({} as CategoriesData);
+          setProductSelected({} as ProductData);
+        }}
+      />
+
+      <ProductModal
+        isOpen={
+          isOpenProductModal && !!categorySelected?.id && !!productSelected?.id
+        }
+        variant='edit'
+        isLoading={isLoading}
+        data={productSelected?.id ? productSelected : undefined}
         onAdd={async product => await onCreateProduct(product)}
         onClose={() => {
           setIsOpenProductModal(false);

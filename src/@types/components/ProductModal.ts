@@ -26,6 +26,7 @@ export type ProductModalAddDataProps = ProductModalDataProps & {
 export interface ProductModalProps {
   variant: ProductModalVariant;
   isOpen: boolean;
+  data?: ProductModalDataProps;
   isLoading?: boolean;
   onClose?(): void;
   onAdd?(product: ProductModalAddDataProps): void;

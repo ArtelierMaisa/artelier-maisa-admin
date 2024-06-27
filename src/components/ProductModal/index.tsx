@@ -11,11 +11,13 @@ import { Intro } from './Intro';
 import { Photos } from './Photos';
 
 export function ProductModal(props: ProductModalProps) {
-  const { isOpen, variant, isLoading = false, onAdd, onClose } = props;
+  const { isOpen, variant, data, isLoading = false, onAdd, onClose } = props;
 
   const [currentModalContent, setCurrentModalContent] =
     useState<ProductModalActiveType>('intro');
-  const [product, setProduct] = useState<ProductModalDataProps>();
+  const [product, setProduct] = useState<ProductModalDataProps | undefined>(
+    data,
+  );
 
   const commonModalContentProps = {
     variant,
