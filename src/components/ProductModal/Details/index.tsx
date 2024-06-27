@@ -110,7 +110,7 @@ export function Details(props: DetailsProps) {
             mode='submit'
             variant='primary'
             type='medium'
-            title='Continuar'
+            title={variant === 'add' ? 'Continuar' : 'Editar'}
             isHugWidth
           />
         </div>

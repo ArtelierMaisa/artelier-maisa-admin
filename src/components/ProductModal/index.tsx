@@ -31,7 +31,8 @@ export function ProductModal(props: ProductModalProps) {
         onGoBack={() => setCurrentModalContent('intro')}
         onContinue={detailsData => {
           setProduct({ ...product!, ...detailsData });
-          setCurrentModalContent('photos');
+          if (variant === 'add') setCurrentModalContent('photos');
+          else if (onAdd) onAdd({ ...product!, ...detailsData, files: [] });
         }}
         {...commonModalContentProps}
       />

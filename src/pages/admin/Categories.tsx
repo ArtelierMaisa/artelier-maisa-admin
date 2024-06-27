@@ -167,6 +167,11 @@ export function Categories() {
             images={product.images}
             isOccult={product.isOccult}
             name={product.name}
+            onUpdate={() => {
+              setProductSelected(product);
+              setCategorySelected(category);
+              setIsOpenProductModal(true);
+            }}
             onDelete={() => {
               setProductSelected(product);
               setCategorySelected(category);
