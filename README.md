@@ -49,3 +49,5 @@ npm run dev
 - [Rafael Mota Alves](https://github.com/RafaelMotaAlvess)
 - [Gabriel Marcos Mendes](https://github.com/gmarcosmendes)
 - [Josias Pereira](https://github.com/JosiasNGPereira)
+
+**Observação**: Este **projeto de extensão** foi desenvolvido durante a matéria de **Programação Web** lecionada pelo professor **Jhonatan Alves** da [Faculdade do Vale do Itajaí](https://www.univali.br/).
