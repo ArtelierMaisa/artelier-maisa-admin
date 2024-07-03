@@ -1,25 +1,70 @@
 import { Sidebar as FlowbiteSidebar } from 'flowbite-react';
-import { useCallback, useEffect, useState } from 'react';
+import { useReducer, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import packageJson from '../../../package.json';
-import { SidebarCurrentPageType } from '../../@types';
+import {
+  SidebarCurrentPageAction,
+  SidebarCurrentPageState,
+  SidebarCurrentPageType,
+  SidebarCurrentPageUriType,
+} from '../../@types';
 import { PRIMARY_LOGO } from '../../config';
 import { useAuth } from '../../hooks';
 import { Dialog, Icon, Text } from '../';
+
+function reducer(
+  state: SidebarCurrentPageState,
+  action: SidebarCurrentPageAction,
+): SidebarCurrentPageState {
+  const { type, payload } = action;
+  switch (type) {
+    case '/admin/about': {
+      return { ...state, currentPage: payload };
+    }
+    case '/admin/categories': {
+      return { ...state, currentPage: payload };
+    }
+    case '/admin/banners': {
+      return { ...state, currentPage: payload };
+    }
+    case '/admin/events': {
+      return { ...state, currentPage: payload };
+    }
+    default:
+      return { ...state, currentPage: 'banners' };
+  }
+}
 
 export function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [isOpenSignOutDialog, setIsOpenSignOutDialog] =
     useState<boolean>(false);
-  const [currentPage, setCurrentPage] =
-    useState<SidebarCurrentPageType>('banners');
 
-  const { handleSignOut } = useAuth();
   const { pathname } = useLocation();
 
+  const pages: Record<SidebarCurrentPageType, SidebarCurrentPageUriType> = {
+    about: '/admin/about',
+    banners: '/admin/banners',
+    highlights: '/admin/events',
+    products: '/admin/categories',
+  };
+
+  const pagesUri: Record<SidebarCurrentPageUriType, SidebarCurrentPageType> = {
+    '/admin/about': 'about',
+    '/admin/banners': 'banners',
+    '/admin/events': 'highlights',
+    '/admin/categories': 'products',
+  };
+
+  const [page, dispatch] = useReducer(reducer, {
+    currentPage: pagesUri[pathname as SidebarCurrentPageUriType],
+  } as never);
+
+  const { handleSignOut } = useAuth();
+
   function handleChangeCurrentPage(newPage: SidebarCurrentPageType): void {
-    if (newPage !== currentPage) setCurrentPage(newPage);
+    dispatch({ type: pages[newPage], payload: newPage });
   }
 
   function handleSignOutAccept(): void {
@@ -27,27 +72,14 @@ export function Sidebar() {
     handleSignOut();
   }
 
-  const pathnames = useCallback(
-    () =>
-      ({
-        '/admin/banners': () => setCurrentPage('banners'),
-        '/admin/categories': () => setCurrentPage('products'),
-        '/admin/events': () => setCurrentPage('highlights'),
-        '/admin/about': () => setCurrentPage('about'),
-      })[pathname],
-    [pathname],
-  );
-
-  const isBanners = currentPage === 'banners';
-  const isHighlights = currentPage === 'highlights';
-  const isAbout = currentPage === 'about';
-  const isProducts = currentPage === 'products';
+  const isBanners = page.currentPage === 'banners';
+  const isHighlights = page.currentPage === 'highlights';
+  const isAbout = page.currentPage === 'about';
+  const isProducts = page.currentPage === 'products';
 
   const width = isCollapsed ? 'w-auto' : 'w-full sm:w-auto';
   const textsClassName = `${isCollapsed ? 'hidden' : 'flex'} text-wrap`;
   const menuJustify = isCollapsed ? 'justify-center' : 'justify-between';
-
-  useEffect(pathnames, [pathnames]);
 
   return (
     <>
