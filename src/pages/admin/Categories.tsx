@@ -58,10 +58,10 @@ export function Categories() {
   function onSearch(): void {
     const categoriesSearched = searchValue.trim()
       ? categoriesFirebase.filter(category =>
-          searchValue
+          category.name
             .trim()
             .toLowerCase()
-            .includes(category.name.trim().toLowerCase()),
+            .includes(searchValue.trim().toLowerCase()),
         )
       : categoriesFirebase;
 
