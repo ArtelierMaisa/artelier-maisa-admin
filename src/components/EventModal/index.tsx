@@ -1,5 +1,5 @@
 import { nanoid } from 'nanoid';
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 import { ExternalToast, toast } from 'sonner';
 
 import { EventModalProps, Highlight } from '../../@types';
@@ -7,7 +7,7 @@ import { eventModalTitles } from '../../constants';
 import { useUser } from '../../hooks';
 import { GenericButton, Icon, ImageCard, Input, Modal, Text } from '../';
 
-export function EventModal(props: EventModalProps) {
+function EventModal(props: EventModalProps) {
   const { isOpen, variant, data, onClose } = props;
 
   const { highlights, handleCreateHighlight, handlePutHighlight } = useUser();
@@ -139,3 +139,5 @@ export function EventModal(props: EventModalProps) {
     </Modal>
   );
 }
+
+export default memo(EventModal);

@@ -1,8 +1,9 @@
+import { memo } from 'react';
 import ReactModal from 'react-modal';
 
 import { ModalProps } from '../../@types';
 
-export function Modal(props: ModalProps) {
+function Modal(props: ModalProps) {
   const { children, isOpen, className = '', onRequestClose } = props;
 
   return (
@@ -18,3 +19,5 @@ export function Modal(props: ModalProps) {
     </ReactModal>
   );
 }
+
+export default memo(Modal);

@@ -1,7 +1,9 @@
+import { memo } from 'react';
+
 import { IconProps, ProductProps } from '../../@types';
 import { Carousel, DotButton, Icon, Switch, Text } from '../';
 
-export function Product(props: ProductProps) {
+function Product(props: ProductProps) {
   const {
     variant = 'blank',
     images = [],
@@ -81,3 +83,5 @@ export function Product(props: ProductProps) {
     </div>
   );
 }
+
+export default memo(Product);

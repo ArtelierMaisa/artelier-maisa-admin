@@ -1,8 +1,10 @@
+import { memo } from 'react';
+
 import { DotButtonMode, DotButtonProps, IconProps } from '../../@types';
 import { dotButtonIconSizes, dotButtonSizes } from '../../constants';
-import { Icon } from '../Icon';
+import { Icon } from '../';
 
-export function DotButton(props: DotButtonProps) {
+function DotButton(props: DotButtonProps) {
   const { type = 'add', variant = 'medium', mode = 'button', onClick } = props;
 
   const commonIconProps: Omit<IconProps, 'variant'> = {
@@ -42,3 +44,5 @@ export function DotButton(props: DotButtonProps) {
 
   return dotButtonModes[mode];
 }
+
+export default memo(DotButton);

@@ -1,9 +1,9 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 import { SwitchProps } from '../../@types';
 import { Icon } from '../';
 
-export function Switch(props: SwitchProps) {
+function Switch(props: SwitchProps) {
   const {
     checked,
     htmlFor,
@@ -56,3 +56,5 @@ export function Switch(props: SwitchProps) {
     </div>
   );
 }
+
+export default memo(Switch);

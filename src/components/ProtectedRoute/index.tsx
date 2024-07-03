@@ -1,9 +1,10 @@
+import { memo } from 'react';
 import { Navigate } from 'react-router-dom';
 
 import { ProtectedRouteProps } from '../../@types';
 import { useAuth } from '../../hooks';
 
-export function ProtectedRoute(props: ProtectedRouteProps) {
+function ProtectedRoute(props: ProtectedRouteProps) {
   const { children, variant = 'private' } = props;
 
   const { isAuthenticated } = useAuth();
@@ -16,3 +17,5 @@ export function ProtectedRoute(props: ProtectedRouteProps) {
 
   return children;
 }
+
+export default memo(ProtectedRoute);

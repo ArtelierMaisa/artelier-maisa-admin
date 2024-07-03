@@ -1,9 +1,10 @@
 import { Carousel as FlowbiteCarousel } from 'flowbite-react';
+import { memo } from 'react';
 
 import { CarouselProps, DotButtonProps } from '../../@types';
 import { DotButton } from '../';
 
-export function Carousel(props: CarouselProps) {
+function Carousel(props: CarouselProps) {
   const { images = [], isDisabled = false } = props;
 
   const display = isDisabled
@@ -53,3 +54,5 @@ export function Carousel(props: CarouselProps) {
     </div>
   );
 }
+
+export default memo(Carousel);

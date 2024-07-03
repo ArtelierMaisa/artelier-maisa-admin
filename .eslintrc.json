@@ -16,19 +16,10 @@
     },
     "ecmaVersion": "latest"
   },
-  "plugins": [
-    "react-refresh",
-    "@typescript-eslint",
-    "simple-import-sort",
-    "prettier"
-  ],
+  "plugins": ["@typescript-eslint", "simple-import-sort", "prettier"],
   "rules": {
     "prettier/prettier": "error",
     "simple-import-sort/imports": "error",
-    "simple-import-sort/exports": "error",
-    "react-refresh/only-export-components": [
-      "warn",
-      { "allowConstantExport": true }
-    ]
+    "simple-import-sort/exports": "error"
   }
 }

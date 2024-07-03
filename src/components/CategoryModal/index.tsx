@@ -1,10 +1,10 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 import { CategoryModalProps } from '../../@types';
 import { categoryModalTitles } from '../../constants';
 import { GenericButton, Icon, Input, Modal, Text } from '../';
 
-export function CategoryModal(props: CategoryModalProps) {
+function CategoryModal(props: CategoryModalProps) {
   const { isOpen, variant, data, isLoading = false, onAccept, onClose } = props;
 
   const isEdit = variant === 'edit';
@@ -91,3 +91,5 @@ export function CategoryModal(props: CategoryModalProps) {
     </Modal>
   );
 }
+
+export default memo(CategoryModal);

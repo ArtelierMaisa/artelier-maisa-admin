@@ -1,6 +1,8 @@
+import { memo } from 'react';
+
 import { ContainerProps } from '../../@types';
 
-export function Container(props: ContainerProps) {
+function Container(props: ContainerProps) {
   const { children } = props;
 
   return (
@@ -9,3 +11,5 @@ export function Container(props: ContainerProps) {
     </main>
   );
 }
+
+export default memo(Container);

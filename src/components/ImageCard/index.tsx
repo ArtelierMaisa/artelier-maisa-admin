@@ -1,4 +1,4 @@
-import { ChangeEvent, useRef } from 'react';
+import { ChangeEvent, memo, useRef } from 'react';
 import { toast } from 'sonner';
 
 import { ImageCardProps } from '../../@types';
@@ -6,7 +6,7 @@ import { ACCEPT_EXTENSION_FILES } from '../../config';
 import { imageCardTitles, imageCardTypes } from '../../constants';
 import { DotButton, Text } from '../';
 
-export function ImageCard(props: ImageCardProps) {
+function ImageCard(props: ImageCardProps) {
   const { type = 'photo', isDisabled = false, onGetFile } = props;
 
   const inputRef = useRef<HTMLInputElement>(null);
@@ -68,3 +68,5 @@ export function ImageCard(props: ImageCardProps) {
     </>
   );
 }
+
+export default memo(ImageCard);
