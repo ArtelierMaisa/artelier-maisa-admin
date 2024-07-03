@@ -90,7 +90,7 @@ export function Details(props: DetailsProps) {
             type='currency'
             value={details?.price || ''}
             placeholder='R$ 49,99'
-            label='Preço (Opcional)'
+            label='Preço'
             isHugWidth
             isRequired
             onChange={price => setDetails({ ...details, price })}

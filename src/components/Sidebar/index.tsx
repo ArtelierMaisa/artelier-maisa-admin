@@ -47,7 +47,7 @@ export function Sidebar() {
   const textsClassName = `${isCollapsed ? 'hidden' : 'flex'} text-wrap`;
   const menuJustify = isCollapsed ? 'justify-center' : 'justify-between';
 
-  useEffect(pathnames, [pathname, pathnames]);
+  useEffect(pathnames, [pathnames]);
 
   return (
     <>
