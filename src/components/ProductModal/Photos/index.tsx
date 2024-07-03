@@ -1,12 +1,12 @@
 import { nanoid } from 'nanoid';
-import { useState } from 'react';
+import { memo, useState } from 'react';
 import { toast } from 'sonner';
 
 import { PhotosProps, ProductModalImageProps } from '../../../@types';
 import { productModalTitles } from '../../../constants';
 import { BannerCard, GenericButton, Icon, Text } from '../../';
 
-export function Photos(props: PhotosProps) {
+function Photos(props: PhotosProps) {
   const { variant, data, isLoading = false, onAdd, onGoBack, onClose } = props;
 
   const [images, setImages] = useState<ProductModalImageProps[] | null>(
@@ -147,3 +147,5 @@ export function Photos(props: PhotosProps) {
     </div>
   );
 }
+
+export default memo(Photos);

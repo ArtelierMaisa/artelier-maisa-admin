@@ -1,9 +1,10 @@
+import { memo } from 'react';
+
 import { Colors, GenericButtonProps, SpinnerColor } from '../../@types';
 import { genericButtonHeights } from '../../constants';
-import { Text } from '../';
-import { Spinner } from '../Spinner';
+import { Spinner, Text } from '../';
 
-export function GenericButton(props: GenericButtonProps) {
+function GenericButton(props: GenericButtonProps) {
   const {
     title,
     variant = 'primary',
@@ -66,3 +67,5 @@ export function GenericButton(props: GenericButtonProps) {
     </button>
   );
 }
+
+export default memo(GenericButton);

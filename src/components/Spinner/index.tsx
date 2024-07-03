@@ -1,9 +1,10 @@
 import { Spinner as FlowbiteSpinner } from 'flowbite-react';
+import { memo } from 'react';
 
 import { SpinnerProps } from '../../@types';
 import { spinnerSizes } from '../../constants';
 
-export function Spinner(props: SpinnerProps) {
+function Spinner(props: SpinnerProps) {
   const { size = 'medium', color = 'primary' } = props;
 
   return (
@@ -14,3 +15,5 @@ export function Spinner(props: SpinnerProps) {
     />
   );
 }
+
+export default memo(Spinner);

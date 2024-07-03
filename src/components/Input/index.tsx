@@ -1,12 +1,12 @@
 import { Label, Textarea, TextInput } from 'flowbite-react';
-import { ChangeEvent } from 'react';
+import { ChangeEvent, memo } from 'react';
 import { NumericFormat, PatternFormat } from 'react-number-format';
 
 import { InputProps, InputVariant } from '../../@types';
 import { textInputTypes } from '../../constants';
-import { Icon } from '../Icon';
+import { Icon } from '../';
 
-export function Input(props: InputProps) {
+function Input(props: InputProps) {
   const {
     id = 'input',
     type = 'text',
@@ -96,3 +96,5 @@ export function Input(props: InputProps) {
     </div>
   );
 }
+
+export default memo(Input);

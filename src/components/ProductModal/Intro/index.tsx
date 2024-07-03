@@ -1,10 +1,10 @@
-import { FormEvent, useEffect, useState } from 'react';
+import { FormEvent, memo, useEffect, useState } from 'react';
 
 import { IntroProps } from '../../../@types';
 import { productModalTitles } from '../../../constants';
 import { GenericButton, Icon, Input, Switch, Text } from '../../';
 
-export function Intro(props: IntroProps) {
+function Intro(props: IntroProps) {
   const { variant, data, onClose, onContinue } = props;
 
   const [name, setName] = useState<string>(data ? data.name : '');
@@ -95,3 +95,5 @@ export function Intro(props: IntroProps) {
     </form>
   );
 }
+
+export default memo(Intro);

@@ -1,11 +1,11 @@
-import { ChangeEvent, useRef, useState } from 'react';
+import { ChangeEvent, memo, useRef, useState } from 'react';
 import { toast } from 'sonner';
 
 import { BannerCardProps, BannerCardVariant, IconProps } from '../../@types';
 import { ACCEPT_EXTENSION_FILES } from '../../config';
 import { DotButton, Icon, Spinner, Text } from '../';
 
-export function BannerCard(props: BannerCardProps) {
+function BannerCard(props: BannerCardProps) {
   const {
     variant = 'add',
     type = 'file-system',
@@ -165,3 +165,5 @@ export function BannerCard(props: BannerCardProps) {
 
   return bannerCardVariants[variant];
 }
+
+export default memo(BannerCard);

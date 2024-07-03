@@ -1,3 +1,5 @@
+import { memo } from 'react';
+
 import { TextProps } from '../../@types';
 import {
   textColors,
@@ -7,7 +9,7 @@ import {
   textWeights,
 } from '../../constants';
 
-export function Text(props: TextProps) {
+function Text(props: TextProps) {
   const {
     children,
     type = 'regular',
@@ -31,3 +33,5 @@ export function Text(props: TextProps) {
     </p>
   );
 }
+
+export default memo(Text);

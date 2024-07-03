@@ -1,16 +1,16 @@
-import { useEffect, useState } from 'react';
+import { memo, useEffect, useState } from 'react';
 
 import {
   ProductModalActiveType,
   ProductModalDataProps,
   ProductModalProps,
 } from '../../@types';
-import { Modal } from '../Modal';
-import { Details } from './Details';
-import { Intro } from './Intro';
-import { Photos } from './Photos';
+import { Modal } from '../';
+import Details from './Details';
+import Intro from './Intro';
+import Photos from './Photos';
 
-export function ProductModal(props: ProductModalProps) {
+function ProductModal(props: ProductModalProps) {
   const { isOpen, variant, data, isLoading = false, onAdd, onClose } = props;
 
   const [currentModalContent, setCurrentModalContent] =
@@ -71,3 +71,5 @@ export function ProductModal(props: ProductModalProps) {
     </Modal>
   );
 }
+
+export default memo(ProductModal);

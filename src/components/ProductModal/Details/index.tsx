@@ -1,10 +1,10 @@
-import { FormEvent, useState } from 'react';
+import { FormEvent, memo, useState } from 'react';
 
 import { DetailsDataProps, DetailsProps } from '../../../@types';
 import { productModalTitles } from '../../../constants';
 import { GenericButton, Icon, Input, Text } from '../../';
 
-export function Details(props: DetailsProps) {
+function Details(props: DetailsProps) {
   const { variant, data, onContinue, onGoBack, onClose } = props;
 
   const [details, setDetails] = useState<DetailsDataProps>(
@@ -118,3 +118,5 @@ export function Details(props: DetailsProps) {
     </form>
   );
 }
+
+export default memo(Details);

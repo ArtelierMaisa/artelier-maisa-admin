@@ -1,7 +1,9 @@
+import { memo } from 'react';
+
 import { SearchInputProps } from '../../@types';
 import { GenericButton, Icon } from '../';
 
-export function SearchInput(props: SearchInputProps) {
+function SearchInput(props: SearchInputProps) {
   const { searchValue, onChange, onSearch } = props;
 
   return (
@@ -41,3 +43,5 @@ export function SearchInput(props: SearchInputProps) {
     </>
   );
 }
+
+export default memo(SearchInput);

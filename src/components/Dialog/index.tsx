@@ -1,8 +1,10 @@
+import { memo } from 'react';
+
 import { DialogProps, TextProps } from '../../@types';
 import { dialogTitles } from '../../constants';
 import { GenericButton, Icon, Modal, Text } from '../';
 
-export function Dialog(props: DialogProps) {
+function Dialog(props: DialogProps) {
   const { isOpen, variant, isLoading = false, onAccept, onClose } = props;
 
   const commonTextProps: Omit<TextProps, 'children'> = {
@@ -104,3 +106,5 @@ export function Dialog(props: DialogProps) {
     </Modal>
   );
 }
+
+export default memo(Dialog);

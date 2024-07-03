@@ -1,5 +1,5 @@
 import { Sidebar as FlowbiteSidebar } from 'flowbite-react';
-import { useReducer, useState } from 'react';
+import { memo, useReducer, useState } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 
 import packageJson from '../../../package.json';
@@ -36,7 +36,7 @@ function reducer(
   }
 }
 
-export function Sidebar() {
+function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
   const [isOpenSignOutDialog, setIsOpenSignOutDialog] =
     useState<boolean>(false);
@@ -227,3 +227,5 @@ export function Sidebar() {
     </>
   );
 }
+
+export default memo(Sidebar);
