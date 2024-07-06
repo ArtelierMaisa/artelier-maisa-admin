@@ -1,15 +1,13 @@
 # [1.2.0](https://github.com/ArtelierMaisa/artelier-maisa-admin/compare/v1.1.0...v1.2.0) (2024-07-03)
 
-
 ### Features
 
-* add `meta` tags to show platform preview ([3f4461b](https://github.com/ArtelierMaisa/artelier-maisa-admin/commit/3f4461b4ee12605ae15d8fc8bc915937f71762b4))
-
+- add `meta` tags to show platform preview ([3f4461b](https://github.com/ArtelierMaisa/artelier-maisa-admin/commit/3f4461b4ee12605ae15d8fc8bc915937f71762b4))
 
 ### Performance Improvements
 
-* change all components to use `memo` to improve application performance ([d2907ff](https://github.com/ArtelierMaisa/artelier-maisa-admin/commit/d2907ff0d012c820dc303d49375f00de83426d17))
-* improve search category by name in `onSearch` function ([c8fed3d](https://github.com/ArtelierMaisa/artelier-maisa-admin/commit/c8fed3d936c50111f4bd2051d4a1ecdefbcfd974))
+- change all components to use `memo` to improve application performance ([d2907ff](https://github.com/ArtelierMaisa/artelier-maisa-admin/commit/d2907ff0d012c820dc303d49375f00de83426d17))
+- improve search category by name in `onSearch` function ([c8fed3d](https://github.com/ArtelierMaisa/artelier-maisa-admin/commit/c8fed3d936c50111f4bd2051d4a1ecdefbcfd974))
 
 # [1.1.0](https://github.com/ArtelierMaisa/artelier-maisa-admin/compare/v1.0.0...v1.1.0) (2024-07-03)
 
