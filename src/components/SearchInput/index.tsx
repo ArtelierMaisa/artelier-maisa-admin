@@ -1,4 +1,4 @@
-import { memo } from 'react';
+import { FormEvent, memo } from 'react';
 
 import { SearchInputProps } from '../../@types';
 import { GenericButton, Icon } from '../';
@@ -6,9 +6,18 @@ import { GenericButton, Icon } from '../';
 function SearchInput(props: SearchInputProps) {
   const { searchValue, onChange, onSearch } = props;
 
+  function onSubmit(event: FormEvent<HTMLFormElement>): void {
+    event.preventDefault();
+
+    if (onSearch) onSearch();
+  }
+
   return (
     <>
-      <form className='w-full max-w-[38rem] rounded-lg sm:rounded-s-lg shadow-default mb-2 sm:mb-0'>
+      <form
+        onSubmit={onSubmit}
+        className='w-full max-w-[38rem] rounded-lg sm:rounded-s-lg shadow-default mb-2 sm:mb-0'
+      >
         <div className='flex relative'>
           <div className='relative w-full'>
             <input
@@ -17,7 +26,6 @@ function SearchInput(props: SearchInputProps) {
               className='block w-full h-16 z-20 p-4 sm:p-2 sm:pr-16 rounded-lg sm:rounded-s-lg bg-background-color text-primary font-normal text-base placeholder-primary60 border-transparent focus:ring focus:ring-primary60 focus:border-primary60'
               placeholder='Buscar categoria'
               onChange={onChange}
-              required
             />
 
             <button
@@ -34,11 +42,7 @@ function SearchInput(props: SearchInputProps) {
       </form>
 
       <div className='relative flex flex-col sm:hidden w-full gap-2'>
-        <GenericButton
-          title='Buscar produto ou categoria'
-          onClick={onSearch}
-          isHugWidth
-        />
+        <GenericButton title='Buscar categoria' onClick={onSearch} isHugWidth />
       </div>
     </>
   );
