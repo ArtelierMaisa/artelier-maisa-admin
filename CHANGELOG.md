@@ -1,3 +1,18 @@
+## [1.2.2](https://github.com/ArtelierMaisa/artelier-maisa-admin/compare/v1.2.1...v1.2.2) (2024-07-27)
+
+
+### Bug Fixes
+
+* add `isMobile` constant to show or not `Sidebar` component opening ([9e1c2c4](https://github.com/ArtelierMaisa/artelier-maisa-admin/commit/9e1c2c46ce9616495d8888cfbc688dc5aa573e07))
+* change `Switch` variant of the `neutral` to `eyes` ([5850687](https://github.com/ArtelierMaisa/artelier-maisa-admin/commit/5850687efc4a54a85193be87cfc3e049a60bcb55))
+* change default phone to the correct ([a972aec](https://github.com/ArtelierMaisa/artelier-maisa-admin/commit/a972aec8f07ae86966ec65f4c93bf3e392506efa))
+* remove unnecessary DDI in input whatsapp ([eae7a61](https://github.com/ArtelierMaisa/artelier-maisa-admin/commit/eae7a61077e120cbf3470b31c0bbbb4ee742f8c7))
+
+
+### Reverts
+
+* change again `Switch` component variant to `neutral` ([15e7ab3](https://github.com/ArtelierMaisa/artelier-maisa-admin/commit/15e7ab329b9ecf18278b1dba697372bf9934f8e9))
+
 ## [1.2.1](https://github.com/ArtelierMaisa/artelier-maisa-admin/compare/v1.2.0...v1.2.1) (2024-07-06)
 
 ### Bug Fixes
