@@ -71,7 +71,7 @@ function Input(props: InputProps) {
       <PatternFormat
         type='tel'
         customInput={TextInput}
-        format='+55 (##) # ####-####'
+        format='+## (##) # ####-####'
         mask='_'
         allowEmptyFormatting
         {...commonInputProps}
