@@ -13,6 +13,8 @@ import { PRIMARY_LOGO } from '../../config';
 import { useAuth } from '../../hooks';
 import { Dialog, Icon, Text } from '../';
 
+const isMobile = window.innerWidth <= 640;
+
 function reducer(
   state: SidebarCurrentPageState,
   action: SidebarCurrentPageAction,
@@ -37,7 +39,7 @@ function reducer(
 }
 
 function Sidebar() {
-  const [isCollapsed, setIsCollapsed] = useState<boolean>(false);
+  const [isCollapsed, setIsCollapsed] = useState<boolean>(isMobile);
   const [isOpenSignOutDialog, setIsOpenSignOutDialog] =
     useState<boolean>(false);
 

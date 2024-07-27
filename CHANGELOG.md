@@ -1,9 +1,8 @@
 ## [1.2.1](https://github.com/ArtelierMaisa/artelier-maisa-admin/compare/v1.2.0...v1.2.1) (2024-07-06)
 
-
 ### Bug Fixes
 
-* cancel submit event of the `form` tag and small adjust in padding value of the `Container` component ([1d0134e](https://github.com/ArtelierMaisa/artelier-maisa-admin/commit/1d0134ebe5e4bbc0c3c898be8592cdefdb59e655))
+- cancel submit event of the `form` tag and small adjust in padding value of the `Container` component ([1d0134e](https://github.com/ArtelierMaisa/artelier-maisa-admin/commit/1d0134ebe5e4bbc0c3c898be8592cdefdb59e655))
 
 # [1.2.0](https://github.com/ArtelierMaisa/artelier-maisa-admin/compare/v1.1.0...v1.2.0) (2024-07-03)
 
