@@ -81,7 +81,7 @@ function Intro(props: IntroProps) {
           htmlFor='toggle'
           checked={!isOccult}
           onToggle={checked => setIsOccult(!checked)}
-          variant='eyes'
+          variant='neutral'
         />
       </div>
 
