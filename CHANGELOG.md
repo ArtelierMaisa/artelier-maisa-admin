@@ -1,3 +1,10 @@
+## [1.2.3](https://github.com/ArtelierMaisa/artelier-maisa-admin/compare/v1.2.2...v1.2.3) (2024-07-29)
+
+
+### Bug Fixes
+
+* send correct `weight` product value ([d943b76](https://github.com/ArtelierMaisa/artelier-maisa-admin/commit/d943b76e2f91cd2bb1c800f16bc7caf74fba5a69))
+
 ## [1.2.2](https://github.com/ArtelierMaisa/artelier-maisa-admin/compare/v1.2.1...v1.2.2) (2024-07-27)
 
 
