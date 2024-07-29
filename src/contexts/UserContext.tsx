@@ -513,7 +513,7 @@ export function UserProvider({ children }: Required<PropsWithChildren>) {
       ...newProduct,
       material: newProduct.material || '',
       size: newProduct.size || '',
-      weight: newProduct.size || '',
+      weight: newProduct.weight || '',
       whatsapp,
       images: imagesObject,
       createdAt: new Date().getTime(),
